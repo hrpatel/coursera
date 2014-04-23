@@ -1,5 +1,5 @@
 # template for "Guess the number" mini-project
-__author__= "mamaray"
+__author__ = "hrpatel"
 
 import simplegui
 import random
