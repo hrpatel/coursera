@@ -17,7 +17,7 @@ RIGHT = False
 
 # initialize ball
 ball_pos = [WIDTH / 2,  HEIGHT/ 2]
-ball_vel = [1, 1]
+ball_vel = [2, 2]
 
 # initialize paddle
 paddle1_pos = [ [0, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
@@ -106,8 +106,8 @@ def draw(canvas):
     # update paddle's vertical position, keep paddle on the screen
     
     # draw paddles
-    canvas.draw_polygon(paddle1_pos, 2, "White", "Orange")
-    canvas.draw_polygon(paddle2_pos, 2, "White", "Orange")
+    canvas.draw_polygon(paddle1_pos, 2, "Yellow", "Orange")
+    canvas.draw_polygon(paddle2_pos, 2, "Yellow", "Orange")
     
     # draw scores
     canvas.draw_text("P1: " + str(score1), (125, 50), 30, "White")
