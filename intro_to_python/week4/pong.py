@@ -20,8 +20,8 @@ ball_pos = [0, 0]
 ball_vel = [0, 0]
 
 # initialize paddle properties
-paddle1_pos = [ [0, 0], [0, 0], [0, 0], [0, 0] ]
-paddle2_pos = [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+paddle1_pos = [ [0, 0], [0, 0] ]
+paddle2_pos = [ [0, 0], [0, 0] ]
 paddle1_vel = 0
 paddle2_vel = 0
 
@@ -29,15 +29,29 @@ paddle2_vel = 0
 score1 = 0
 score2 = 0
 
+# stop the paddles from leaving the screen
+def move_paddle(pad, vel):
+    pad[0][1] += vel
+    pad[1][1] += vel
+
+    if pad[0][1] <= 0:
+        pad[0][1] = 0
+        pad[1][1] = pad[0][1] + PAD_HEIGHT
+        
+    if pad[1][1] >= HEIGHT:
+        pad[0][1] = HEIGHT - PAD_HEIGHT
+        pad[1][1] = HEIGHT
+
+
 # initialize ball_pos and ball_vel for new bal in middle of table
 # if direction is RIGHT, the ball's velocity is upper right, else upper left
 def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
     if direction == RIGHT:
-        ball_vel = [-1 * random.randrange(1, 2), random.randrange(1, 2)]
+        ball_vel = [-1 * random.randrange(1, 5), random.randrange(1, 5)]
     else:
-        ball_vel = [random.randrange(1, 2), -1 * random.randrange(1, 2)]
+        ball_vel = [random.randrange(1, 5), -1 * random.randrange(1, 5)]
 
 
 # define event handlers
@@ -46,16 +60,13 @@ def new_game():
     global score1, score2  # these are ints
 
     # initialize paddle
-    paddle1_pos = [ [0, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT],
-               [0, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
-    paddle2_pos = [ [WIDTH - PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT],
-               [WIDTH - PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
-    paddle1_vel = 1
-    paddle2_vel = 1
+    paddle2_pos = [[0 + HALF_PAD_WIDTH -1 , (HEIGHT / 2) - HALF_PAD_HEIGHT], 
+                   [0 + HALF_PAD_WIDTH - 1, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
+    paddle1_pos = [[WIDTH - HALF_PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
+                   [WIDTH - HALF_PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
+
+    paddle1_vel = 0
+    paddle2_vel = 0
 
     # initialize score
     score1 = 0
@@ -79,11 +90,13 @@ def draw(canvas):
     if ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH):
         ball_vel[0] = - ball_vel[0]
         spawn_ball(LEFT)
+        score2 += 1
     
     # collide and reflect off of right side
     if ball_pos[0] >= (WIDTH - 1) - (BALL_RADIUS + PAD_WIDTH):
         ball_vel[0] = - ball_vel[0]
         spawn_ball(RIGHT)
+        score1 += 1
     
     # collide and reflect off the top wall
     if ball_pos[1] <= BALL_RADIUS:
@@ -100,10 +113,12 @@ def draw(canvas):
     canvas.draw_circle(ball_pos, BALL_RADIUS, 2, "Brown", "Red")
     
     # update paddle's vertical position, keep paddle on the screen
+    move_paddle(paddle1_pos, paddle1_vel)
+    move_paddle(paddle2_pos, paddle2_vel)
     
     # draw paddles
-    canvas.draw_polygon(paddle1_pos, 2, "Yellow", "Orange")
-    canvas.draw_polygon(paddle2_pos, 2, "Yellow", "Orange")
+    canvas.draw_line( paddle1_pos[0], paddle1_pos[1], PAD_WIDTH, "Orange")
+    canvas.draw_line( paddle2_pos[0], paddle2_pos[1], PAD_WIDTH, "Orange")
     
     # draw scores
     canvas.draw_text("P1: " + str(score1), (125, 50), 30, "White")
@@ -111,16 +126,17 @@ def draw(canvas):
         
 def keydown(key):
     global paddle1_vel, paddle2_vel
+    velocity_factor = 5
     # P1 uses up/down keys
     # P2 uses 'w'/'s' keys
     if key == simplegui.KEY_MAP["up"]:
-        paddle1_vel *= 1
+        paddle1_vel = -1 * velocity_factor
     elif key == simplegui.KEY_MAP["down"]:
-        paddle1_vel *= 1
+        paddle1_vel = 1 * velocity_factor
     elif key == simplegui.KEY_MAP["w"]:
-        paddle2_vel *= 1
+        paddle2_vel = -1 * velocity_factor
     elif key == simplegui.KEY_MAP["s"]:
-        paddle2_vel *= 1
+        paddle2_vel = 1 * velocity_factor
    
 def keyup(key):
     global paddle1_vel, paddle2_vel
