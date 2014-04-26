@@ -17,19 +17,26 @@ RIGHT = False
 
 # initialize ball properties
 ball_pos = [0, 0]
-ball_vel = [0, 0]
+ball_vel = list(ball_pos)
 
 # initialize paddle properties
 paddle1_pos = [ [0, 0], [0, 0] ]
-paddle2_pos = [ [0, 0], [0, 0] ]
-paddle1_vel = 0
-paddle2_vel = 0
+paddle2_pos = list(paddle1_pos)
+paddle1_vel, paddle2_vel = 0, 0
 
 # initialize score
-score1 = 0
-score2 = 0
+score1, score2 = 0, 0
 
-# stop the paddles from leaving the screen
+
+# make the game more interesting
+def make_interesting():
+    global ball_pos
+    how_interesting = 1.05
+    ball_vel[0] *= how_interesting
+    ball_vel[1] *= how_interesting
+
+    
+# stop paddles from leaving the screen
 def move_paddle(pad, vel):
     pad[0][1] += vel
     pad[1][1] += vel
@@ -49,9 +56,9 @@ def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
     if direction == RIGHT:
-        ball_vel = [-1 * random.randrange(1, 5), random.randrange(1, 5)]
+        ball_vel = [-1 * random.randrange(3, 6), random.randrange(3, 6)]
     else:
-        ball_vel = [random.randrange(1, 5), -1 * random.randrange(1, 5)]
+        ball_vel = [random.randrange(3, 6), -1 * random.randrange(3, 6)]
 
 
 # define event handlers
@@ -60,17 +67,15 @@ def new_game():
     global score1, score2  # these are ints
 
     # initialize paddle
-    paddle2_pos = [[0 + HALF_PAD_WIDTH -1 , (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-                   [0 + HALF_PAD_WIDTH - 1, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
     paddle1_pos = [[WIDTH - HALF_PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
                    [WIDTH - HALF_PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
+    paddle2_pos = [[0 + HALF_PAD_WIDTH -1 , (HEIGHT / 2) - HALF_PAD_HEIGHT], 
+                   [0 + HALF_PAD_WIDTH - 1, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
 
-    paddle1_vel = 0
-    paddle2_vel = 0
+    paddle1_vel, paddle2_vel = 0, 0
 
     # initialize score
-    score1 = 0
-    score2 = 0
+    score1, score2 = 0, 0
     
     # pick a random direction to start with
     spawn_ball(random.randint(0, 1))
@@ -78,8 +83,7 @@ def new_game():
 
 def draw(canvas):
     global score1, score2, paddle1_pos, paddle2_pos, ball_pos, ball_vel
- 
-        
+
     # draw mid line and gutters
     canvas.draw_line([WIDTH / 2, 0],[WIDTH / 2, HEIGHT], 1, "White")
     canvas.draw_line([PAD_WIDTH, 0],[PAD_WIDTH, HEIGHT], 1, "White")
@@ -88,15 +92,21 @@ def draw(canvas):
     # update ball
     # collide and reflect off of left side
     if ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH):
-        ball_vel[0] = - ball_vel[0]
-        spawn_ball(LEFT)
-        score2 += 1
+        if ball_pos[1] >= paddle2_pos[0][1] and ball_pos[1] <= paddle2_pos[1][1]:
+            ball_vel[0] = - ball_vel[0]
+            make_interesting()
+        else:
+            spawn_ball(LEFT)
+            score2 += 1
     
     # collide and reflect off of right side
     if ball_pos[0] >= (WIDTH - 1) - (BALL_RADIUS + PAD_WIDTH):
-        ball_vel[0] = - ball_vel[0]
-        spawn_ball(RIGHT)
-        score1 += 1
+        if ball_pos[1] >= paddle1_pos[0][1] and ball_pos[1] <= paddle1_pos[1][1]:
+            ball_vel[0] = - ball_vel[0]
+            make_interesting()
+        else:
+            spawn_ball(RIGHT)
+            score1 += 1
     
     # collide and reflect off the top wall
     if ball_pos[1] <= BALL_RADIUS:
@@ -154,6 +164,7 @@ def keyup(key):
 
 # create frame
 frame = simplegui.create_frame("Pong", WIDTH, HEIGHT)
+frame.add_button("Reset", new_game)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keydown)
 frame.set_keyup_handler(keyup)
