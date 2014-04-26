@@ -43,7 +43,7 @@ def move_paddle(pad, vel):
 
     if pad[0][1] <= 0:
         pad[0][1] = 0
-        pad[1][1] = pad[0][1] + PAD_HEIGHT
+        pad[1][1] = PAD_HEIGHT
         
     if pad[1][1] >= HEIGHT:
         pad[0][1] = HEIGHT - PAD_HEIGHT
@@ -108,14 +108,11 @@ def draw(canvas):
             spawn_ball(RIGHT)
             score1 += 1
     
-    # collide and reflect off the top wall
-    if ball_pos[1] <= BALL_RADIUS:
+    # collide and reflect off the top/bottom wall
+    if (ball_pos[1] <= BALL_RADIUS) or (ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS):
         ball_vel[1] = - ball_vel[1]
     
-    # collide and reflect off of the bottom side
-    if ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS:
-        ball_vel[1] = - ball_vel[1]
-
+    # move the ball
     ball_pos[0] += ball_vel[0]        
     ball_pos[1] += ball_vel[1]        
 
