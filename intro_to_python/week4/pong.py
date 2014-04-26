@@ -56,7 +56,7 @@ def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
     if direction == RIGHT:
-        ball_vel = [-1 * random.randrange(3, 6), random.randrange(3, 6)]
+        ball_vel = [-1 * random.randrange(3, 6), -1 * random.randrange(3, 6)]
     else:
         ball_vel = [random.randrange(3, 6), -1 * random.randrange(3, 6)]
 
