@@ -15,21 +15,15 @@ HALF_PAD_HEIGHT = PAD_HEIGHT / 2
 LEFT = True
 RIGHT = False
 
-# initialize ball
-ball_pos = [WIDTH / 2,  HEIGHT/ 2]
-ball_vel = [2, 2]
+# initialize ball properties
+ball_pos = [0, 0]
+ball_vel = [0, 0]
 
-# initialize paddle
-paddle1_pos = [ [0, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT],
-               [0, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
-paddle2_pos = [ [WIDTH - PAD_WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [WIDTH, (HEIGHT / 2) - HALF_PAD_HEIGHT], 
-               [WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT],
-               [WIDTH - PAD_WIDTH, (HEIGHT / 2) + HALF_PAD_HEIGHT] ]
-paddle1_vel = 1
-paddle2_vel = 1
+# initialize paddle properties
+paddle1_pos = [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+paddle2_pos = [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+paddle1_vel = 0
+paddle2_vel = 0
 
 # initialize score
 score1 = 0
@@ -39,11 +33,11 @@ score2 = 0
 # if direction is RIGHT, the ball's velocity is upper right, else upper left
 def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
-    ball_pos = [HEIGHT / 2, WIDTH / 2]
-    if RIGHT == True:
-        ball_vel = [-1, 1]
+    ball_pos = [WIDTH / 2, HEIGHT / 2]
+    if direction == RIGHT:
+        ball_vel = [-1 * random.randrange(1, 2), random.randrange(1, 2)]
     else:
-        ball_vel = [1, -1]
+        ball_vel = [random.randrange(1, 2), -1 * random.randrange(1, 2)]
 
 
 # define event handlers
@@ -66,6 +60,10 @@ def new_game():
     # initialize score
     score1 = 0
     score2 = 0
+    
+    # pick a random direction to start with
+    spawn_ball(random.randint(0, 1))
+    
 
 def draw(canvas):
     global score1, score2, paddle1_pos, paddle2_pos, ball_pos, ball_vel
@@ -80,14 +78,12 @@ def draw(canvas):
     # collide and reflect off of left side
     if ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH):
         ball_vel[0] = - ball_vel[0]
-        RIGHT = True
-        LEFT = not(RIGHT)
+        spawn_ball(LEFT)
     
     # collide and reflect off of right side
     if ball_pos[0] >= (WIDTH - 1) - (BALL_RADIUS + PAD_WIDTH):
         ball_vel[0] = - ball_vel[0]
-        RIGHT = False
-        LEFT = not(RIGHT)
+        spawn_ball(RIGHT)
     
     # collide and reflect off the top wall
     if ball_pos[1] <= BALL_RADIUS:
