@@ -1,4 +1,6 @@
 # Implementation of classic arcade game Pong
+# http://www.codeskulptor.org/#user30_svpO13Czys_19.py
+
 __author__ = "mamaray"
 
 import simplegui
