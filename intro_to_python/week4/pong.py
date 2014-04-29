@@ -9,7 +9,7 @@ WIDTH = 600
 HEIGHT = 400       
 BALL_RADIUS = 20
 PAD_WIDTH = 12
-PAD_HEIGHT = 580
+PAD_HEIGHT = 80
 HALF_PAD_WIDTH = PAD_WIDTH / 2
 HALF_PAD_HEIGHT = PAD_HEIGHT / 2
 LEFT = True
@@ -31,7 +31,7 @@ score1, score2 = 0, 0
 # make the game more interesting
 def make_interesting():
     global ball_pos
-    how_interesting = 1.05
+    how_interesting = 1.15
     ball_vel[0] *= how_interesting
     ball_vel[1] *= how_interesting
 
@@ -56,9 +56,9 @@ def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
     if direction == RIGHT:
-        ball_vel = [-1 * random.randrange(3, 6), -1 * random.randrange(3, 6)]
+        ball_vel = [-1 * random.randrange(3, 7), -1 * random.randrange(3, 7)]
     else:
-        ball_vel = [random.randrange(3, 6), -1 * random.randrange(3, 6)]
+        ball_vel = [random.randrange(3, 7), -1 * random.randrange(3, 7)]
 
 
 # define event handlers
@@ -88,7 +88,11 @@ def draw(canvas):
     canvas.draw_line([WIDTH / 2, 0],[WIDTH / 2, HEIGHT], 1, "White")
     canvas.draw_line([PAD_WIDTH, 0],[PAD_WIDTH, HEIGHT], 1, "White")
     canvas.draw_line([WIDTH - PAD_WIDTH, 0],[WIDTH - PAD_WIDTH, HEIGHT], 1, "White")
-        
+    
+    # move the ball
+    ball_pos[0] += ball_vel[0]        
+    ball_pos[1] += ball_vel[1]        
+    
     # update ball
     # collide and reflect off of left side
     if ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH):
@@ -119,10 +123,6 @@ def draw(canvas):
         ball_pos[1] = (HEIGHT - 1) - BALL_RADIUS
         ball_vel[1] = - ball_vel[1]
     
-    
-    # move the ball
-    ball_pos[0] += ball_vel[0]        
-    ball_pos[1] += ball_vel[1]        
 
     # draw ball
     canvas.draw_circle(ball_pos, BALL_RADIUS, 2, "Brown", "Red")
