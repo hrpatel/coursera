@@ -9,7 +9,7 @@ WIDTH = 600
 HEIGHT = 400       
 BALL_RADIUS = 20
 PAD_WIDTH = 12
-PAD_HEIGHT = 80
+PAD_HEIGHT = 580
 HALF_PAD_WIDTH = PAD_WIDTH / 2
 HALF_PAD_HEIGHT = PAD_HEIGHT / 2
 LEFT = True
@@ -92,6 +92,7 @@ def draw(canvas):
     # update ball
     # collide and reflect off of left side
     if ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH):
+        ball_pos[0] = (BALL_RADIUS + PAD_WIDTH)
         if ball_pos[1] >= paddle2_pos[0][1] and ball_pos[1] <= paddle2_pos[1][1]:
             ball_vel[0] = - ball_vel[0]
             make_interesting()
@@ -101,6 +102,7 @@ def draw(canvas):
     
     # collide and reflect off of right side
     if ball_pos[0] >= (WIDTH - 1) - (BALL_RADIUS + PAD_WIDTH):
+        ball_pos[0] = (WIDTH - 1) - (BALL_RADIUS + PAD_WIDTH)
         if ball_pos[1] >= paddle1_pos[0][1] and ball_pos[1] <= paddle1_pos[1][1]:
             ball_vel[0] = - ball_vel[0]
             make_interesting()
@@ -109,8 +111,14 @@ def draw(canvas):
             score1 += 1
     
     # collide and reflect off the top/bottom wall
-    if (ball_pos[1] <= BALL_RADIUS) or (ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS):
+    if ball_pos[1] <= BALL_RADIUS:
+        ball_pos[1] = BALL_RADIUS
         ball_vel[1] = - ball_vel[1]
+    
+    if ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS:
+        ball_pos[1] = (HEIGHT - 1) - BALL_RADIUS
+        ball_vel[1] = - ball_vel[1]
+    
     
     # move the ball
     ball_pos[0] += ball_vel[0]        
@@ -138,12 +146,20 @@ def keydown(key):
     # P2 uses 'w'/'s' keys
     if key == simplegui.KEY_MAP["up"]:
         paddle1_vel = -1 * velocity_factor
-    elif key == simplegui.KEY_MAP["down"]:
+        return
+    
+    if key == simplegui.KEY_MAP["down"]:
         paddle1_vel = 1 * velocity_factor
-    elif key == simplegui.KEY_MAP["w"]:
+        return
+    
+    if key == simplegui.KEY_MAP["w"]:
         paddle2_vel = -1 * velocity_factor
-    elif key == simplegui.KEY_MAP["s"]:
+        return
+    
+    if key == simplegui.KEY_MAP["s"]:
         paddle2_vel = 1 * velocity_factor
+        return
+    
    
 def keyup(key):
     global paddle1_vel, paddle2_vel
@@ -151,12 +167,19 @@ def keyup(key):
     # P2 uses 'w'/'s' keys
     if key == simplegui.KEY_MAP["up"]:
         paddle1_vel = 0
-    elif key == simplegui.KEY_MAP["down"]:
+        return
+    
+    if key == simplegui.KEY_MAP["down"]:
         paddle1_vel = 0
-    elif key == simplegui.KEY_MAP["w"]:
+        return
+    
+    if key == simplegui.KEY_MAP["w"]:
         paddle2_vel = 0
-    elif key == simplegui.KEY_MAP["s"]:
+        return
+    
+    if key == simplegui.KEY_MAP["s"]:
         paddle2_vel = 0
+        return
 
 
 # create frame
