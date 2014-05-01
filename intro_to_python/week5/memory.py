@@ -4,13 +4,17 @@ __author__ = "mamaray"
 import simplegui
 import random
 
+tiles = range(1, 9) + range(1, 9)
+random.shuffle(tiles)
+hide_tile, disable_tile = [1] * 16, [1] * 16
 
 # helper function to initialize globals
 def new_game():
-    global game_nums, hide_tile, disable_tile
-    game_nums = range(1, 9) + range(1, 9)
-    random.shuffle(game_nums)
-    show_hide = [1] * 16
+    # make new tiles and reset the views
+    global tiles, hide_tile, disable_tile
+    tiles = range(1, 9) + range(1, 9)
+    random.shuffle(tiles)
+    hide_tile = [1] * 16
     disable_tile = [1] * 16
      
 # define event handlers
@@ -28,14 +32,17 @@ def mouseclick(pos):
                         
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
-    # draw the lines to give the illusion of boxes    
+    # draw lines to give the illusion of boxes    
     for i in range(1, 16):
         canvas.draw_line((50 * i, 0), (50 * i, 100), 1, 'White')
     
     # draw the "tiles" if we should
     for i in range(16):
         if hide_tile[i] == 1 or disable_tile[i] == 1:
-            canvas.draw_text(str(game_nums[i]), (15 + 50 * i, 60), 30, 'Orange')
+            canvas.draw_text(str(tiles[i]), (15 + 50 * i, 60), 30, 'Orange')
+    for i in range(16):
+        canvas.draw_text(str(hide_tile[i]), (15 + 50 * i, 75), 15, 'Orange')
+        canvas.draw_text(str(disable_tile[i]), (15 + 50 * i, 90), 15, 'Orange')
         
 
 # create frame and add a button and labels
