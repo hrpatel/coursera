@@ -24,28 +24,29 @@ def mouseclick(pos):
     # which tile did we click on?
     tile_num = pos[0] // 50        
     
-    # no-op if tile already showing or disabled
+    # no-op if tile already showing
     if exposed[tile_num] == True:
         return
     else:
         exposed[tile_num] = True
     
-    # start of the game, 1 card shows    
+    # start of the game, 1st pick   
     if state == 0:
         state = 1
         pick1 = tile_num
-    # 2 cards show
+    # 2nd pick
     elif state == 1:
         state = 2
         pick2 = tile_num
         turns += 1
-    # 3rd pick, back to 2 cards show
+    # 3rd pick, cycle between state 1/2 now
     else:
         state = 1
         if tiles[pick1] != tiles[pick2]:
             exposed[pick1] = False
             exposed[pick2] = False
         
+        # new 1st pick
         pick1 = tile_num
     
 # cards are logically 50x100 pixels in size    
@@ -62,7 +63,6 @@ def draw(canvas):
         if exposed[i] == True:
             canvas.draw_text(str(tiles[i]), (15 + 50 * i, 60), 30, 'Orange')
       
-
 # create frame and add a button and labels
 frame = simplegui.create_frame("Memory", 800, 100)
 frame.add_button("Reset", new_game)
