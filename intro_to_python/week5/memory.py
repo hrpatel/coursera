@@ -4,9 +4,8 @@ __author__ = "mamaray"
 import simplegui
 import random
 
-tiles = range(1, 9) + range(1, 9)
-random.shuffle(tiles)
-exposed = [False] * 16
+tiles = []
+exposed = []
 state, pick1, pick2, turns = 0, 0, 0, 0
 
 # helper function to initialize globals
@@ -50,8 +49,6 @@ def mouseclick(pos):
         pick1 = tile_num
     
     label.set_text("Turns = "+str(turns))
-    print "tile: %d, st: %d, p1: %d, p2: %d, trn: %d" % (tile_num, state, pick1, pick2, turns)
-
     
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
