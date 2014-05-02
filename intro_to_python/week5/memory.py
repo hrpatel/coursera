@@ -17,8 +17,6 @@ def new_game():
     random.shuffle(tiles)
     exposed = [False] * 16
     state, pick1, pick2, turns = 0, 0, 0, 0
-    
-    label.set_text("Turns = "+str(turns))
      
 # define event handlers
 def mouseclick(pos):
@@ -48,10 +46,11 @@ def mouseclick(pos):
         
         pick1 = tile_num
     
-    label.set_text("Turns = "+str(turns))
-    
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
+    # update the score
+    label.set_text("Turns = "+str(turns))
+
     # draw lines to give the illusion of boxes    
     for i in range(1, 16):
         canvas.draw_line((50 * i, 0), (50 * i, 100), 1, 'White')
