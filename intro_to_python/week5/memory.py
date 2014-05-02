@@ -24,7 +24,7 @@ def mouseclick(pos):
     # which tile did we click on?
     tile_num = pos[0] // 50        
     
-    # no-op if tile already showing
+    # no-op if tile is already showing
     if exposed[tile_num] == True:
         return
     else:
