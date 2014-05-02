@@ -4,8 +4,7 @@ __author__ = "mamaray"
 import simplegui
 import random
 
-tiles = []
-exposed = []
+tiles, exposed = [], []
 state, pick1, pick2, turns = 0, 0, 0, 0
 
 # helper function to initialize globals
@@ -30,14 +29,17 @@ def mouseclick(pos):
         return
     else:
         exposed[tile_num] = True
-        
+    
+    # start of the game, 1 card shows    
     if state == 0:
         state = 1
         pick1 = tile_num
+    # 2 cards show
     elif state == 1:
         state = 2
         pick2 = tile_num
         turns += 1
+    # 3rd pick, back to 2 cards show
     else:
         state = 1
         if tiles[pick1] != tiles[pick2]:
@@ -64,7 +66,7 @@ def draw(canvas):
 # create frame and add a button and labels
 frame = simplegui.create_frame("Memory", 800, 100)
 frame.add_button("Reset", new_game)
-label = frame.add_label("Turns = "+str(turns))
+label = frame.add_label("Turns = 0")
 
 # register event handlers
 frame.set_mouseclick_handler(mouseclick)
