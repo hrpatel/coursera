@@ -147,6 +147,19 @@ def results(n):
 print results(10)
 print len(results(100))
 print len(results(1000))
-    
-    
-    
+print
+print
+
+
+## q8
+y=1
+slow = 1000
+fast = 1
+print "y: %2d, s: %.4f, f: %.4f"% (y, slow, fast)
+while fast < slow:
+    slow = (slow * 2) * 0.6
+    fast = (fast * 2) * 0.7
+    y += 1
+    print "y: %2d, s: %.4f, f: %.4f"% (y, slow, fast)
+print "y: %2d, s: %.4f, f: %.4f"% (y, slow, fast)
+
