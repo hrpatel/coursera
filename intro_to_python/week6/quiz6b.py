@@ -75,38 +75,15 @@ frame.start()
 ## q5
 l = [[1,2], [3], [4, 5, 6], [7]]
 
-def list_extend_many(lists):
-    """Returns a list that is the concatenation of all the lists in the given list-of-lists."""
-    result = []
-    for l in lists:
-        result.extend(l)
-    return result
-
-
 def list_extend_many2(lists):
     result = []
-    for i in range(len(lists)):
-        result.extend(lists[i])
+    i = 0
+    while i < len(lists): 
+        i += 1
+        #result.extend(lists[i])
     return result
-
 
 def list_extend_many3(lists):
-    result = []
-    i = len(lists)
-    while i >= 0:
-        i -= 1
-        result.extend(lists[i])
-    return result
-
-
-def list_extend_many4(lists):
-    result = []
-    for i in range(len(lists) - 1, -1, -1):
-        result.extend(lists[i])
-    return result
-
-
-def list_extend_many5(lists):
     result = []
     i = 0
     while i < len(lists): 
@@ -115,7 +92,24 @@ def list_extend_many5(lists):
     return result
 
 
-print list_extend_many(l) 
+def list_extend_many4(lists):
+    result = []
+    i = 0
+    while i <= len(lists): 
+        #result.extend(lists[i])
+        i += 1
+    return result
+
+
+def list_extend_many5(lists):
+    result = []
+    i = 0
+    while i < len(lists): 
+        result += lists[i]
+        i += 1
+    return result
+
+
 print list_extend_many2(l) 
 print list_extend_many3(l) 
 print list_extend_many4(l) 
@@ -161,5 +155,4 @@ while fast < slow:
     fast = (fast * 2) * 0.7
     y += 1
     print "y: %2d, s: %.4f, f: %.4f"% (y, slow, fast)
-print "y: %2d, s: %.4f, f: %.4f"% (y, slow, fast)
 
