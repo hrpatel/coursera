@@ -74,10 +74,7 @@ class Hand:
 class Deck:
     def __init__(self):
         # create a Deck object
-        self.cards = []
-        for suit in SUITS:
-            for rank in RANKS:
-                self.cards.append(Card(suit, rank))
+        self.cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
 
     def shuffle(self):
         # shuffle the deck 
