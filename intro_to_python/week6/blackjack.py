@@ -55,19 +55,25 @@ class Card:
 class Hand:
     def __init__(self):
         self.cards = []
+        self.values = []
 
     def __str__(self):
-        return_val = ""
+        return_val = "Hand contains"
         for card in self.cards:
             return_val = return_val + " " + str(card)
         return return_val
 
     def add_card(self, card):
         self.cards.append(card)
+        self.values.append(VALUES[card.get_rank()])
 
     def get_value(self):
-        # count aces as 1, if the hand has an ace, then add 10 to hand value if it doesn't bust
-        pass	# compute the value of the hand, see Blackjack video
+        # compute the value of the hand
+        value = sum(self.values)
+        for card_val in self.values:
+            if (value + 10) < 22 and card_val == 1:
+                value += 10
+        return value
    
     def draw(self, canvas, pos):
         pass	# draw a hand on the canvas, use the draw method for cards
