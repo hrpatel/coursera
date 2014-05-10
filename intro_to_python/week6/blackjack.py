@@ -16,6 +16,9 @@ card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codesk
 in_play = False
 outcome = ""
 score = 0
+DECK = None
+player_h = None
+dealer_h = None
 
 # define globals for cards
 SUITS = ('C', 'S', 'H', 'D')
@@ -81,7 +84,7 @@ class Deck:
         random.shuffle(self.cards)
 
     def deal_card(self):
-        if len(self.cards) > 1:
+        if len(self.cards) > 0:
             return self.cards.pop()
     
     def __str__(self):
@@ -91,14 +94,33 @@ class Deck:
         return return_val
 
 
-
 #define event handlers for buttons
 def deal():
-    global outcome, in_play
+    global outcome, in_play, DECK, player_h, dealer_h
 
-    # your code goes here
-    
+    # game on!
     in_play = True
+    
+    # create and shuffle the deck
+    if DECK == None:
+        DECK = Deck()
+        
+    DECK.shuffle()
+    
+    # Deal for player
+    player_h = Hand()
+    player_h.add_card(DECK.deal_card())
+    player_h.add_card(DECK.deal_card())
+    print str(player_h)
+    
+    # Deal for dealer
+    dealer_h = Hand()
+    dealer_h.add_card(DECK.deal_card())
+    dealer_h.add_card(DECK.deal_card())
+    print str(dealer_h)
+    
+    print str(DECK)
+    
 
 def hit():
     pass	# replace with your code below
@@ -136,6 +158,3 @@ frame.set_draw_handler(draw)
 # get things rolling
 deal()
 frame.start()
-
-
-# remember to review the gradic rubric
