@@ -106,42 +106,55 @@ def deal():
 
     # game on!
     in_play = True
+    print 
+    print "New Game!"
     
     # create and shuffle the deck
-    if DECK == None:
-        DECK = Deck()
-        
+    DECK = Deck()
     DECK.shuffle()
     
     # Deal for player
     player_h = Hand()
     player_h.add_card(DECK.deal_card())
     player_h.add_card(DECK.deal_card())
-    print str(player_h)
+    print "Player: " + str(player_h)
     
     # Deal for dealer
     dealer_h = Hand()
     dealer_h.add_card(DECK.deal_card())
     dealer_h.add_card(DECK.deal_card())
-    print str(dealer_h)
-    
-    print str(DECK)
+    print "Dealer: " + str(dealer_h)
     
 
 def hit():
-    pass	# replace with your code below
- 
+    global in_play
+    
     # if the hand is in play, hit the player
-   
-    # if busted, assign a message to outcome, update in_play and score
+    if in_play:
+        player_h.add_card(DECK.deal_card())
+        print "Player hit"
+        print str(player_h)
+        print "player has: " + str(player_h.get_value())
+
+        # if busted, assign a message to outcome, update in_play and score
+        if player_h.get_value() > 21:
+            print "Player busted!"
+            in_play = False
+        
        
 def stand():
-    pass	# replace with your code below
-   
+    global in_play
+    
     # if hand is in play, repeatedly hit dealer until his hand has value 17 or more
+    while dealer_h.get_value() <= 17: 
+        # if busted, assign a message to outcome, update in_play and score
+        if player_h.get_value() > 21:
+            print "Dealer busted!"
+            in_play = False
+        else:
+            print "dealer has has: " + str(player_h.get_value())
 
-    # assign a message to outcome, update in_play and score
-
+        
 # draw handler    
 def draw(canvas):
     # test to make sure that card.draw works, replace with your code below
