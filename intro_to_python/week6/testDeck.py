@@ -44,7 +44,7 @@ class Deck:
         random.shuffle(self.cards)
 
     def deal_card(self):
-        if len(self.cards) > 1:
+        if len(self.cards) > 0:
             return self.cards.pop()
     
     def __str__(self):
