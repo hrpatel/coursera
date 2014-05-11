@@ -102,7 +102,7 @@ class Deck:
 
 #define event handlers for buttons
 def deal():
-    global outcome, in_play, DECK, player_h, dealer_h
+    global outcome, in_play, DECK, player_h, dealer_h, score
 
     # game on!
     if in_play:
@@ -131,7 +131,7 @@ def deal():
     
 
 def hit():
-    global in_play
+    global in_play, score
     
     # if the hand is in play, hit the player
     if in_play and player_h.get_value() <= 21:
@@ -147,7 +147,7 @@ def hit():
         
        
 def stand():
-    global in_play
+    global in_play, score
     
     if in_play:
         # if hand is in play, repeatedly hit dealer until his hand has value 17 or more
