@@ -1,4 +1,6 @@
 # Mini-project #6 - Blackjack
+__author__ = "mamaray"
+
 
 import simplegui
 import random
@@ -15,7 +17,7 @@ card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codesk
 # initialize some useful global variables
 in_play = False
 outcome = "Hit or Stand?"
-score = 0
+score = [0, 0] # [wins, loses]
 DECK = None
 player_h = None
 dealer_h = None
@@ -108,14 +110,13 @@ def deal():
 
     # game on!
     if in_play:
-        outcome = "Player forfeits!"
-        score -= 1
+        score[1] += 1
     else:
         in_play = True
-        outcome = "Hit or Stand?"
 
     print 
     print "New Game!"
+    outcome = "Hit or Stand?"
     
     # create and shuffle the deck
     DECK = Deck()
@@ -148,7 +149,7 @@ def hit():
             print "Player has busted!"
             outcome = "Player has busted! New game?"
             in_play = False
-            score -= 1
+            score[1] += 1
         
        
 def stand():
@@ -166,15 +167,15 @@ def stand():
             print "Dealer has busted!"
             print "Player Wins!"
             outcome = "Player Wins! New deal?"
-            score += 1
+            score[0] += 1
         elif dealer_h.get_value() >= player_h.get_value():
             print "Dealer Wins!"
             outcome = "Dealer Wins! New deal?"
-            score -= 1
+            score[1] += 1
         else:
             print "Player Wins!"
             outcome = "Player Wins! New deal?"
-            score += 1
+            score[0] += 1
         
         in_play = False
 
@@ -189,7 +190,7 @@ def draw(canvas):
     canvas.draw_text('Blackjack', (420, 580), 40, 'White', 'sans-serif')
     canvas.draw_text('Dealer', (50, 100), 25, 'Orange', 'sans-serif')
     canvas.draw_text('Player', (50, 500), 25, 'Orange', 'sans-serif')
-    canvas.draw_text('Score: ' + str(score), (50, 520), 18, 'Orange', 'sans-serif')
+    canvas.draw_text('Wins: ' + str(score[0]) + " Loses: " + str(score[1]), (50, 520), 18, 'Orange', 'sans-serif')
     canvas.draw_text(str(outcome), (50, 300), 20, 'Yellow', 'sans-serif')
     
     # hide dealers pot card
