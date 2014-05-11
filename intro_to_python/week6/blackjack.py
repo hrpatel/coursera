@@ -105,7 +105,11 @@ def deal():
     global outcome, in_play, DECK, player_h, dealer_h
 
     # game on!
-    in_play = True
+    if in_play:
+        "Player forfeits!"
+        score -= 1
+    else:
+        in_play = True
     print 
     print "New Game!"
     
@@ -117,13 +121,13 @@ def deal():
     player_h = Hand()
     player_h.add_card(DECK.deal_card())
     player_h.add_card(DECK.deal_card())
-    print "Player: " + str(player_h)
+    print "Player has: " + str(player_h)
     
     # Deal for dealer
     dealer_h = Hand()
     dealer_h.add_card(DECK.deal_card())
     dealer_h.add_card(DECK.deal_card())
-    print "Dealer: " + str(dealer_h)
+    print "Dealer has: " + str(dealer_h)
     
 
 def hit():
@@ -139,6 +143,7 @@ def hit():
         if player_h.get_value() > 21:
             print "Player has busted!"
             in_play = False
+            score -= 1
         
        
 def stand():
@@ -159,6 +164,7 @@ def stand():
             print "Dealer Wins!"
         else:
             print "Player Wins!"
+            score+=1
         
         in_play = False
 
