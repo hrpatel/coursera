@@ -186,11 +186,11 @@ def draw(canvas):
     player_h.draw(canvas, [50, 350])
     
     # draw text on the table
-    canvas.draw_text('Blackjack', (400, 580), 40, 'White', 'sans-serif')
+    canvas.draw_text('Blackjack', (420, 580), 40, 'White', 'sans-serif')
     canvas.draw_text('Dealer', (50, 100), 25, 'Orange', 'sans-serif')
     canvas.draw_text('Player', (50, 500), 25, 'Orange', 'sans-serif')
     canvas.draw_text('Score: ' + str(score), (50, 520), 18, 'Orange', 'sans-serif')
-    canvas.draw_text(str(outcome), (50, 560), 20, 'Yellow', 'sans-serif')
+    canvas.draw_text(str(outcome), (50, 300), 20, 'Yellow', 'sans-serif')
 
     
     
