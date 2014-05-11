@@ -164,7 +164,7 @@ def stand():
             print "Dealer Wins!"
         else:
             print "Player Wins!"
-            score+=1
+            score += 1
         
         in_play = False
 
