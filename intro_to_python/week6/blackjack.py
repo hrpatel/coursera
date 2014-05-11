@@ -191,6 +191,12 @@ def draw(canvas):
     canvas.draw_text('Player', (50, 500), 25, 'Orange', 'sans-serif')
     canvas.draw_text('Score: ' + str(score), (50, 520), 18, 'Orange', 'sans-serif')
     canvas.draw_text(str(outcome), (50, 300), 20, 'Yellow', 'sans-serif')
+    
+    # hide dealers pot card
+    if in_play:
+        card_loc = (CARD_BACK_CENTER[0] + CARD_BACK_SIZE[0], 
+                    CARD_BACK_CENTER[1] + CARD_BACK_SIZE[1])
+        canvas.draw_image(card_back, CARD_BACK_CENTER, CARD_BACK_SIZE, [51 + CARD_BACK_CENTER[0], 151 + CARD_BACK_CENTER[1]], CARD_BACK_SIZE)
 
     
     
