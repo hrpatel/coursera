@@ -76,8 +76,10 @@ class Hand:
         return value
    
     def draw(self, canvas, pos):
-        pass	# draw a hand on the canvas, use the draw method for cards
- 
+        for card in self.cards:
+            card.draw(canvas, pos)
+            pos[0] += 100
+        
         
 # define deck class 
 class Deck:
@@ -171,12 +173,17 @@ def stand():
         
 # draw handler    
 def draw(canvas):
-    # test to make sure that card.draw works, replace with your code below
+    # draw the cards
+    dealer_h.draw(canvas, [100, 150])
+    player_h.draw(canvas, [100, 350])
     
-    card = Card("S", "A")
-    card.draw(canvas, [300, 300])
+    # draw labels
+    canvas.draw_text('Blackjack', (400, 580), 40, 'White', 'sans-serif')
+    canvas.draw_text('Dealer', (100, 100), 25, 'Orange', 'sans-serif')
+    canvas.draw_text('Player', (100, 500), 25, 'Orange', 'sans-serif')
 
-
+    
+    
 # initialization frame
 frame = simplegui.create_frame("Blackjack", 600, 600)
 frame.set_canvas_background("Green")
