@@ -78,7 +78,7 @@ class Hand:
     def draw(self, canvas, pos):
         for card in self.cards:
             card.draw(canvas, pos)
-            pos[0] += 100
+            pos[0] += 90
         
         
 # define deck class 
@@ -162,8 +162,10 @@ def stand():
         if dealer_h.get_value() > 21:
             print "Dealer has busted!"
             print "Player Wins!"
+            score += 1
         elif dealer_h.get_value() >= player_h.get_value():
             print "Dealer Wins!"
+            score -= 1
         else:
             print "Player Wins!"
             score += 1
@@ -173,14 +175,17 @@ def stand():
         
 # draw handler    
 def draw(canvas):
+    global score
+    
     # draw the cards
-    dealer_h.draw(canvas, [100, 150])
-    player_h.draw(canvas, [100, 350])
+    dealer_h.draw(canvas, [50, 150])
+    player_h.draw(canvas, [50, 350])
     
     # draw labels
     canvas.draw_text('Blackjack', (400, 580), 40, 'White', 'sans-serif')
-    canvas.draw_text('Dealer', (100, 100), 25, 'Orange', 'sans-serif')
-    canvas.draw_text('Player', (100, 500), 25, 'Orange', 'sans-serif')
+    canvas.draw_text('Dealer', (50, 100), 25, 'Orange', 'sans-serif')
+    canvas.draw_text('Player', (50, 500), 25, 'Orange', 'sans-serif')
+    canvas.draw_text('Score: ' + str(score), (50, 520), 18, 'Orange', 'sans-serif')
 
     
     
