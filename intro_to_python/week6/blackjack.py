@@ -132,13 +132,12 @@ def hit():
     # if the hand is in play, hit the player
     if in_play:
         player_h.add_card(DECK.deal_card())
-        print "Player hit"
-        print str(player_h)
-        print "Player has: " + str(player_h.get_value())
+        print "Player hits"
+        print str(player_h) + ":", str(player_h.get_value()), "points"
 
         # if busted, assign a message to outcome, update in_play and score
         if player_h.get_value() > 21:
-            print "Player busted!"
+            print "Player has busted!"
             in_play = False
         
        
@@ -149,15 +148,19 @@ def stand():
         # if hand is in play, repeatedly hit dealer until his hand has value 17 or more
         while dealer_h.get_value() < 17: 
             dealer_h.add_card(DECK.deal_card())
-            print "Dealer hit"
+            print "Dealer hits"
             
-            print str(dealer_h)
-            print "Dealer has: " + str(dealer_h.get_value())
+            print str(dealer_h) + ":", str(dealer_h.get_value()), "points"
     
-            # if busted, assign a message to outcome, update in_play and score
-            if dealer_h.get_value() > 21:
-                print "Dealer busted!"
-                in_play = False
+        # if busted, assign a message to outcome, update in_play and score
+        if dealer_h.get_value() > 21:
+            print "Dealer busted!"
+        elif dealer_h.get_value() >= player_h.get_value():
+            print "Dealer Wins!"
+        else:
+            print "Player Wins!"
+        
+        in_play = False
 
         
 # draw handler    
