@@ -5,6 +5,7 @@ __author__ = "mamaray"
 import simplegui
 import random
 
+
 # load card sprite - 949x392 - source: jfitz.com
 CARD_SIZE = (73, 98)
 CARD_CENTER = (36.5, 49)
@@ -14,6 +15,7 @@ CARD_BACK_SIZE = (71, 96)
 CARD_BACK_CENTER = (35.5, 48)
 card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codeskulptor-assets/card_back.png")    
 
+
 # initialize some useful global variables
 in_play = False
 outcome = "Hit or Stand?"
@@ -21,6 +23,7 @@ score = [0, 0] # [wins, loses]
 DECK = None
 player_h = None
 dealer_h = None
+
 
 # define globals for cards
 SUITS = ('C', 'S', 'H', 'D')
@@ -200,10 +203,10 @@ def draw(canvas):
         canvas.draw_image(card_back, CARD_BACK_CENTER, CARD_BACK_SIZE, [51 + CARD_BACK_CENTER[0], 151 + CARD_BACK_CENTER[1]], CARD_BACK_SIZE)
 
     
-    
 # initialization frame
 frame = simplegui.create_frame("Blackjack", 600, 600)
 frame.set_canvas_background("Green")
+
 
 #create buttons and canvas callback
 frame.add_button("Deal", deal, 200)
