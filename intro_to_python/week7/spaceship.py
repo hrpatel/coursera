@@ -100,6 +100,10 @@ def keydown_handler(key):
         my_ship.thruster(True)
         return
     
+    if key == simplegui.KEY_MAP["space"]:
+        my_ship.shoot()
+        return
+
     
 def keyup_handler(key):
     global my_ship
@@ -121,6 +125,7 @@ class Ship:
         self.thrust = False
         self.angle = angle
         self.angle_vel = 0
+        self.fwd_vec = angle_to_vector(self.angle)
         self.image = image
         self.image_center = info.get_center()
         self.image_size = info.get_size()
@@ -129,24 +134,37 @@ class Ship:
     def draw(self,canvas):
         canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, deg_to_rad(self.angle))
 
+    def shoot(self):
+        global a_missile
+        missle_pos = [0, 0]
+        missle_vel = [0, 0]
+        
+        for i in range(2):
+            missle_pos[i] = self.pos[i] + self.radius * self.fwd_vec[i]
+            missle_vel[i] = self.vel[i] + self.fwd_vec[i] * 2
+
+        
+        a_missile = Sprite(missle_pos, missle_vel, 
+                           self.angle, 0, missile_image, missile_info, missile_sound)
+        
     def update(self):
         # update the direction ship faces
         self.angle += self.angle_vel
-        
-        # slow down and stop eventually
-        for i in range(2):
-            self.vel[i] *= 0.94
-        
-        # calculate acceleration vector
-        if self.thrust:
-            acc = angle_to_vector(deg_to_rad(self.angle))
-            for i in range(2):
-                self.vel[i] += acc[i] * 0.45
+        self.fwd_vec = angle_to_vector(deg_to_rad(self.angle))
         
         # update position
         for i in range(2):
+            # set the new position            
             self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
-    
+
+            # slow down and stop eventually
+            self.vel[i] *= 0.94
+
+            # calculate acceleration vector
+            if self.thrust:
+                self.vel[i] += self.fwd_vec[i] * 0.45
+
+            
     def turn(self, direction):
         self.angle_vel = direction * ang_vel
     
@@ -227,7 +245,7 @@ frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
 # initialize ship and two sprites
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
-a_rock = Sprite([WIDTH / 3, HEIGHT / 3], [1, 1], 0, 0, asteroid_image, asteroid_info)
+rock_spawner()
 a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image, missile_info, missile_sound)
 
 # register handlers
