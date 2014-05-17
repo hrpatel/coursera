@@ -3,7 +3,7 @@ import simplegui
 import math
 import random
 
-__author__ = "mamaray"
+__author__ = "mamaray" 
 
 # globals for user interface
 WIDTH = 800
