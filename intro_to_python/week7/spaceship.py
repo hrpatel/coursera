@@ -6,6 +6,7 @@ import random
 # globals for user interface
 WIDTH = 800
 HEIGHT = 600
+SCREEN_SIZE = [WIDTH, HEIGHT]
 score = 0
 lives = 3
 time = 0.5
@@ -132,17 +133,25 @@ class Ship:
         # update the direction ship faces
         self.angle += self.angle_vel
         
-        # calculate acceleration vector
-        acc = angle_to_vector(deg_to_rad(self.angle))
-        
-        # update velocity
+        # slow down and stop eventually
         for i in range(2):
-            self.pos[i] += self.vel[i] + acc[i] * 0.5
+            self.vel[i] *= 0.94
+        
+        # calculate acceleration vector
+        if self.thrust:
+            acc = angle_to_vector(deg_to_rad(self.angle))
+            for i in range(2):
+                self.vel[i] += acc[i] * 0.5
+        
+        # update position
+        for i in range(2):
+            self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
     
     def turn(self, direction):
         self.angle_vel = direction * ang_vel
     
     def thruster(self, on_off):
+        self.thrust = on_off
         if on_off:
             self.image_center[0] = 135
             ship_thrust_sound.play()
