@@ -229,6 +229,10 @@ def draw(canvas):
     my_ship.update()
     a_rock.update()
     a_missile.update()
+    
+    # score and lives labels
+    canvas.draw_text('Score: ' + str(score), (30, 50), 25, 'Orange', 'sans-serif')
+    canvas.draw_text('Lives: ' + str(lives), (WIDTH - 120, 50), 25, 'Orange', 'sans-serif')
             
 # timer handler that spawns a rock    
 def rock_spawner():
