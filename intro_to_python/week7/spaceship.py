@@ -9,10 +9,10 @@ HEIGHT = 600
 SCREEN_SIZE = [WIDTH, HEIGHT]
 DIMENSION = 2
 
-score = 0
-lives = 3
-time = 0.5
 ang_vel = 3
+lives = 3
+score = 0
+time = 0.5
 turn_dir = {37: -1, 39: 1}
 
 
@@ -85,11 +85,14 @@ explosion_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/
 def angle_to_vector(ang):
     return [math.cos(ang), math.sin(ang)]
 
+
 def dist(p,q):
     return math.sqrt((p[0] - q[0]) ** 2+(p[1] - q[1]) ** 2)
 
+
 def deg_to_rad(angle):
     return angle * math.pi / 180
+
 
 def keydown_handler(key):
     # change ship direction 
@@ -143,7 +146,7 @@ class Ship:
 
         # calculate missle position and velocity        
         missle_pos, missle_vel = [0, 0], [0, 0]
-        for i in range(2):
+        for i in range(DIMENSION):
             missle_pos[i] = self.pos[i] + self.radius * self.fwd_vec[i]
             missle_vel[i] = self.vel[i] + self.fwd_vec[i] * 2
 
@@ -156,17 +159,16 @@ class Ship:
         self.angle += self.angle_vel
         self.fwd_vec = angle_to_vector(deg_to_rad(self.angle))
         
-        # update position
-        for i in range(2):
+        for i in range(DIMENSION):
+            # calculate acceleration vector
+            if self.thrust:
+                self.vel[i] += self.fwd_vec[i] * 0.45
+
             # set the new position            
             self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
 
             # slow down and stop eventually
             self.vel[i] *= 0.94
-
-            # calculate acceleration vector
-            if self.thrust:
-                self.vel[i] += self.fwd_vec[i] * 0.45
 
             
     def turn(self, direction):
@@ -214,7 +216,7 @@ class Sprite:
         self.angle += self.angle_vel
 
         # update position
-        for i in range(2):
+        for i in range(DIMENSION):
             self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
 
             
