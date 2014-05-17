@@ -7,6 +7,8 @@ import random
 WIDTH = 800
 HEIGHT = 600
 SCREEN_SIZE = [WIDTH, HEIGHT]
+DIMENSION = 2
+
 score = 0
 lives = 3
 time = 0.5
@@ -90,28 +92,29 @@ def deg_to_rad(angle):
     return angle * math.pi / 180
 
 def keydown_handler(key):
-    global my_ship
-    
+    # change ship direction 
     if key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["right"]:
         my_ship.turn(turn_dir[key])
         return
     
+    # start ship thrusters
     if key == simplegui.KEY_MAP["up"]:
         my_ship.thruster(True)
         return
     
+    # fire missles
     if key == simplegui.KEY_MAP["space"]:
         my_ship.shoot()
         return
 
     
 def keyup_handler(key):
-    global my_ship
-    
+    # stop rotating the ship
     if key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["right"]:
         my_ship.turn(0)
         return
     
+    # stop the thrusters
     if key == simplegui.KEY_MAP["up"]:
         my_ship.thruster(False)
         return
@@ -132,19 +135,21 @@ class Ship:
         self.radius = info.get_radius()
         
     def draw(self,canvas):
+        # draw the ship
         canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, deg_to_rad(self.angle))
 
     def shoot(self):
         global a_missile
+
+        # calculate missle position and velocity        
         missle_pos, missle_vel = [0, 0], [0, 0]
-        
         for i in range(2):
             missle_pos[i] = self.pos[i] + self.radius * self.fwd_vec[i]
             missle_vel[i] = self.vel[i] + self.fwd_vec[i] * 2
 
-        
-        a_missile = Sprite(missle_pos, missle_vel, 
-                           self.angle, 0, missile_image, missile_info, missile_sound)
+        # fire missle
+        a_missile = Sprite(missle_pos, missle_vel, self.angle, 
+                           0, missile_image, missile_info, missile_sound)
         
     def update(self):
         # update the direction ship faces
@@ -201,6 +206,7 @@ class Sprite:
             sound.play()
    
     def draw(self, canvas):
+        # draw sprite object
         canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, deg_to_rad(self.angle))
     
     def update(self):
