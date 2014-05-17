@@ -9,6 +9,9 @@ HEIGHT = 600
 score = 0
 lives = 3
 time = 0.5
+ang_vel = 3
+turn_dir = {37: -1, 39: 1}
+
 
 class ImageInfo:
     def __init__(self, center, size, radius = 0, lifespan = None, animated = False):
@@ -82,7 +85,25 @@ def angle_to_vector(ang):
 def dist(p,q):
     return math.sqrt((p[0] - q[0]) ** 2+(p[1] - q[1]) ** 2)
 
+def deg_to_rad(angle):
+    return angle * math.pi / 180
 
+def keydown_handler(key):
+    global my_ship
+    
+    if key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["right"]:
+        my_ship.turn(True, turn_dir[key])
+        return
+    
+    
+def keyup_handler(key):
+    global my_ship
+    
+    if key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["right"]:
+        my_ship.turn(False, turn_dir[key])
+        return
+    
+    
 # Ship class
 class Ship:
     def __init__(self, pos, vel, angle, image, info):
@@ -97,11 +118,17 @@ class Ship:
         self.radius = info.get_radius()
         
     def draw(self,canvas):
-        canvas.draw_circle(self.pos, self.radius, 1, "White", "White")
+        canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, deg_to_rad(self.angle))
 
     def update(self):
-        pass
+        self.angle += self.angle_vel
     
+    def turn(self, keep_turning, direction):
+        if keep_turning:
+            self.angle_vel += direction * ang_vel
+        else:
+            self.angle_vel = 0
+        
     
 # Sprite class
 class Sprite:
@@ -164,6 +191,8 @@ a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image,
 
 # register handlers
 frame.set_draw_handler(draw)
+frame.set_keydown_handler(keydown_handler)
+frame.set_keyup_handler(keyup_handler)
 
 timer = simplegui.create_timer(1000.0, rock_spawner)
 
