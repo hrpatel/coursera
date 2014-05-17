@@ -132,9 +132,12 @@ class Ship:
         # update the direction ship faces
         self.angle += self.angle_vel
         
+        # calculate acceleration vector
+        acc = angle_to_vector(deg_to_rad(self.angle))
+        
         # update velocity
         for i in range(2):
-            self.pos[i] += self.vel[i]
+            self.pos[i] += self.vel[i] + acc[i] * 0.5
     
     def turn(self, direction):
         self.angle_vel = direction * ang_vel
