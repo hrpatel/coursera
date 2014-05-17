@@ -218,7 +218,7 @@ def rock_spawner():
     a_rock = Sprite([random.randrange(WIDTH), random.randrange(HEIGHT)], 
                     [random.random(), random.random()], 
                     deg_to_rad(random.randrange(360)), 
-                    random.random() * 2, 
+                    random.choice([-1, 1]) * 2, 
                     asteroid_image, asteroid_info)
 
 
