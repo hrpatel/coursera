@@ -81,6 +81,7 @@ missile_sound.set_volume(.5)
 ship_thrust_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.ogg")
 explosion_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.ogg")
 
+
 # helper functions to handle transformations
 def angle_to_vector(ang):
     return [math.cos(ang), math.sin(ang)]
@@ -169,7 +170,6 @@ class Ship:
 
             # slow down and stop eventually
             self.vel[i] *= 0.94
-
             
     def turn(self, direction):
         # set angular velocity
@@ -259,6 +259,7 @@ def rock_spawner():
 
 # initialize frame
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
+
 
 # initialize ship and two sprites
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
