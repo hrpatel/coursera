@@ -72,11 +72,11 @@ explosion_info = ImageInfo([64, 64], [128, 128], 17, 24, True)
 explosion_image = simplegui.load_image("http://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/explosion_alpha.png")
 
 # sound assets purchased from sounddogs.com, please do not redistribute
-soundtrack = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/soundtrack.mp3")
-missile_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/missile.mp3")
+soundtrack = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/soundtrack.ogg")
+missile_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/missile.ogg")
 missile_sound.set_volume(.5)
-ship_thrust_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.mp3")
-explosion_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.mp3")
+ship_thrust_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.ogg")
+explosion_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.ogg")
 
 # helper functions to handle transformations
 def angle_to_vector(ang):
@@ -96,7 +96,7 @@ def keydown_handler(key):
         return
     
     if key == simplegui.KEY_MAP["up"]:
-        my_ship.thrust(True)
+        my_ship.thruster(True)
         return
     
     
@@ -108,7 +108,7 @@ def keyup_handler(key):
         return
     
     if key == simplegui.KEY_MAP["up"]:
-        my_ship.thrust(False)
+        my_ship.thruster(False)
         return
     
     
@@ -139,8 +139,13 @@ class Ship:
     def turn(self, direction):
         self.angle_vel = direction * ang_vel
     
-    def thrust(self, on_off):
-        self.thrust = on_off
+    def thruster(self, on_off):
+        if on_off:
+            self.image_center[0] = 135
+            ship_thrust_sound.play()
+        else:
+            self.image_center[0] = 45
+            ship_thrust_sound.rewind()
     
     
 # Sprite class
@@ -198,7 +203,7 @@ def rock_spawner():
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
 # initialize ship and two sprites
-my_ship = Ship([WIDTH / 2, HEIGHT / 2], [.1, .1], 45, ship_image, ship_info)
+my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
 a_rock = Sprite([WIDTH / 3, HEIGHT / 3], [1, 1], 0, 0, asteroid_image, asteroid_info)
 a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image, missile_info, missile_sound)
 
