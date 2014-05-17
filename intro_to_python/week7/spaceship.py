@@ -148,7 +148,7 @@ class Ship:
         missle_pos, missle_vel = [0, 0], [0, 0]
         for i in range(DIMENSION):
             missle_pos[i] = self.pos[i] + self.radius * self.fwd_vec[i]
-            missle_vel[i] = self.vel[i] + self.fwd_vec[i] * 2
+            missle_vel[i] = self.vel[i] + self.fwd_vec[i] * 2.75
 
         # fire missle
         a_missile = Sprite(missle_pos, missle_vel, self.angle, 
@@ -162,7 +162,7 @@ class Ship:
         for i in range(DIMENSION):
             # calculate acceleration vector
             if self.thrust:
-                self.vel[i] += self.fwd_vec[i] * 0.45
+                self.vel[i] += self.fwd_vec[i] * 0.5
 
             # set the new position            
             self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
