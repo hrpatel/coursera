@@ -141,7 +141,7 @@ class Ship:
         if self.thrust:
             acc = angle_to_vector(deg_to_rad(self.angle))
             for i in range(2):
-                self.vel[i] += acc[i] * 0.5
+                self.vel[i] += acc[i] * 0.45
         
         # update position
         for i in range(2):
@@ -158,8 +158,8 @@ class Ship:
         else:
             self.image_center[0] = 45
             ship_thrust_sound.rewind()
-    
-    
+
+            
 # Sprite class
 class Sprite:
     def __init__(self, pos, vel, ang, ang_vel, image, info, sound = None):
