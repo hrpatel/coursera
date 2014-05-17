@@ -179,12 +179,17 @@ class Sprite:
             sound.play()
    
     def draw(self, canvas):
-        canvas.draw_circle(self.pos, self.radius, 1, "Red", "Red")
+        canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, deg_to_rad(self.angle))
     
     def update(self):
-        pass        
+        # update the direction ship faces
+        self.angle += self.angle_vel
 
-           
+        # update position
+        for i in range(2):
+            self.pos[i] = (self.pos[i] + self.vel[i]) % SCREEN_SIZE[i]
+
+            
 def draw(canvas):
     global time
     
@@ -209,8 +214,14 @@ def draw(canvas):
             
 # timer handler that spawns a rock    
 def rock_spawner():
-    pass
-    
+    global a_rock
+    a_rock = Sprite([random.randrange(WIDTH), random.randrange(HEIGHT)], 
+                    [random.random(), random.random()], 
+                    deg_to_rad(random.randrange(360)), 
+                    random.random() * 2, 
+                    asteroid_image, asteroid_info)
+
+
 # initialize frame
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
