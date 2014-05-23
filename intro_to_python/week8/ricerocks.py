@@ -10,6 +10,7 @@ score = 0
 lives = 3
 time = 0
 started = False
+rock_group = set([])
 
 class ImageInfo:
     def __init__(self, center, size, radius = 0, lifespan = None, animated = False):
@@ -81,9 +82,16 @@ explosion_sound = simplegui.load_sound("http://commondatastorage.googleapis.com/
 def angle_to_vector(ang):
     return [math.cos(ang), math.sin(ang)]
 
+# calculate distance between two points
 def dist(p, q):
     return math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
 
+# do stuff with rocks
+def process_sprite_group(r_group, canvas):
+    for rock in r_group:
+        rock.draw(canvas)
+        rock.update()
+    
 
 # Ship class
 class Ship:
@@ -228,14 +236,15 @@ def draw(canvas):
 
     # draw ship and sprites
     my_ship.draw(canvas)
-    a_rock.draw(canvas)
     a_missile.draw(canvas)
     
     # update ship and sprites
     my_ship.update()
-    a_rock.update()
     a_missile.update()
 
+    # process/update/draw the rocks
+    process_sprite_group(rock_group, canvas)        
+        
     # draw splash screen if not started
     if not started:
         canvas.draw_image(splash_image, splash_info.get_center(), 
@@ -244,18 +253,21 @@ def draw(canvas):
 
 # timer handler that spawns a rock    
 def rock_spawner():
-    global a_rock
-    rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
-    rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
-    rock_avel = random.random() * .2 - .1
-    a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
-            
+    global rock_group
+    
+    if len(rock_group) < 12:
+        rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
+        rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
+        rock_avel = random.random() * .2 - .1
+        a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
+        rock_group.add(a_rock)
+        
+        
 # initialize stuff
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
 # initialize ship and two sprites
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
-a_rock = Sprite([WIDTH / 3, HEIGHT / 3], [1, 1], 0, .1, asteroid_image, asteroid_info)
 a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image, missile_info, missile_sound)
 
 
