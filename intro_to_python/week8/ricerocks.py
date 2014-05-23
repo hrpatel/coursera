@@ -11,6 +11,8 @@ lives = 3
 time = 0
 started = False
 rock_group = set([])
+missile_group = set([])
+
 
 class ImageInfo:
     def __init__(self, center, size, radius = 0, lifespan = None, animated = False):
@@ -88,10 +90,19 @@ def dist(p, q):
 
 # do stuff with rocks
 def process_sprite_group(r_group, canvas):
-    for rock in r_group:
-        rock.draw(canvas)
-        rock.update()
+    # initize return val and copy objects
+    objects = set(r_group)
     
+    # draw and update objects
+    for obj in objects:
+        # draw
+        obj.draw(canvas)
+        
+        # remove if its too old
+        if obj.update() == True:
+            r_group.remove(obj)
+
+            
 # check for collisions
 def group_collide(group, other_obj):
     # initize return val and copy objects
@@ -105,7 +116,6 @@ def group_collide(group, other_obj):
             crash = True
 
     return crash
-    
     
 # Ship class
 class Ship:
@@ -161,12 +171,15 @@ class Ship:
         self.angle_vel -= .05
         
     def shoot(self):
-        global a_missile
+        global missile_group
+        
         forward = angle_to_vector(self.angle)
         missile_pos = [self.pos[0] + self.radius * forward[0], self.pos[1] + self.radius * forward[1]]
         missile_vel = [self.vel[0] + 6 * forward[0], self.vel[1] + 6 * forward[1]]
         a_missile = Sprite(missile_pos, missile_vel, self.angle, 0, missile_image, missile_info, missile_sound)
-    
+        missile_group.add(a_missile)
+        
+        
     def get_position(self):
         return self.pos
     
@@ -204,6 +217,12 @@ class Sprite:
         self.pos[0] = (self.pos[0] + self.vel[0]) % WIDTH
         self.pos[1] = (self.pos[1] + self.vel[1]) % HEIGHT
         
+        # getting older
+        self.age += 1
+        
+        # should 
+        return self.age >= self.lifespan
+    
     def get_position(self):
         return self.pos
     
@@ -218,10 +237,7 @@ class Sprite:
         too_close = self.radius + other_obj.get_radius()
         
         # kapow!!
-        if d < too_close:
-            return True
-        else:
-            return False
+        return d < too_close
   
         
 # key handlers to control ship   
@@ -273,14 +289,13 @@ def draw(canvas):
 
     # draw ship and sprites
     my_ship.draw(canvas)
-    a_missile.draw(canvas)
     
     # update ship and sprites
     my_ship.update()
-    a_missile.update()
 
     # process/update/draw the rocks
     process_sprite_group(rock_group, canvas)        
+    process_sprite_group(missile_group, canvas)        
     
     # how's my flying??
     if group_collide(rock_group, my_ship):
@@ -309,7 +324,6 @@ frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
 # initialize ship and two sprites
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
-a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image, missile_info, missile_sound)
 
 
 # register handlers
