@@ -19,7 +19,6 @@ print
 
 
 ## q8
-
 def next(x):
     return (x ** 2 + 79) % 997
 
