@@ -92,7 +92,21 @@ def process_sprite_group(r_group, canvas):
         rock.draw(canvas)
         rock.update()
     
+# check for collisions
+def group_collide(group, other_obj):
+    # initize return val and copy objects
+    crash = False
+    objects = set(group)
+    
+    # test for collision
+    for obj in objects:
+        if obj.collide(other_obj):
+            group.remove(obj)
+            crash = True
 
+    return crash
+    
+    
 # Ship class
 class Ship:
 
@@ -114,7 +128,6 @@ class Ship:
         else:
             canvas.draw_image(self.image, self.image_center, self.image_size,
                               self.pos, self.image_size, self.angle)
-        # canvas.draw_circle(self.pos, self.radius, 1, "White", "White")
 
     def update(self):
         # update angle
@@ -154,6 +167,11 @@ class Ship:
         missile_vel = [self.vel[0] + 6 * forward[0], self.vel[1] + 6 * forward[1]]
         a_missile = Sprite(missile_pos, missile_vel, self.angle, 0, missile_image, missile_info, missile_sound)
     
+    def get_position(self):
+        return self.pos
+    
+    def get_radius(self):
+        return self.radius
     
     
 # Sprite class
@@ -185,6 +203,25 @@ class Sprite:
         # update position
         self.pos[0] = (self.pos[0] + self.vel[0]) % WIDTH
         self.pos[1] = (self.pos[1] + self.vel[1]) % HEIGHT
+        
+    def get_position(self):
+        return self.pos
+    
+    def get_radius(self):
+        return self.radius
+
+    def collide(self, other_obj):
+        # calculate distance between the two objects (centers)
+        d = dist(self.pos, other_obj.get_position())
+        
+        # sum of radius
+        too_close = self.radius + other_obj.get_radius()
+        
+        # kapow!!
+        if d < too_close:
+            return True
+        else:
+            return False
   
         
 # key handlers to control ship   
@@ -217,7 +254,7 @@ def click(pos):
         started = True
 
 def draw(canvas):
-    global time, started
+    global time, started, lives
     
     # animiate background
     time += 1
@@ -244,7 +281,11 @@ def draw(canvas):
 
     # process/update/draw the rocks
     process_sprite_group(rock_group, canvas)        
-        
+    
+    # how's my flying??
+    if group_collide(rock_group, my_ship):
+        lives -= 1
+    
     # draw splash screen if not started
     if not started:
         canvas.draw_image(splash_image, splash_info.get_center(), 
