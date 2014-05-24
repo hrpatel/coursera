@@ -117,6 +117,25 @@ def group_collide(group, other_obj):
 
     return crash
     
+
+# detect missle/rock collission
+def group_group_collide(r_group, m_group):
+    # initialize counter and copy sets
+    num_collisions = 0
+    rocks = set(r_group)
+    missiles = set(m_group)
+    
+    # check each rock with each missile
+    for rock in rocks:
+        for missile in missiles:
+            if missile.collide(rock):
+                num_collisions += 1
+                r_group.discard(rock)
+                m_group.discard(missile)
+                
+    return num_collisions
+
+
 # Ship class
 class Ship:
 
@@ -270,7 +289,7 @@ def click(pos):
         started = True
 
 def draw(canvas):
-    global time, started, lives
+    global time, started, lives, score
     
     # animiate background
     time += 1
@@ -300,6 +319,10 @@ def draw(canvas):
     # how's my flying??
     if group_collide(rock_group, my_ship):
         lives -= 1
+    
+    # how's my accuracy
+    num_hits = group_group_collide(rock_group, missile_group)
+    score += num_hits
     
     # draw splash screen if not started
     if not started:
