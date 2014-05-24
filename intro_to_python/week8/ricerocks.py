@@ -144,6 +144,8 @@ def new_game():
     rock_group = set([])
     missile_group = set([])
     num_rocks = 12
+    soundtrack.rewind()
+    soundtrack.play()
 
 # stop game
 def stop_game():
@@ -357,15 +359,20 @@ def rock_spawner():
     global rock_group
     
     if len(rock_group) < num_rocks:
+        # make sure rocks dont spawn near the ship
         rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
-        rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
+        while dist(rock_pos, my_ship.get_position()) < WIDTH / 5:
+            rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
+        
+        rock_vel = [random.random() * .6 * 0.2 * score - .3, 
+                    random.random() * .6 * 0.2 * score - .3]
         rock_avel = random.random() * .2 - .1
         a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
         rock_group.add(a_rock)
         
         
 # initialize stuff
-frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
+frame = simplegui.create_frame("Ricerocks", WIDTH, HEIGHT)
 
 # initialize ship
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
@@ -381,3 +388,4 @@ timer = simplegui.create_timer(1000.0, rock_spawner)
 # get things rolling
 timer.start()
 frame.start()
+soundtrack.play()
