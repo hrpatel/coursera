@@ -12,6 +12,7 @@ time = 0
 started = False
 rock_group = set([])
 missile_group = set([])
+num_rocks = 0
 
 
 class ImageInfo:
@@ -116,7 +117,6 @@ def group_collide(group, other_obj):
             crash = True
 
     return crash
-    
 
 # detect missle/rock collission
 def group_group_collide(r_group, m_group):
@@ -135,7 +135,25 @@ def group_group_collide(r_group, m_group):
                 
     return num_collisions
 
+# rest the game
+def new_game():
+    global started, score, lives, rock_group, missile_group, num_rocks
+    started = True
+    score = 0
+    lives = 3
+    rock_group = set([])
+    missile_group = set([])
+    num_rocks = 12
 
+# stop game
+def stop_game():
+    global started, rock_group, missile_group, num_rocks
+    started = False
+    rock_group = set([])
+    missile_group = set([])
+    num_rocks = 0
+    
+    
 # Ship class
 class Ship:
 
@@ -280,14 +298,16 @@ def keyup(key):
         
 # mouseclick handlers that reset UI and conditions whether splash image is drawn
 def click(pos):
-    global started
+    # figure out where you clicked
     center = [WIDTH / 2, HEIGHT / 2]
     size = splash_info.get_size()
     inwidth = (center[0] - size[0] / 2) < pos[0] < (center[0] + size[0] / 2)
     inheight = (center[1] - size[1] / 2) < pos[1] < (center[1] + size[1] / 2)
+    
     if (not started) and inwidth and inheight:
-        started = True
+        new_game()
 
+        
 def draw(canvas):
     global time, started, lives, score
     
@@ -306,10 +326,8 @@ def draw(canvas):
     canvas.draw_text(str(lives), [50, 80], 22, "White")
     canvas.draw_text(str(score), [680, 80], 22, "White")
 
-    # draw ship and sprites
+    # draw/update the ship
     my_ship.draw(canvas)
-    
-    # update ship and sprites
     my_ship.update()
 
     # process/update/draw the rocks
@@ -319,6 +337,10 @@ def draw(canvas):
     # how's my flying??
     if group_collide(rock_group, my_ship):
         lives -= 1
+    
+        # you died too many times!
+        if lives == 0:
+            stop_game()
     
     # how's my accuracy
     num_hits = group_group_collide(rock_group, missile_group)
@@ -334,7 +356,7 @@ def draw(canvas):
 def rock_spawner():
     global rock_group
     
-    if len(rock_group) < 12:
+    if len(rock_group) < num_rocks:
         rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
         rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
         rock_avel = random.random() * .2 - .1
@@ -345,9 +367,8 @@ def rock_spawner():
 # initialize stuff
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
-# initialize ship and two sprites
+# initialize ship
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
-
 
 # register handlers
 frame.set_keyup_handler(keyup)
