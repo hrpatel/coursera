@@ -12,6 +12,7 @@ time = 0
 started = False
 rock_group = set([])
 missile_group = set([])
+explosion_group = set([])
 num_rocks = 0
 
 
@@ -113,9 +114,14 @@ def group_collide(group, other_obj):
     # test for collision
     for obj in objects:
         if obj.collide(other_obj):
+            # create an explosion
+            exp = Sprite(other_obj.get_position(), [0,0], 0, 0, explosion_image, explosion_info)
+            explosion_group.add(exp)
+            explosion_sound.play()
+            
             group.remove(obj)
             crash = True
-
+            
     return crash
 
 # detect missle/rock collission
@@ -123,15 +129,12 @@ def group_group_collide(r_group, m_group):
     # initialize counter and copy sets
     num_collisions = 0
     rocks = set(r_group)
-    missiles = set(m_group)
     
     # check each rock with each missile
     for rock in rocks:
-        for missile in missiles:
-            if missile.collide(rock):
-                num_collisions += 1
-                r_group.discard(rock)
-                m_group.discard(missile)
+        if group_collide(m_group, rock):
+            num_collisions += 1
+            r_group.discard(rock)
                 
     return num_collisions
 
@@ -245,7 +248,12 @@ class Sprite:
             sound.play()
    
     def draw(self, canvas):
-        canvas.draw_image(self.image, self.image_center, self.image_size,
+        if self.animated:
+            current_rock_index = ((self.age * 1) % self.image_size[1]) // 1
+            current_rock_center = [self.image_center[0] +  current_rock_index * self.image_size[0], self.image_center[1]]
+            canvas.draw_image(self.image, current_rock_center, self.image_size, self.pos, self.image_size) 
+        else:
+            canvas.draw_image(self.image, self.image_center, self.image_size,
                           self.pos, self.image_size, self.angle)
 
     def update(self):
@@ -335,6 +343,7 @@ def draw(canvas):
     # process/update/draw the rocks
     process_sprite_group(rock_group, canvas)        
     process_sprite_group(missile_group, canvas)        
+    process_sprite_group(explosion_group, canvas)        
     
     # how's my flying??
     if group_collide(rock_group, my_ship):
