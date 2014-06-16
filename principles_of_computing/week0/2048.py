@@ -4,6 +4,7 @@ Clone of 2048 game.
 __author__ = "mamaray"
 
 
+import random
 import poc_2048_gui        
 
 # Directions, DO NOT MODIFY
@@ -61,7 +62,7 @@ class TwentyFortyEight:
         """
         Reset the game so the grid is empty.
         """
-        self._grid = [[0] * self._width] * self._height
+        self._grid = [[0 * row * col for col in range(self._width)] for row in range(self._height)]
         
     def __str__(self):
         """
@@ -100,8 +101,18 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        # replace with your code
-        pass
+        # Find an empty cell ("0")
+        cell_value = -1
+        while cell_value != 0:
+            rrow = random.randrange(0, self._height)
+            rcol = random.randrange(0, self._width)
+            cell_value = self._grid[rrow][rcol]
+        
+        # Assign a value to it
+        if random.randrange(0, 10) > 0:
+            self.set_tile(rrow, rcol, 2)
+        else:
+            self.set_tile(rrow, rcol, 4)
         
     def set_tile(self, row, col, value):
         """
