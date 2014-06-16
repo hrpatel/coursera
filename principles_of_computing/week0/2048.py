@@ -62,7 +62,7 @@ class TwentyFortyEight:
         """
         Reset the game so the grid is empty.
         """
-        self._grid = [[0 * row * col for col in range(self._width)] for row in range(self._height)]
+        self._grid = [[0 for dummy_col in range(self._width)] for dummy_row in range(self._height)]
         
     def __str__(self):
         """
