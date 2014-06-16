@@ -1,6 +1,8 @@
 """
 Clone of 2048 game.
 """
+__author__ = "mamaray"
+
 
 import poc_2048_gui        
 
@@ -108,29 +110,5 @@ class TwentyFortyEight:
         # replace with your code
         return 0
 
-    
-    
-print merge([2,0,2,2])
-print
-print merge([2, 0, 2, 4])
-print
-print merge([0, 0, 2, 2])
-print
-print merge([2, 2, 0, 0])
-print
-print merge([2, 2, 2, 2,4,4])
-print
-print merge([8, 16, 16, 8,8])
-print
-print merge([0, 8, 8, 4])
-print
-print merge([0, 2, 2, 2])
-print
-print merge([2, 4, 4, 0])
-print
-print merge([2, 2, 4, 2])
-print
-print merge([8, 16, 16, 16])
-    
     
 poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
