@@ -1,5 +1,5 @@
 """
-Clone of 2048 game.
+Clone of 2048 game. 
 """
 __author__ = "mamaray"
 
