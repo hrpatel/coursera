@@ -21,8 +21,24 @@ def merge(line):
     """
     Helper function that merges a single row or column in 2048
     """
-    # replace with your code
-    return []
+    # return line and merge tracker
+    rline = [0] * len(line)
+    merged = [False] * len(line)
+    
+    # move all the values to the "top" of the line and merge
+    itr = 0
+    for value in line:
+        if value != 0:
+            if itr > 0 and value == rline[itr - 1] and not merged[itr - 1]:
+                rline[itr - 1] += value
+                merged[itr - 1] = True
+            else:
+                rline[itr] = value
+                itr += 1
+    
+    # return the new list
+    return rline
+
 
 class TwentyFortyEight:
     """
@@ -91,6 +107,30 @@ class TwentyFortyEight:
         """        
         # replace with your code
         return 0
- 
+
+    
+    
+print merge([2,0,2,2])
+print
+print merge([2, 0, 2, 4])
+print
+print merge([0, 0, 2, 2])
+print
+print merge([2, 2, 0, 0])
+print
+print merge([2, 2, 2, 2,4,4])
+print
+print merge([8, 16, 16, 8,8])
+print
+print merge([0, 8, 8, 4])
+print
+print merge([0, 2, 2, 2])
+print
+print merge([2, 4, 4, 0])
+print
+print merge([2, 2, 4, 2])
+print
+print merge([8, 16, 16, 16])
+    
     
 poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
