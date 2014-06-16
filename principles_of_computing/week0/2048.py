@@ -48,36 +48,43 @@ class TwentyFortyEight:
     """
 
     def __init__(self, grid_height, grid_width):
-        # replace with your code
-        pass
-    
+        """
+        Setup a new board.
+        """
+        self._height = grid_height
+        self._width = grid_width
+        
+        # reset the grid
+        self.reset()
+        
     def reset(self):
         """
         Reset the game so the grid is empty.
         """
-        # replace with your code
-        pass
-    
+        self._grid = [ [0 for col in range(self._width)] for row in range(self._height)]    
+        
     def __str__(self):
         """
         Return a string representation of the grid for debugging.
         """
-        # replace with your code
-        pass
+        output = "[\n"
+        for row in range(self._height):
+            output += " " + str(self._grid[row]) + "\n"
+        output += "]"
+        
+        return output
 
     def get_grid_height(self):
         """
         Get the height of the board.
         """
-        # replace with your code
-        return 0
+        return self._height
     
     def get_grid_width(self):
         """
         Get the width of the board.
         """
-        # replace with your code
-        return 0
+        return self._width
                             
     def move(self, direction):
         """
@@ -99,16 +106,14 @@ class TwentyFortyEight:
     def set_tile(self, row, col, value):
         """
         Set the tile at position row, col to have the given value.
-        """        
-        # replace with your code
-        pass
+        """
+        self._grid[row][col] = value
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """        
-        # replace with your code
-        return 0
+        return self._grid[row][col]
 
     
 poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
