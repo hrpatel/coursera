@@ -171,3 +171,4 @@ class TwentyFortyEight:
 
     
 poc_2048_gui.run_gui(TwentyFortyEight(6, 7))
+ 
