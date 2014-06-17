@@ -1,5 +1,5 @@
 """
-Clone of 2048 game. 
+Clone of 2048 game.
 """
 __author__ = "mamaray"
 
@@ -58,6 +58,20 @@ class TwentyFortyEight:
         # reset the grid
         self.reset()
         
+        # precompute the indices for directions
+        self._indices = { UP: [[0, col] for col in range(self._width)],
+                          DOWN: [[self._height - 1, col] for col in range(self._width)],
+                          LEFT: [[row, 0] for row in range(self._height)],
+                          RIGHT: [[row, self._width - 1] for row in range(self._height)]
+                         }
+        
+        # precompile the length of each direction of move
+        self._dir_len = { UP: self._height,
+                          DOWN: self._height,
+                          LEFT: self._width,
+                          RIGHT: self._width
+                         }
+
     def reset(self):
         """
         Reset the game so the grid is empty.
@@ -92,9 +106,38 @@ class TwentyFortyEight:
         Move all tiles in the given direction and add
         a new tile if any tiles moved.
         """
-        # replace with your code
-        pass
+        # helper variable
+        need_new_tile = False
         
+        for index in self._indices[direction]:
+            # helper variables
+            line = []
+            coords = []
+            
+            # figure how whats being merged
+            for itr in range(self._dir_len[direction]):
+                row = index[0] + itr * OFFSETS[direction][0]
+                col = index[1] + itr * OFFSETS[direction][1]
+                
+                # store the list of coordinates and values
+                coords.append([row, col])
+                line.append(self._grid[row][col])
+
+            # Merge the line
+            merged_line = merge(line)
+            
+            for itr in range(len(merged_line)):
+                if merged_line[itr] != line[itr]:
+                    need_new_tile = True
+
+            # put the new line back into the grid
+            for coord in coords:
+                self._grid[coord[0]][coord[1]] = merged_line.pop(0)
+                
+        # do we need a new tile:
+        if need_new_tile:
+            self.new_tile()
+            
     def new_tile(self):
         """
         Create a new tile in a randomly selected empty 
@@ -127,4 +170,4 @@ class TwentyFortyEight:
         return self._grid[row][col]
 
     
-poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
+poc_2048_gui.run_gui(TwentyFortyEight(6, 7))
