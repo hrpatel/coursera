@@ -27,7 +27,10 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
         resource_generation_rate += 1
         
         # increment cost of upgrade
-        upgrade_cost += upgrade_cost_increment
+        if upgrade_cost_increment == -1:
+            upgrade_cost *= 1.15
+        else:
+            upgrade_cost += upgrade_cost_increment
 
         # figure out when the next upgrade is possible
         next_upgrade_time = upgrade_cost / resource_generation_rate
@@ -52,10 +55,10 @@ def test():
     """
     Testing code for resources_vs_time
     """
-    ## q8
-    data1 = resources_vs_time(1.0, 10)
-    print data1
-    simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1])
+    ## q10, q11
+    data1 = resources_vs_time(-1, 45)
+    data2 = resources_vs_time(1.0, 100)
+    simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2])
 
 
     
