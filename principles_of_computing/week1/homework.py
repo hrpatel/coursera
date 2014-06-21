@@ -52,20 +52,8 @@ def test():
     """
     Testing code for resources_vs_time
     """
-    ## q1
-    data1 = resources_vs_time(0.0, 10)
-    data2 = resources_vs_time(1.0, 10)
-    #simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2])
-
-    ## q2
-    data1 = resources_vs_time(0.0, 100)
-    data2 = resources_vs_time(0.5, 20)
-    data3 = resources_vs_time(1.0, 15)
-    data4 = resources_vs_time(2.0, 10)
-    #simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2, data3, data4])
-    
-    ## q3
-    data1 = resources_vs_time(0.0, 100)
+    ## q7
+    data1 = resources_vs_time(1.0, 100)
     simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1])
 
 
