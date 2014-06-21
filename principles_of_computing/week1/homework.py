@@ -50,12 +50,10 @@ def test():
     """
     Testing code for resources_vs_time
     """
-    data1 = resources_vs_time(0.5, 20)
-    data2 = resources_vs_time(1.5, 10)
-    data3 = resources_vs_time(2.5, 2)
+    data1 = resources_vs_time(0.0, 10)
+    data2 = resources_vs_time(1.0, 10)
     print data1
     print data2
-    print data3
     simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2])
 
 test()
