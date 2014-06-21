@@ -12,7 +12,30 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
     """
     Build function that performs unit upgrades with specified cost increments
     """
-    return []
+    # initialize variables
+    current_time = 1.0
+    total_resources_generated = 1
+    data = [[current_time, total_resources_generated]]
+
+    upgrade_cost = 1
+    resource_generation_rate = 1
+    
+    while num_upgrade > 1:
+        print "blah"
+        num_upgrade -= 1
+        current_time += 1
+        
+        # increment resource generation
+        resource_generation_rate += 1
+        
+        # increment cost of upgrade
+        upgrade_cost += upgrade_cost_increment
+        
+        data.append([current_time, total_resources_generated])
+        
+    # return the data
+    return data
+
 
 def test():
     """
@@ -20,8 +43,10 @@ def test():
     """
     data1 = resources_vs_time(0.5, 20)
     data2 = resources_vs_time(1.5, 10)
+    data3 = resources_vs_time(2.5, 1)
     print data1
     print data2
+    print data3
     simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2])
 
 test()
