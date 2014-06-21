@@ -15,7 +15,7 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
     # initialize variables
     current_time = 1.0
     total_resources_generated = 1
-    data = [[current_time, total_resources_generated]]
+    data = [[math.log(current_time), math.log(total_resources_generated)]]
 
     # assume no upgrade has happend yet
     upgrade_cost = 1
@@ -39,7 +39,7 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
         total_resources_generated += upgrade_cost
         
         # append upgrade data
-        data.append([current_time, total_resources_generated])
+        data.append([math.log(current_time), math.log(total_resources_generated)])
         
         # one less upgrade to do
         num_upgrade -= 1
@@ -62,8 +62,13 @@ def test():
     data2 = resources_vs_time(0.5, 20)
     data3 = resources_vs_time(1.0, 15)
     data4 = resources_vs_time(2.0, 10)
-    simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2, data3, data4])
+    #simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1, data2, data3, data4])
     
+    ## q3
+    data1 = resources_vs_time(0.0, 100)
+    simpleplot.plot_lines("Growth", 600, 600, "time", "total resources", [data1])
+
+
     
 test()
 
