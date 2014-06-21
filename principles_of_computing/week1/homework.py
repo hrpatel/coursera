@@ -17,10 +17,12 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
     total_resources_generated = 1
     data = [[current_time, total_resources_generated]]
 
+    # assume no upgrade has happend yet
     upgrade_cost = 1
     resource_generation_rate = 1
     
     while num_upgrade > 1:
+        # we just upgraded (1st time included)
         # increment resource generation
         resource_generation_rate += 1
         
@@ -34,7 +36,7 @@ def resources_vs_time(upgrade_cost_increment, num_upgrade):
         current_time += next_upgrade_time
         
         # update how much we generated
-        total_resources_generated += next_upgrade_time * resource_generation_rate
+        total_resources_generated += upgrade_cost
         
         # append upgrade data
         data.append([current_time, total_resources_generated])
