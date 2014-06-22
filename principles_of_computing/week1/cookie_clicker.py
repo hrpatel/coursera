@@ -144,9 +144,9 @@ def simulate_clicker(build_info, duration, strategy):
                           state.get_cps(),
                           duration - state.get_time(),
                           bi_clone)
-
-        # stop if we can no longer use the strategy
+        
         if strtgy == None:
+            print "no more strategy"
             break
         
         # how many cookies do we need for this strategy
@@ -155,25 +155,33 @@ def simulate_clicker(build_info, duration, strategy):
         # how much should we wait for more cookies
         wait_time = state.time_until(need_cookies)
         if wait_time + state.get_time() > duration:
+            print "wait isnt enough"
             break
         
         # wait for cookies to accumulate
         state.wait(wait_time)
         
         # buy the upgrade
+        #if strtgy != None:
         state.buy_item(strtgy, need_cookies, bi_clone.get_cps(strtgy))
         
         # update item
+        #if strtgy != None:
         bi_clone.update_item(strtgy)
-
+    
     # use up remaining time
     state.wait(duration - state.get_time())    
-    
+
     # use up remaining cookies
-    if strtgy != None:
-        can_buy = True
-        while can_buy == True:
-            can_buy = state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
+    can_afford = True
+    while strtgy != None and can_afford:
+        can_afford = state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
+        bi_clone.update_item(strtgy)
+    
+        strtgy = strategy(state.get_cookies(),
+                          state.get_cps(),
+                          duration - state.get_time(),
+                          bi_clone)
     
     # finally, return the state        
     return state
@@ -239,37 +247,26 @@ def strategy_best(cookies, cps, time_left, build_info):
     This is a pointless strategy that you can use to help debug
     your simulate_clicker function.
     """
-    return random.choice(build_info.build_items())
-        
+    choices = build_info.build_items()
+    while len(choices) > 0:
+        choice = random.choice(choices)
+        if (time_left * cps + cookies) >= build_info.get_cost(choice):
+            return choice
+        else:
+            choices.remove(choice)
+    return None
+
+
 def run_strategy(strategy_name, time, strategy):
     """
     Run a simulation with one strategy
     """
     #state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 0.10000000000000001], 'Portal': [1666666.0, 6666.0], 'Shipment': [40000.0, 100.0], 'Grandma': [100.0, 0.5], 'Farm': [500.0, 4.0], 'Time Machine': [123456789.0, 98765.0], 'Alchemy Lab': [200000.0, 400.0], 'Factory': [3000.0, 10.0], 'Antimatter Condenser': [3999999999.0, 999999.0], 'Mine': [10000.0, 40.0]}, 1.15), 10000000000.0, strategy_expensive)
+    #state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 0.10000000000000001], 'Portal': [1666666.0, 6666.0], 'Shipment': [40000.0, 100.0], 'Grandma': [100.0, 0.5], 'Farm': [500.0, 4.0], 'Time Machine': [123456789.0, 98765.0], 'Alchemy Lab': [200000.0, 400.0], 'Factory': [3000.0, 10.0], 'Antimatter Condenser': [3999999999.0, 999999.0], 'Mine': [10000.0, 40.0]}, 1.15), 10000000000.0, strategy_expensive)
+    state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 50.0]}, 1.15), 16, strategy_cursor)
     print strategy_name, ":", state
-    
-    print len(state.get_history())
-    
-    # Plot total cookies over time
-    #state_cheap = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_cheap)
-    #state_exp = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_expensive)
-    #state_best = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_best)
-
-    #print state_best
-    
-    # Uncomment out the lines below to see a plot of total cookies vs. time
-    # Be sure to allow popups, if you do want to see it
-    #history_cheap = state_cheap.get_history()
-    #history_cheap = [(item[0], item[3]) for item in history_cheap]    
-    #history_exp = state_exp.get_history()
-    #history_exp = [(item[0], item[3]) for item in history_exp]
-    #history_best = state_best.get_history()
-    #history_best = [(item[0], item[3]) for item in history_best]
-    
-    #simpleplot.plot_lines("blah", 1000, 400, 'Time', 'Total Cookies', [history_best], True)
-
-    
+    print "history length:", len(state.get_history())
+        
 def run():
     """
     Run the simulator.
@@ -281,5 +278,5 @@ def run():
     #run_strategy("Expensive", SIM_TIME, strategy_expensive)
     run_strategy("Best", SIM_TIME, strategy_best)
 
-run()
+#run()
     
