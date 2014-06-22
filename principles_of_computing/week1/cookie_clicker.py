@@ -135,7 +135,7 @@ def simulate_clicker(build_info, duration, strategy):
     
     # start a new state object
     state = ClickerState()
-    
+
     # loop until we run out of time
     while state.get_time() < duration:
         
@@ -162,11 +162,9 @@ def simulate_clicker(build_info, duration, strategy):
         state.wait(wait_time)
         
         # buy the upgrade
-        #if strtgy != None:
         state.buy_item(strtgy, need_cookies, bi_clone.get_cps(strtgy))
         
         # update item
-        #if strtgy != None:
         bi_clone.update_item(strtgy)
     
     # use up remaining time
@@ -244,28 +242,34 @@ def strategy_best(cookies, cps, time_left, build_info):
     """
     Always return None
 
-    This is a pointless strategy that you can use to help debug
-    your simulate_clicker function.
+    Pick the upgrade that pays back the quickest. I.e. minimize
+    cost/cps...
     """
-    choices = build_info.build_items()
-    while len(choices) > 0:
-        choice = random.choice(choices)
-        if (time_left * cps + cookies) >= build_info.get_cost(choice):
-            return choice
-        else:
-            choices.remove(choice)
-    return None
+    costs = []
+    rev_items = {}
+    for item in build_info.build_items():
+        key = build_info.get_cost(item)/build_info.get_cps(item)
+        costs.append(key)
+        rev_items[key] = item
+    
+    costs.sort()
 
+    for cost in costs:
+        if (time_left * cps + cookies) >= cost:
+            return rev_items[cost]
+    return None
 
 def run_strategy(strategy_name, time, strategy):
     """
     Run a simulation with one strategy
     """
-    #state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    #state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 0.10000000000000001], 'Portal': [1666666.0, 6666.0], 'Shipment': [40000.0, 100.0], 'Grandma': [100.0, 0.5], 'Farm': [500.0, 4.0], 'Time Machine': [123456789.0, 98765.0], 'Alchemy Lab': [200000.0, 400.0], 'Factory': [3000.0, 10.0], 'Antimatter Condenser': [3999999999.0, 999999.0], 'Mine': [10000.0, 40.0]}, 1.15), 10000000000.0, strategy_expensive)
-    state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 50.0]}, 1.15), 16, strategy_cursor)
+    state = simulate_clicker(provided.BuildInfo(), time, strategy)
+  
+    # for DEBUG
+    #for item in state.get_history():
+    #    print item
+    #print "history length:", len(state.get_history())
     print strategy_name, ":", state
-    print "history length:", len(state.get_history())
         
 def run():
     """
@@ -278,5 +282,5 @@ def run():
     #run_strategy("Expensive", SIM_TIME, strategy_expensive)
     run_strategy("Best", SIM_TIME, strategy_best)
 
-#run()
+run()
     
