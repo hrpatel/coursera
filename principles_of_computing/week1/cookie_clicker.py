@@ -168,7 +168,8 @@ def simulate_clicker(build_info, duration, strategy):
     state.wait(duration - state.get_time())    
     
     # use up remaining cookies
-    state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
+    if strtgy != None:
+        state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
     
     # finally, return the state        
     return state
@@ -187,21 +188,36 @@ def strategy_cursor(cookies, cps, time_left, build_info):
 
 def strategy_none(cookies, cps, time_left, build_info):
     """
-    Always return 
+    Always return None
     """
     return None
 
 def strategy_cheap(cookies, cps, time_left, build_info):
     """
-    Always return 
+    Always return the cheapest upgrade item (affordable)
     """
-    return None
+    cost = []
+    for item in build_info.build_items():
+        cost.append([build_info.get_cost(item), item])
+
+    if (time_left * cps + cookies) > max(cost)[0]:
+        return min(cost)[1]
+    else:
+        return None
 
 def strategy_expensive(cookies, cps, time_left, build_info):
     """
-    Always return 
+    Always return the most expensive item affordable
     """
-    return None
+    cost = []
+    for item in build_info.build_items():
+        cost.append([build_info.get_cost(item), item])
+    
+    print 'potential', (time_left * cps + cookies), 'max', max(cost)[0]
+    if (time_left * cps + cookies) > max(cost)[0]:
+        return max(cost)[1]
+    else:
+        return None
 
 def strategy_best(cookies, cps, time_left, build_info):
     """
@@ -217,7 +233,10 @@ def run_strategy(strategy_name, time, strategy):
     Run a simulation with one strategy
     """
     state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    print strategy_name, ":", state
+    print strategy_name, ":", state, 
+    
+    for item in state.get_history():
+        print item
 
     # Plot total cookies over time
 
@@ -232,12 +251,21 @@ def run():
     """
     Run the simulator.
     """    
-    run_strategy("Cursor", SIM_TIME, strategy_cursor)
+    #run_strategy("Cursor", SIM_TIME, strategy_cursor)
 
     # Add calls to run_strategy to run additional strategies
     # run_strategy("Cheap", SIM_TIME, strategy_cheap)
     # run_strategy("Expensive", SIM_TIME, strategy_expensive)
-    # run_strategy("Best", SIM_TIME, strategy_best)
+    # run_strategy("Best", SIM_TIME, strategy_best
+    
+    print strategy_cheap(1.0, 3.0, 17.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
+    print
+    print strategy_cheap(500000.0, 1.0, 5.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
+    print
+    print strategy_expensive(1.0, 3.0, 17.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
+    print
+    print strategy_expensive(500000.0, 1.0, 5.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
+    print
 
 run()
     
