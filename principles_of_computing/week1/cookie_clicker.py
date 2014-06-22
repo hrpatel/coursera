@@ -1,6 +1,7 @@
 """
 Cookie Clicker Simulator
 """
+__author__ = "mamaray"
 
 import simpleplot
 import math
@@ -280,7 +281,7 @@ def run():
     # Add calls to run_strategy to run additional strategies
     #run_strategy("Cheap", SIM_TIME, strategy_cheap)
     #run_strategy("Expensive", SIM_TIME, strategy_expensive)
-    run_strategy("Best", SIM_TIME, strategy_best)
+    #run_strategy("Best", SIM_TIME, strategy_best)
 
-run()
+#run()
     
