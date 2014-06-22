@@ -38,7 +38,7 @@ class ClickerState:
         out += "\nCurrent Cookies: " + str(self._current_cookies)
         out += "\nCPS: " + str(self._cps)
         out += "\nTotal Cookies: " + str(self._cookies_produced)
-        out += "\n\n"
+        out += "\n"
 
         return out
         
@@ -88,9 +88,6 @@ class ClickerState:
         if self._current_cookies >= cookies:
             return 0.0
         else:
-            print 'cps:', self._cps
-            print 'cookies needed:', cookies
-            print 'time until:', float(math.ceil((cookies - self._current_cookies) / self._cps))
             return float(math.ceil((cookies - self._current_cookies) / self._cps))
     
     def wait(self, time):
@@ -99,14 +96,11 @@ class ClickerState:
 
         Should do nothing if time <= 0
         """
-        print 'cps', self._cps
-        print 'wait time', time
         if time <= 0:
             return
         else:
             add_cookies = self._cps * time
-            print 'wait add cookies', add_cookies
-            
+
             self._cookies_produced += add_cookies
             self._current_cookies += add_cookies
             self._current_time += time
@@ -120,10 +114,6 @@ class ClickerState:
         if cost > self._current_cookies:
             return
         else:
-            print 'cps', self._cps
-            print 'buy current cookies', self._current_cookies
-            print 'buy cost', cost
-            
             self._current_cookies -= cost
             self._cps += additional_cps
             self._game_history.append((self._current_time, 
@@ -173,12 +163,12 @@ def simulate_clicker(build_info, duration, strategy):
         
         # update item
         bi_clone.update_item(strtgy)
-        
-        print
-        print
 
-    # use up remaining cookies
+    # use up remaining time
     state.wait(duration - state.get_time())    
+    
+    # use up remaining cookies
+    state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
     
     # finally, return the state        
     return state
@@ -227,7 +217,7 @@ def run_strategy(strategy_name, time, strategy):
     Run a simulation with one strategy
     """
     state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    print strategy_name, ":", state, state.get_history()
+    print strategy_name, ":", state
 
     # Plot total cookies over time
 
