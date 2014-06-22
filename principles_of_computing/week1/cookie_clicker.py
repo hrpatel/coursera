@@ -4,6 +4,7 @@ Cookie Clicker Simulator
 
 import simpleplot
 import math
+import random
 
 # Used to increase the timeout, if necessary
 import codeskulptor
@@ -112,7 +113,7 @@ class ClickerState:
         Should do nothing if you cannot afford the item
         """
         if cost > self._current_cookies:
-            return
+            return False
         else:
             self._current_cookies -= cost
             self._cps += additional_cps
@@ -120,6 +121,7 @@ class ClickerState:
                                    item_name, 
                                    cost, 
                                    self._cookies_produced))
+            return True
         
     
 def simulate_clicker(build_info, duration, strategy):
@@ -169,7 +171,9 @@ def simulate_clicker(build_info, duration, strategy):
     
     # use up remaining cookies
     if strtgy != None:
-        state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
+        can_buy = True
+        while can_buy == True:
+            can_buy = state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
     
     # finally, return the state        
     return state
@@ -196,28 +200,37 @@ def strategy_cheap(cookies, cps, time_left, build_info):
     """
     Always return the cheapest upgrade item (affordable)
     """
-    cost = []
+    costs = []
+    rev_items = {}
     for item in build_info.build_items():
-        cost.append([build_info.get_cost(item), item])
-
-    if (time_left * cps + cookies) > max(cost)[0]:
-        return min(cost)[1]
-    else:
-        return None
-
+        costs.append(build_info.get_cost(item))
+        rev_items[build_info.get_cost(item)] = item
+   
+    costs.sort()
+    
+    for cost in costs:
+        if (time_left * cps + cookies) >= cost:
+            return rev_items[cost]
+    return None
+        
+        
 def strategy_expensive(cookies, cps, time_left, build_info):
     """
     Always return the most expensive item affordable
     """
-    cost = []
+    costs = []
+    rev_items = {}
     for item in build_info.build_items():
-        cost.append([build_info.get_cost(item), item])
+        costs.append(build_info.get_cost(item))
+        rev_items[build_info.get_cost(item)] = item
     
-    print 'potential', (time_left * cps + cookies), 'max', max(cost)[0]
-    if (time_left * cps + cookies) > max(cost)[0]:
-        return max(cost)[1]
-    else:
-        return None
+    costs.sort()
+    costs.reverse()
+    
+    for cost in costs:
+        if (time_left * cps + cookies) >= cost:
+            return rev_items[cost]
+    return None
 
 def strategy_best(cookies, cps, time_left, build_info):
     """
@@ -226,27 +239,37 @@ def strategy_best(cookies, cps, time_left, build_info):
     This is a pointless strategy that you can use to help debug
     your simulate_clicker function.
     """
-    return None
+    return random.choice(build_info.build_items())
         
 def run_strategy(strategy_name, time, strategy):
     """
     Run a simulation with one strategy
     """
-    state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    print strategy_name, ":", state, 
+    #state = simulate_clicker(provided.BuildInfo(), time, strategy)
+    state = simulate_clicker(provided.BuildInfo({'Cursor': [15.0, 0.10000000000000001], 'Portal': [1666666.0, 6666.0], 'Shipment': [40000.0, 100.0], 'Grandma': [100.0, 0.5], 'Farm': [500.0, 4.0], 'Time Machine': [123456789.0, 98765.0], 'Alchemy Lab': [200000.0, 400.0], 'Factory': [3000.0, 10.0], 'Antimatter Condenser': [3999999999.0, 999999.0], 'Mine': [10000.0, 40.0]}, 1.15), 10000000000.0, strategy_expensive)
+    print strategy_name, ":", state
     
-    for item in state.get_history():
-        print item
-
+    print len(state.get_history())
+    
     # Plot total cookies over time
+    #state_cheap = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_cheap)
+    #state_exp = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_expensive)
+    #state_best = simulate_clicker(provided.BuildInfo(), SIM_TIME, strategy_best)
 
+    #print state_best
+    
     # Uncomment out the lines below to see a plot of total cookies vs. time
     # Be sure to allow popups, if you do want to see it
+    #history_cheap = state_cheap.get_history()
+    #history_cheap = [(item[0], item[3]) for item in history_cheap]    
+    #history_exp = state_exp.get_history()
+    #history_exp = [(item[0], item[3]) for item in history_exp]
+    #history_best = state_best.get_history()
+    #history_best = [(item[0], item[3]) for item in history_best]
+    
+    #simpleplot.plot_lines("blah", 1000, 400, 'Time', 'Total Cookies', [history_best], True)
 
-    # history = state.get_history()
-    # history = [(item[0], item[3]) for item in history]
-    # simpleplot.plot_lines(strategy_name, 1000, 400, 'Time', 'Total Cookies', [history], True)
-
+    
 def run():
     """
     Run the simulator.
@@ -254,18 +277,9 @@ def run():
     #run_strategy("Cursor", SIM_TIME, strategy_cursor)
 
     # Add calls to run_strategy to run additional strategies
-    # run_strategy("Cheap", SIM_TIME, strategy_cheap)
-    # run_strategy("Expensive", SIM_TIME, strategy_expensive)
-    # run_strategy("Best", SIM_TIME, strategy_best
-    
-    print strategy_cheap(1.0, 3.0, 17.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
-    print
-    print strategy_cheap(500000.0, 1.0, 5.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
-    print
-    print strategy_expensive(1.0, 3.0, 17.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
-    print
-    print strategy_expensive(500000.0, 1.0, 5.0, provided.BuildInfo({'A': [5.0, 1.0], 'C': [50000.0, 3.0], 'B': [500.0, 2.0]}, 1.15))
-    print
+    #run_strategy("Cheap", SIM_TIME, strategy_cheap)
+    #run_strategy("Expensive", SIM_TIME, strategy_expensive)
+    run_strategy("Best", SIM_TIME, strategy_best)
 
 run()
     
