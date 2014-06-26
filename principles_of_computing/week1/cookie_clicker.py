@@ -138,7 +138,7 @@ def simulate_clicker(build_info, duration, strategy):
     state = ClickerState()
 
     # loop until we run out of time
-    while state.get_time() < duration:
+    while state.get_time() <= duration:
         
         # get the strategy
         strtgy = strategy(state.get_cookies(),
@@ -170,17 +170,6 @@ def simulate_clicker(build_info, duration, strategy):
     
     # use up remaining time
     state.wait(duration - state.get_time())    
-
-    # use up remaining cookies
-    can_afford = True
-    while strtgy != None and can_afford:
-        can_afford = state.buy_item(strtgy, bi_clone.get_cost(strtgy), bi_clone.get_cps(strtgy))
-        bi_clone.update_item(strtgy)
-    
-        strtgy = strategy(state.get_cookies(),
-                          state.get_cps(),
-                          duration - state.get_time(),
-                          bi_clone)
     
     # finally, return the state        
     return state
