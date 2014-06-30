@@ -3,9 +3,7 @@ Cookie Clicker Simulator
 """
 __author__ = "mamaray"
 
-import simpleplot
 import math
-import random
 
 # Used to increase the timeout, if necessary
 import codeskulptor
