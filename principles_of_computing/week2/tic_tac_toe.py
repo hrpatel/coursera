@@ -7,7 +7,7 @@ __author__ = 'mamaray'
 import random
 import ttt_provided as provided
 
-# Constants f   or Monte Carlo simulator
+# Constants for Monte Carlo simulator
 # Change as desired
 NTRIALS = 1  # Number of trials to run
 MCMATCH = 1.0  # Score for squares played by the machine player
@@ -56,11 +56,26 @@ def mc_update_scores(scores, board, player):
     from a completed game, and which player the machine player is. The function should score the completed board and
     update the scores grid. As the function updates the scores grid directly, it does not return anything,
 
-    :param scores:
-    :param board:
-    :param player:
-    :return:
+    :param scores: variable used to track scores between trials
+    :param board: final board
+    :param player: player whose turn it is
+    :return: None, score is passed by reference
     """
+
+    # who won?
+    winner = board.check_win()
+
+    # loop through the board and update the score
+    for row in range(len(scores)):
+        for col in range(len(scores[row])):
+            if winner == provided.DRAW:
+                scores[row][col] += 0
+            elif board.square(row, col) == provided.EMPTY:
+                continue
+            elif board.square(row, col) == winner:
+                scores[row][col] += MCMATCH
+            else:
+                scores[row][col] -= MCOTHER
 
     return
 
@@ -97,6 +112,28 @@ def mc_move(board, player, trials):
 
 # Lets start the game
 board = provided.TTTBoard(3)
-mc_trial(board, provided.PLAYERO)
+mc_update_scores([[0, 0, 0],
+                  [0, 0, 0],
+                  [0, 0, 0]],
+                 provided.TTTBoard(3,
+                                   False,
+                                   [[provided.PLAYERX, provided.PLAYERX, provided.PLAYERO],
+                                    [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
+                                    [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
+                 2)
+
+print
+print
+
+mc_update_scores([[0, 0, 0],
+                  [0, 0, 0],
+                  [0, 0, 0]],
+                 provided.TTTBoard(3,
+                                   False,
+                                   [[provided.PLAYERX, provided.PLAYERX, provided.PLAYERO],
+                                    [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
+                                    [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
+                 3)
+
 
 # provided.play_game(mc_move, NTRIALS, False)
