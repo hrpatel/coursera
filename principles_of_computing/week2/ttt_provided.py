@@ -153,14 +153,9 @@ def play_game(mc_move_function, ntrials, reverse=False):
         row, col = mc_move_function(board, curplayer, ntrials)
         board.move(row, col, curplayer)
 
-
         # Update state
         winner = board.check_win()
         curplayer = switch_player(curplayer)
-
-        # Display board
-        print board
-        print
 
     # Print winner
     if winner == PLAYERX:
@@ -171,3 +166,4 @@ def play_game(mc_move_function, ntrials, reverse=False):
         print "Tie!"
     else:
         print "Error: unknown winner"
+    print board
