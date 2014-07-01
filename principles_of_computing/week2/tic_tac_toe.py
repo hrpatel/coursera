@@ -9,7 +9,7 @@ import ttt_provided as provided
 
 # Constants for Monte Carlo simulator
 # Change as desired
-NTRIALS = 10  # Number of trials to run
+NTRIALS = 50  # Number of trials to run
 MCMATCH = 5.0  # Score for squares played by the machine player
 MCOTHER = 5.0  # Score for squares played by the other player
 
@@ -46,31 +46,37 @@ def mc_trial(board, player):
     return
 
 
-def mc_update_scores(scores, board, player):
+def mc_update_scores(scores, tboard, gboard, player):
     """
     This function takes a grid of scores (a list of lists) with the same dimensions as the Tic-Tac-Toe board, a board
     from a completed game, and which player the machine player is. The function should score the completed board and
     update the scores grid. As the function updates the scores grid directly, it does not return anything,
 
     :param scores: variable used to track scores between trials
-    :param board: final board
+    :param tboard: trial board
+    :param gboard: game board
     :param player: player whose turn it is
     :return: None, score is passed by reference
     """
 
     # who won?
-    winner = board.check_win()
+    winner = tboard.check_win()
 
     # if its a draw then we don't score
     if winner == provided.DRAW:
         return
 
+    # list of empty squares on the game/trial board
+    gempty_squares = gboard.get_empty_squares()
+    tempty_squares = tboard.get_empty_squares()
+
     # loop through the board and update the score
     for row in range(len(scores)):
         for col in range(len(scores[row])):
-            if board.square(row, col) == provided.EMPTY:
+            # ignore non-empty squares on the game board and empty squares on the trial board
+            if (row, col) not in gempty_squares or (row, col) in tempty_squares:
                 continue
-            elif board.square(row, col) == winner:
+            if tboard.square(row, col) == winner:
                 scores[row][col] += MCMATCH
             else:
                 scores[row][col] -= MCOTHER
@@ -126,7 +132,7 @@ def mc_move(board, player, trials):
         mc_trial(trial_board, player)
 
         # update the scores from the trial
-        mc_update_scores(scores, trial_board, player)
+        mc_update_scores(scores, trial_board, board, player)
 
     # get the best move
     move = get_best_move(board, scores)
