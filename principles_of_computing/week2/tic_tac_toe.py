@@ -9,7 +9,7 @@ import ttt_provided as provided
 
 # Constants for Monte Carlo simulator
 # Change as desired
-NTRIALS = 1  # Number of trials to run
+NTRIALS = 500  # Number of trials to run
 MCMATCH = 1.0  # Score for squares played by the machine player
 MCOTHER = 1.0  # Score for squares played by the other player
 
@@ -31,10 +31,11 @@ def mc_trial(board, player):
     # Run game
     while winner is None:
         # calculate a random move and make it
-        row, col = random.choice(board.get_empty_squares())
-        # print "row,col", row, col
-        # print "player: ", provided.STRMAP[curplayer]
-        # Make the random move
+        empty_squares = board.get_empty_squares()
+        if len(empty_squares) < 1:
+            break
+
+        row, col = random.choice(empty_squares)
         board.move(row, col, curplayer)
 
         # check if the game continues
@@ -42,10 +43,6 @@ def mc_trial(board, player):
 
         # game continues, switch players
         curplayer = provided.switch_player(curplayer)
-
-        # Display board
-        # print board
-        # print
 
     return
 
@@ -99,7 +96,6 @@ def get_best_move(board, scores):
     empty_squares = board.get_empty_squares()
 
     for row, col in empty_squares:
-        print row, col
         if scores[row][col] > max_score:
             max_score = scores[row][col]
             move = (row, col)
@@ -113,25 +109,29 @@ def mc_move(board, player, trials):
     function should use the Monte Carlo simulation to return a move for the machine player in the form of a
     (row, column) tuple.
 
-    :param board:
-    :param player:
-    :param trials:
+    :param board: current state of the game
+    :param player: current player
+    :param trials: # of trials to run for test
     :return:
     """
 
-    return
+    # make the score grid
+    scores = [[0 for dummy_col in range(board.get_dim())] for dummy_row in range(board.get_dim())]
+
+    # run the trials
+    for dummy_ctr in range(trials):
+        # generate a trial
+        trial_board = board.clone()
+        mc_trial(trial_board, player)
+
+        # update the scores from the trial
+        mc_update_scores(scores, trial_board, player)
+
+    # get the best move
+    move = get_best_move(board, scores)
+
+    return move
 
 
 # Lets start the game
-board = provided.TTTBoard(3)
-
-print get_best_move(provided.TTTBoard(3,
-                                False,
-                                [[provided.EMPTY, provided.EMPTY, provided.PLAYERO],
-                                 [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
-                                 [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
-              [[3, 4.5, 0],
-               [0, 0, .5],
-               [5, 0, 0]])
-
-# provided.play_game(mc_move, NTRIALS, False)
+provided.play_game(mc_move, NTRIALS, False)
