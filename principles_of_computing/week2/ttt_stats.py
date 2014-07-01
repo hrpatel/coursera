@@ -6,7 +6,7 @@ import ttt_provided as provided
 import tic_tac_toe as ttt
 
 # Create set of stats
-NUM_RUNS = 100
+NUM_RUNS = 50
 files = []
 for i in range(NUM_RUNS):
     filename = 'profile_stats_%d.stats' % i
@@ -17,7 +17,7 @@ stats = pstats.Stats('profile_stats_0.stats')
 for i in range(1, NUM_RUNS):
     stats.add('profile_stats_%d.stats' % i)
 
-# Clean up filenames for the report
+# Clean up file names for the report
 stats.strip_dirs()
 
 # Sort the statistics by the cumulative time spent in the function
