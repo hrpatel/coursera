@@ -13,7 +13,6 @@ NTRIALS = 1  # Number of trials to run
 MCMATCH = 1.0  # Score for squares played by the machine player
 MCOTHER = 1.0  # Score for squares played by the other player
 
-# Add your functions here.
 
 def mc_trial(board, player):
     """
@@ -21,10 +20,32 @@ def mc_trial(board, player):
     given player by making random moves, alternating between players. The function should return when the game is over.
     The modified board will contain the state of the game, so the function does not return anything.
 
-    :param board:
-    :param player:
-    :return:
+    :param board: run a trial on this board
+    :param player: starting player
+    :return: None, board is modified
     """
+
+    curplayer = player
+    winner = board.check_win()
+
+    # Run game
+    while winner is None:
+        # calculate a random move and make it
+        row, col = random.choice(board.get_empty_squares())
+        # print "row,col", row, col
+        # print "player: ", provided.STRMAP[curplayer]
+        # Make the random move
+        board.move(row, col, curplayer)
+
+        # check if the game continues
+        winner = board.check_win()
+
+        # game continues, switch players
+        curplayer = provided.switch_player(curplayer)
+
+        # Display board
+        # print board
+        # print
 
     return
 
@@ -75,7 +96,7 @@ def mc_move(board, player, trials):
 
 
 # Lets start the game
-board = provided.TTTBoard(5)
-print board
+board = provided.TTTBoard(3)
+mc_trial(board, provided.PLAYERO)
 
-provided.play_game(mc_move, NTRIALS, False)
+# provided.play_game(mc_move, NTRIALS, False)
