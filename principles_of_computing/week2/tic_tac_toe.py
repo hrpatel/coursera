@@ -9,9 +9,9 @@ import ttt_provided as provided
 
 # Constants for Monte Carlo simulator
 # Change as desired
-NTRIALS = 500  # Number of trials to run
-MCMATCH = 1.0  # Score for squares played by the machine player
-MCOTHER = 1.0  # Score for squares played by the other player
+NTRIALS = 10  # Number of trials to run
+MCMATCH = 5.0  # Score for squares played by the machine player
+MCOTHER = 5.0  # Score for squares played by the other player
 
 
 def mc_trial(board, player):
@@ -25,17 +25,19 @@ def mc_trial(board, player):
     :return: None, board is modified
     """
 
+    # initialize local variables
     curplayer = player
     winner = board.check_win()
+    empty_squares = board.get_empty_squares()
 
     # Run game
     while winner is None:
         # calculate a random move and make it
-        empty_squares = board.get_empty_squares()
         if len(empty_squares) < 1:
             break
 
         row, col = random.choice(empty_squares)
+        empty_squares.remove((row, col))
         board.move(row, col, curplayer)
 
         # check if the game continues
