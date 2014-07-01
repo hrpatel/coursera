@@ -62,12 +62,14 @@ def mc_update_scores(scores, board, player):
     # who won?
     winner = board.check_win()
 
+    # if its a draw then we don't score
+    if winner == provided.DRAW:
+        return
+
     # loop through the board and update the score
     for row in range(len(scores)):
         for col in range(len(scores[row])):
-            if winner == provided.DRAW:
-                scores[row][col] += 0
-            elif board.square(row, col) == provided.EMPTY:
+            if board.square(row, col) == provided.EMPTY:
                 continue
             elif board.square(row, col) == winner:
                 scores[row][col] += MCMATCH
@@ -112,7 +114,7 @@ def mc_move(board, player, trials):
     :param board: current state of the game
     :param player: current player
     :param trials: # of trials to run for test
-    :return:
+    :return: the best move to make
     """
 
     # make the score grid
