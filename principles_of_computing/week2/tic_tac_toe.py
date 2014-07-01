@@ -30,12 +30,9 @@ def mc_trial(board, player):
     winner = board.check_win()
     empty_squares = board.get_empty_squares()
 
-    # Run game
-    while winner is None:
+    # make random moves until an endgame
+    while winner is None and len(empty_squares) > 0:
         # calculate a random move and make it
-        if len(empty_squares) < 1:
-            break
-
         row, col = random.choice(empty_squares)
         empty_squares.remove((row, col))
         board.move(row, col, curplayer)
