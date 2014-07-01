@@ -87,12 +87,24 @@ def get_best_move(board, scores):
     that has no empty squares (there is no possible next move), so your function may do whatever it wants in that case.
     The case where the board is full will not be tested.
 
-    :param board:
-    :param scores:
-    :return:
+    :param board: current board in play
+    :param scores: current scores grid
+    :return: the next square to play
     """
 
-    return
+    # initialize local variables
+    max_score = float("-inf")
+    move = None
+
+    empty_squares = board.get_empty_squares()
+
+    for row, col in empty_squares:
+        print row, col
+        if scores[row][col] > max_score:
+            max_score = scores[row][col]
+            move = (row, col)
+
+    return move
 
 
 def mc_move(board, player, trials):
@@ -112,28 +124,14 @@ def mc_move(board, player, trials):
 
 # Lets start the game
 board = provided.TTTBoard(3)
-mc_update_scores([[0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]],
-                 provided.TTTBoard(3,
-                                   False,
-                                   [[provided.PLAYERX, provided.PLAYERX, provided.PLAYERO],
-                                    [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
-                                    [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
-                 2)
 
-print
-print
-
-mc_update_scores([[0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]],
-                 provided.TTTBoard(3,
-                                   False,
-                                   [[provided.PLAYERX, provided.PLAYERX, provided.PLAYERO],
-                                    [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
-                                    [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
-                 3)
-
+print get_best_move(provided.TTTBoard(3,
+                                False,
+                                [[provided.EMPTY, provided.EMPTY, provided.PLAYERO],
+                                 [provided.PLAYERO, provided.PLAYERX, provided.EMPTY],
+                                 [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
+              [[3, 4.5, 0],
+               [0, 0, .5],
+               [5, 0, 0]])
 
 # provided.play_game(mc_move, NTRIALS, False)
