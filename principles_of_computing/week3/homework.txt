@@ -1,0 +1,31 @@
+
+## q3
+four sided die: 1 - 4
+outcomes1:	1	2	3	4
+outcomes2		2		4	6	8
+outcomes3			3		6		9	12
+outcomes4				4		8		12	16
+probability: 	1/16	1/8	1/8	3/16	1/8	1/8	1/16	1/8	1/16
+
+>>> 1.0*1/16 + 2.0*1/8 + 3.0*1/8 + 4.0*3/16 + 6.0*1/8 + 8.0*1/8 + 9.0*1/16 + 12.0*1/8 + 16.0*1/16
+6.25
+
+
+
+## q4
+(0.1) ^  5 * 12 = 0.00012
+total sequences out of enumeration: 12 / 10**5
+
+
+
+## q5
+ascending combinations: 0..5 (01234..56789) =	6
+descending combinations: 4..9 (43210..98765) = 	6
+
+total 5 digit permutation: 30240
+
+total sequences out of permutations:
+>>> 12/30240.0
+0.0003968253968253968
+
+
