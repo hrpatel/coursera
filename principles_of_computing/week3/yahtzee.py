@@ -29,7 +29,7 @@ def score(hand):
     """
     Compute the maximal score for a Yahtzee hand according to the upper section of the Yahtzee score card. || This
     function takes a hand (which is a tuple of die values) and computes a score for the hand as the maximum of the
-    possible values for each choice of box in the upper section of the Yahtzee scorecard.
+    possible values for each choice of box in the upper section of the Yahtzee scorecard
 
     :param hand: full yahtzee hand
 
