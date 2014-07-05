@@ -37,16 +37,16 @@ def score(hand):
     """
 
     # initialize local variables
-    counts = {}
+    all_points = {}
 
     # generate a list of scores
     for item in hand:
-        if counts.has_key(item):
-            counts[item] += item
+        if item in all_points.has_key:
+            all_points[item] += item
         else:
-            counts[item] = item
+            all_points[item] = item
 
-    return max(counts.values())
+    return max(all_points.values())
 
 
 def expected_value(held_dice, num_die_sides, num_free_dice):
