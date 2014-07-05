@@ -3,7 +3,6 @@
 Planner for Yahtzee
 Simplifications:  only allow discard and roll, only score against upper level
 """
-import gen_all_holds_testsuite
 
 __author__ = 'mamaray'
 
@@ -120,11 +119,3 @@ def run_example():
 
 
 # run_example()
-# yahtzee_testsuite.run_suite(gen_all_holds)
-
-
-
-
-
-
-
