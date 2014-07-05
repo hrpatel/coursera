@@ -35,7 +35,18 @@ def score(hand):
 
     Returns an integer score
     """
-    return 0
+
+    # initialize local variables
+    counts = {}
+
+    # generate a list of scores
+    for item in hand:
+        if counts.has_key(item):
+            counts[item] += item
+        else:
+            counts[item] = item
+
+    return max(counts.values())
 
 
 def expected_value(held_dice, num_die_sides, num_free_dice):
@@ -99,8 +110,8 @@ def run_example():
     print "Best strategy for hand", hand, "is to hold", hold, "with expected score", hand_score
 
 
-run_example()
-yahtzee_testsuite.run_suite(gen_all_holds)
+# run_example()
+# yahtzee_testsuite.run_suite(gen_all_holds)
 
 
 
