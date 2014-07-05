@@ -3,7 +3,7 @@
 Planner for Yahtzee
 Simplifications:  only allow discard and roll, only score against upper level
 """
-import yahtzee_testsuite
+import gen_all_holds_testsuite
 
 __author__ = 'mamaray'
 
@@ -81,7 +81,16 @@ def gen_all_holds(hand):
 
     Returns a set of tuples, where each tuple is dice to hold
     """
-    return set([()])
+
+    result_set = set([()])
+    for item in hand:
+        tmp_set = set([])
+        for subset in result_set:
+            new_list = list(subset)
+            new_list.append(item)
+            tmp_set.add(tuple(new_list))
+        result_set = result_set.union(tmp_set)
+    return result_set
 
 
 def strategy(hand, num_die_sides):
