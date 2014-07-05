@@ -59,7 +59,6 @@ def gen_all_holds(hand):
     return set([()])
 
 
-
 def strategy(hand, num_die_sides):
     """
     Compute the hold that maximizes the expected value when the discarded dice are rolled.
