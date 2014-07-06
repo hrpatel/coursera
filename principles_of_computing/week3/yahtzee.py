@@ -12,7 +12,7 @@ def gen_all_sequences(outcomes, length):
     Iterative function that enumerates the set of all sequences of outcomes of given length.
     """
 
-    answer_set = set([()])
+    answer_set = {()}
     for dummy_idx in range(length):
         temp_set = set()
         for partial_sequence in answer_set:
@@ -40,7 +40,7 @@ def score(hand):
 
     # generate a list of scores
     for item in hand:
-        if all_points.has_key(item):
+        if item in all_points:
             all_points[item] += item
         else:
             all_points[item] = item
@@ -115,7 +115,7 @@ def strategy(hand, num_die_sides):
 
     Returns a tuple where the first element is the expected score and the second element is a tuple of the dice to hold
     """
-    return (0.0, ())
+    return 0.0, ()
 
 
 def run_example():
