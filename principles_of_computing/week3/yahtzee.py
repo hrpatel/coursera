@@ -40,7 +40,7 @@ def score(hand):
 
     # generate a list of scores
     for item in hand:
-        if item in all_points.has_key:
+        if all_points.has_key(item):
             all_points[item] += item
         else:
             all_points[item] = item
@@ -64,7 +64,18 @@ def expected_value(held_dice, num_die_sides, num_free_dice):
 
     Returns a floating point expected value
     """
-    return 0.0
+
+    # initialize local variables
+    expected_val = 0.0
+
+    # figure out all the posible rolls
+    next_rolls = gen_all_sequences(range(1, num_die_sides + 1), num_free_dice)
+
+    # keep a running total of all possible scores
+    for roll in next_rolls:
+        expected_val += float(score(held_dice + roll)) / (num_die_sides ** num_free_dice)
+
+    return expected_val
 
 
 def gen_all_holds(hand):
