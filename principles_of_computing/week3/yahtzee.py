@@ -68,7 +68,7 @@ def expected_value(held_dice, num_die_sides, num_free_dice):
     # initialize local variables
     expected_val = 0.0
 
-    # figure out all the posible rolls
+    # figure out all the possible rolls
     next_rolls = gen_all_sequences(range(1, num_die_sides + 1), num_free_dice)
 
     # keep a running total of all possible scores
@@ -92,7 +92,7 @@ def gen_all_holds(hand):
     Returns a set of tuples, where each tuple is dice to hold
     """
 
-    result_set = set([()])
+    result_set = {()}
     for item in hand:
         tmp_set = set([])
         for subset in result_set:
