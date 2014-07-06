@@ -21,6 +21,7 @@ def gen_all_sequences(outcomes, length):
                 new_sequence.append(item)
                 temp_set.add(tuple(new_sequence))
         answer_set = temp_set
+
     return answer_set
 
 
@@ -99,6 +100,7 @@ def gen_all_holds(hand):
             new_list.append(item)
             tmp_set.add(tuple(new_list))
         result_set = result_set.union(tmp_set)
+
     return result_set
 
 
@@ -115,7 +117,22 @@ def strategy(hand, num_die_sides):
 
     Returns a tuple where the first element is the expected score and the second element is a tuple of the dice to hold
     """
-    return 0.0, ()
+
+    # initialize local variables
+    expected_score = float("-inf")
+    hand_to_hold = ()
+
+    # generate all possible dice to hold
+    all_holds = gen_all_holds(hand)
+
+    # calculate the largest expected score for each hold
+    for possible_hold in all_holds:
+        temp_val = expected_value(possible_hold, num_die_sides, len(hand) - len(possible_hold))
+        if temp_val > expected_score:
+            expected_score = temp_val
+            hand_to_hold = possible_hold
+
+    return expected_score, hand_to_hold
 
 
 def run_example():
