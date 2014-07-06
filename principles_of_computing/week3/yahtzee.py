@@ -51,12 +51,11 @@ def score(hand):
 def expected_value(held_dice, num_die_sides, num_free_dice):
     """
     Compute the expected value of the held_dice given that num_free_dice are to be rolled, each with num_die_sides.
-    This function computes that the expected value of the scores for the possible Yahtzee hands that result from
-    holding some dice and rolling the remaining free dice. The dice being held are specified by the tuple held_dice.
-    The number of sides and the number of dice that are free to be rolled are specified by num_die_sides and
-    num_free_dice, respectively. You should use gen_all_sequences to compute all possible rolls for the dice being
-    rolled. As an example, in a standard Yahtzee game using five dice, the length of held_dice plus num_free_dice should
-    always be five
+    This function computes the expected value of the scores for the possible Yahtzee hands that result from holding some
+    dice and rolling the remaining free dice. The dice being held are specified by the tuple held_dice.  The number of
+    sides and the number of dice that are free to be rolled are specified by num_die_sides and  num_free_dice,
+    respectively. You should use gen_all_sequences to compute all possible rolls for the dice being rolled. As an
+    example, in a standard Yahtzee game using five dice, the length of held_dice plus num_free_dice should always be 5
 
     :param held_dice: dice that you will hold
     :param num_die_sides: number of sides on each die
@@ -105,7 +104,7 @@ def gen_all_holds(hand):
 
 def strategy(hand, num_die_sides):
     """
-    Compute the hold that maximizes the expected value when the discarded dice are rolled || Thus function takes a hand
+    Compute the hold that maximizes the expected value when the discarded dice are rolled || This function takes a hand
     and computes which dice to hold to maximize the expected value of the score of the possible hands that result from
     rolling the remaining free dice (with the specified number of sides). The function should return a tuple consisting
     of this maximal expected value and the choice of dice that should be held to achieve this value. If there are
