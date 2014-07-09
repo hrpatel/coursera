@@ -1,8 +1,8 @@
-__author__ = 'mamaray'
-
 """
 Student portion of Zombie Apocalypse mini-project
 """
+
+__author__ = 'mamaray'
 
 import random
 import poc_grid
