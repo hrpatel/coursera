@@ -44,45 +44,52 @@ class Zombie(poc_grid.Grid):
         """
         Set cells in obstacle grid to be empty, Reset zombie and human lists to be empty
         """
-        pass
+
+        # clear the cells
+        poc_grid.Grid.clear(self)
+
+        # clear the human and zombie lists
+        self._zombie_list = []
+        self._human_list = []
 
     def add_zombie(self, row, col):
         """
         Add zombie to the zombie list
         """
-        pass
+        self._zombie_list.append((row, col))
 
     def num_zombies(self):
         """
         Return number of zombies
         """
-        return 0
+        return len(self._zombie_list)
 
     def zombies(self):
         """
         Generator that yields the zombies in the order they were added.
         """
-        # replace with an actual generator
-        return
+        for zombie in self._zombie_list:
+            yield zombie
 
     def add_human(self, row, col):
         """
         Add human to the human list
         """
-        pass
+        self._human_list.append((row, col))
 
     def num_humans(self):
         """
         Return number of humans
         """
-        return 0
+        return len(self._human_list)
 
     def humans(self):
         """
         Generator that yields the humans in the order they were added.
         """
-        # replace with an actual generator
-        return
+
+        for human in self._human_list:
+            yield human
 
     def compute_distance_field(self, entity_type):
         """
