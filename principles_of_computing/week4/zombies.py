@@ -96,17 +96,12 @@ class Zombie(poc_grid.Grid):
         """
 
         # initialize visited cells based on FULL cells
-        visited = []
-        for dummy_row in range(self._grid_height):
-            tmp_row = []
-            for dummy_col in range(self._grid_width):
-                tmp_row.append(self._cells[dummy_row][dummy_col])
-            visited.append(tmp_row)
+        visited = [[self._cells[_row][_col] for _col in range(self._grid_width)]
+                   for _row in range(self._grid_height)]
 
         # generate a distance grid with the maximum value
-        dist_field = []
-        for dummy_row in range(self._grid_height):
-            dist_field.append([self._grid_height * self._grid_width for dummy_col in range(self._grid_width)])
+        max_dist = self._grid_height * self._grid_width
+        dist_field = [[max_dist for _col in range(self._grid_width)] for _row in range(self._grid_height)]
 
         # start a new queue
         boundry = poc_queue.Queue()
