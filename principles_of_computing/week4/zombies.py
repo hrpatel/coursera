@@ -101,17 +101,13 @@ class Zombie(poc_grid.Grid):
         for dummy_row in range(self._grid_height):
             tmp_row = []
             for dummy_col in range(self._grid_width):
-                if self._cells[dummy_row][dummy_col] == EMPTY:
-                    tmp_row.append(EMPTY)
-                else:
-                    tmp_row.append(FULL)
+                tmp_row.append(self._cells[dummy_row][dummy_col])
             visited.append(tmp_row)
 
         # generate a distance grid with the maximum value
         distance_field = []
         for dummy_row in range(self._grid_height):
-            distance_field.append([self._grid_height * self._grid_width
-                                   for dummy_col in range(self._grid_width)])
+            distance_field.append([self._grid_height * self._grid_width for dummy_col in range(self._grid_width)])
 
         # start a new queue
         boundry = poc_queue.Queue()
@@ -133,10 +129,7 @@ class Zombie(poc_grid.Grid):
             current_item = boundry.dequeue()
 
             # get a list of neighbour cells
-            if entity_type == ZOMBIE:
-                neighbours = self.four_neighbors(current_item[0], current_item[1])
-            else:
-                neighbours = self.four_neighbors(current_item[0], current_item[1])
+            neighbours = self.four_neighbors(current_item[0], current_item[1])
 
             for neighbour in neighbours:
                 # update visited
@@ -156,10 +149,46 @@ class Zombie(poc_grid.Grid):
         """
         Function that moves humans away from zombies, diagonal moves are allowed
         """
-        pass
+
+        move_list = []
+
+        # loop through each human
+        for human in self._human_list:
+            # get a list of neighbour cells
+            neighbours = self.eight_neighbors(human[0], human[1])
+
+            max_distance = zombie_distance[human[0]][human[1]]
+            for neighbour in neighbours:
+                if zombie_distance[neighbour[0]][neighbour[1]] >= max_distance:
+                    max_distance = zombie_distance[neighbour[0]][neighbour[1]]
+
+                    # move the human
+                    move_list = (human, neighbour)
+
+        for move in move_list:
+            self._human_list.remove(human)
+            self._human_list.append(move)
 
     def move_zombies(self, human_distance):
         """
         Function that moves zombies towards humans, no diagonal moves are allowed
         """
-        pass
+
+        move_list = []
+
+        # loop through each zombie
+        for zombie in self._zombie_list:
+            # get a list of neighbour cells
+            neighbours = self.four_neighbors(zombie[0], zombie[1])
+
+            min_distance = human_distance[zombie[0]][zombie[1]]
+            for neighbour in neighbours:
+                if human_distance[neighbour[0]][neighbour[1]] <= min_distance:
+                    min_distance = human_distance[neighbour[0]][neighbour[1]]
+
+                    # move the zombie
+                    move_list = (zombie, neighbour)
+
+        for move in move_list:
+            self._zombie_list.remove(zombie)
+            self._zombie_list.append(move)
