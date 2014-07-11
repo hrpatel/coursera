@@ -149,6 +149,9 @@ class Zombie(poc_grid.Grid):
         Function that moves humans away from zombies, diagonal moves are allowed
         """
 
+        self.move_body(zombie_distance, HUMAN)
+        return
+
         # make a copy of the list of humans
         list_copy = list(self._human_list)
 
@@ -181,6 +184,9 @@ class Zombie(poc_grid.Grid):
         Function that moves zombies towards humans, no diagonal moves are allowed
         """
 
+        self.move_body(human_distance, ZOMBIE)
+        return
+
         # make a copy of the list of zombies
         list_copy = list(self._zombie_list)
 
@@ -207,3 +213,45 @@ class Zombie(poc_grid.Grid):
 
         # save the modified list into the object
         self._zombie_list = list_copy
+
+    def move_body(self, dist_array, entity_type):
+
+        if entity_type == HUMAN:
+            entity_list = self._human_list
+            comparison = max
+            get_neighbours = self.eight_neighbors
+        else:
+            entity_list = self._zombie_list
+            comparison = min
+            get_neighbours = self.four_neighbors
+
+        # make a copy of the list of zombies
+        list_copy = list(entity_list)
+
+        # loop through each entity
+        for entity in entity_list:
+            # get a list of neighbour cells
+            neighbours = get_neighbours(entity[0], entity[1])
+
+            # initialize local variables
+            best_neighbour = None
+            changed = False
+            distance = dist_array[entity[0]][entity[1]]
+
+            # calculate the best move
+            for neighbour in neighbours:
+
+                if comparison(dist_array[neighbour[0]][neighbour[1]], distance) != distance:
+                    distance = dist_array[neighbour[0]][neighbour[1]]
+                    best_neighbour = neighbour
+                    changed = True
+
+            # we have a move to make
+            if changed:
+                list_copy[list_copy.index(entity)] = best_neighbour
+
+        # save the modified list into the object
+        if entity_type == HUMAN:
+            self._human_list = list_copy
+        else:
+            self._zombie_list = list_copy
