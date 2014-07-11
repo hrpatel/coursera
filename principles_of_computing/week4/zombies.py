@@ -161,6 +161,8 @@ class Zombie(poc_grid.Grid):
             best_neighbour = None
             changed = False
             max_distance = zombie_distance[human[0]][human[1]]
+
+            # calculate the best move
             for neighbour in neighbours:
                 if zombie_distance[neighbour[0]][neighbour[1]] >= max_distance:
                     max_distance = zombie_distance[neighbour[0]][neighbour[1]]
@@ -191,6 +193,8 @@ class Zombie(poc_grid.Grid):
             best_neighbour = None
             changed = False
             min_distance = human_distance[zombie[0]][zombie[1]]
+
+            # calculate the best move
             for neighbour in neighbours:
                 if human_distance[neighbour[0]][neighbour[1]] <= min_distance:
                     min_distance = human_distance[neighbour[0]][neighbour[1]]
