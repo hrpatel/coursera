@@ -87,7 +87,6 @@ class Zombie(poc_grid.Grid):
         """
         Generator that yields the humans in the order they were added.
         """
-
         for human in self._human_list:
             yield human
 
@@ -96,7 +95,62 @@ class Zombie(poc_grid.Grid):
         Function computes a 2D distance field. Distance at member of entity_queue is zero. Shortest paths avoid
         obstacles and use distance_type distances
         """
-        pass
+
+        # initialize visited cells based on FULL cells
+        visited = []
+        for dummy_row in range(self._grid_height):
+            tmp_row = []
+            for dummy_col in range(self._grid_width):
+                if self._cells[dummy_row][dummy_col] == EMPTY:
+                    tmp_row.append(EMPTY)
+                else:
+                    tmp_row.append(FULL)
+            visited.append(tmp_row)
+
+        # generate a distance grid with the maximum value
+        distance_field = []
+        for dummy_row in range(self._grid_height):
+            distance_field.append([self._grid_height * self._grid_width
+                                   for dummy_col in range(self._grid_width)])
+
+        # start a new queue
+        boundry = poc_queue.Queue()
+        if entity_type == ZOMBIE:
+            for zombie in self._zombie_list:
+                boundry.enqueue(zombie)
+        else:
+            for human in self._human_list:
+                boundry.enqueue(human)
+
+        # initialize the grids
+        for row, col in boundry:
+            visited[row][col] = FULL
+            distance_field[row][col] = 0
+
+        # repeat until we're out of boundary items
+        while len(boundry) > 0:
+            # get the next item in the boundary
+            current_item = boundry.dequeue()
+
+            # get a list of neighbour cells
+            if entity_type == ZOMBIE:
+                neighbours = self.four_neighbors(current_item[0], current_item[1])
+            else:
+                neighbours = self.four_neighbors(current_item[0], current_item[1])
+
+            for neighbour in neighbours:
+                # update visited
+                if visited[neighbour[0]][neighbour[1]] != FULL:
+                    visited[neighbour[0]][neighbour[1]] = FULL
+
+                    # add to boundry
+                    boundry.enqueue(neighbour)
+
+                    # update distance
+                    distance_field[neighbour[0]][neighbour[1]] = min(distance_field[neighbour[0]][neighbour[1]],
+                                                                     distance_field[current_item[0]][current_item[1]] + 1)
+
+        return distance_field
 
     def move_humans(self, zombie_distance):
         """
