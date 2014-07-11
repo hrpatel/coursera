@@ -148,73 +148,18 @@ class Zombie(poc_grid.Grid):
         """
         Function that moves humans away from zombies, diagonal moves are allowed
         """
-
         self.move_body(zombie_distance, HUMAN)
-        return
-
-        # make a copy of the list of humans
-        list_copy = list(self._human_list)
-
-        # loop through each human
-        for human in self._human_list:
-            # get a list of neighbour cells
-            neighbours = self.eight_neighbors(human[0], human[1])
-
-            # initialize local variables
-            best_neighbour = None
-            changed = False
-            max_distance = zombie_distance[human[0]][human[1]]
-
-            # calculate the best move
-            for neighbour in neighbours:
-                if zombie_distance[neighbour[0]][neighbour[1]] >= max_distance:
-                    max_distance = zombie_distance[neighbour[0]][neighbour[1]]
-                    best_neighbour = neighbour
-                    changed = True
-
-            # we have a move to make
-            if changed:
-                list_copy[list_copy.index(human)] = best_neighbour
-
-        # save the modified list into the object
-        self._human_list = list_copy
 
     def move_zombies(self, human_distance):
         """
         Function that moves zombies towards humans, no diagonal moves are allowed
         """
-
         self.move_body(human_distance, ZOMBIE)
-        return
-
-        # make a copy of the list of zombies
-        list_copy = list(self._zombie_list)
-
-        # loop through each zombie
-        for zombie in self._zombie_list:
-            # get a list of neighbour cells
-            neighbours = self.four_neighbors(zombie[0], zombie[1])
-
-            # initialize local variables
-            best_neighbour = None
-            changed = False
-            min_distance = human_distance[zombie[0]][zombie[1]]
-
-            # calculate the best move
-            for neighbour in neighbours:
-                if human_distance[neighbour[0]][neighbour[1]] <= min_distance:
-                    min_distance = human_distance[neighbour[0]][neighbour[1]]
-                    best_neighbour = neighbour
-                    changed = True
-
-            # we have a move to make
-            if changed:
-                list_copy[list_copy.index(zombie)] = best_neighbour
-
-        # save the modified list into the object
-        self._zombie_list = list_copy
 
     def move_body(self, dist_array, entity_type):
+        """
+        Function that moves humans/zombies
+        """
 
         if entity_type == HUMAN:
             entity_list = self._human_list
