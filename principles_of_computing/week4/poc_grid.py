@@ -23,7 +23,7 @@ class Grid:
 
     def __str__(self):
         """
-        Return multi-line string represenation for grid
+        Return multi-line string representation for grid
         """
         ans = ""
         for row in range(self._grid_height):
