@@ -4,6 +4,7 @@ Student portion of Zombie Apocalypse mini-project
 
 __author__ = 'mamaray'
 
+import random
 import poc_grid
 import poc_queue
 
@@ -30,7 +31,7 @@ class Zombie(poc_grid.Grid):
         if obstacle_list != None:
             for cell in obstacle_list:
                 self.set_full(cell[0], cell[1])
-        if zombie_list != None:
+        if zombie_list is not None:
             self._zombie_list = list(zombie_list)
         else:
             self._zombie_list = []
@@ -174,24 +175,23 @@ class Zombie(poc_grid.Grid):
             neighbours = get_neighbours(entity[0], entity[1])
 
             # initialize local variables
-            best_neighbour = None
+            best_neighbour = []
             changed = False
             distance = dist_array[entity[0]][entity[1]]
 
             # calculate the best move
             for neighbour in neighbours:
-
-                if comparison(dist_array[neighbour[0]][neighbour[1]], distance) != distance:
-                    distance = dist_array[neighbour[0]][neighbour[1]]
-                    best_neighbour = neighbour
-                    changed = True
+                if self.is_empty(*neighbour):
+                    if comparison(dist_array[neighbour[0]][neighbour[1]], distance) != distance:
+                        distance = dist_array[neighbour[0]][neighbour[1]]
+                        best_neighbour = [neighbour]
+                        changed = True
+                    elif dist_array[neighbour[0]][neighbour[1]] == distance:
+                        best_neighbour.append(neighbour)
 
             # we have a move to make
             if changed:
-                list_copy[list_copy.index(entity)] = best_neighbour
+                list_copy[list_copy.index(entity)] = random.choice(best_neighbour)
 
         # save the modified list into the object
-        if entity_type == HUMAN:
-            self._human_list = list_copy
-        else:
-            self._zombie_list = list_copy
+        entity_list[:] = list_copy
