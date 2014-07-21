@@ -75,7 +75,24 @@ def merge(list1, list2):
     :param list1:
     :param list2:
     """
-    return []
+
+    return_list = []
+    idx, idy = 0, 0
+
+    while idx < len(list1) and idy < len(list2):
+        if list1[idx] < list2[idy]:
+            return_list.append(list1[idx])
+            idx += 1
+        else:
+            return_list.append(list2[idy])
+            idy += 1
+
+    if idx >= len(list1):
+        return_list += list2[idy:]
+    elif idy >= len(list2):
+        return_list += list1[idx:]
+
+    return return_list
 
 
 def merge_sort(list1):
@@ -130,3 +147,15 @@ def run():
 
 # Uncomment when you are ready to try the game
 # run()
+
+import random
+for i in range(10):
+    list = [random.randrange(1, 40) for _ in range(0, 5)]
+    list2 = [random.randrange(2, 40) for _ in range(0, 5)]
+    list.sort()
+    list2.sort()
+
+    print list
+    print list2
+    print merge(list, list2)
+    print
