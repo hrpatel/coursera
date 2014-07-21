@@ -4,6 +4,7 @@ __author__ = 'hrpatel'
 Recursion according to the "Cat in the Hat"
 """
 
+COUNT = 0
 
 def get_next_cat(current_cat):
     """
@@ -21,6 +22,10 @@ def clean_up(helper_cat):
     """
     Recursive function that prints out story
     """
+
+    global COUNT
+    COUNT += 1
+
     if helper_cat == "Voom":
         print helper_cat + ": I got this. Mess is all cleaned up!"
     else:
@@ -31,4 +36,4 @@ def clean_up(helper_cat):
 # get those cats to work!!!!!
 clean_up("Cat in the Hat")
 
-
+print COUNT
