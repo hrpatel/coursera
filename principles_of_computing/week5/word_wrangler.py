@@ -131,8 +131,22 @@ def gen_all_strings(word):
     This function should be recursive.
     :param word:
     """
-    return []
 
+    if len(word) == 0:
+        return [""]
+    else:
+        first = word[0]
+        rest = word[1:]
+
+        rest_strings = gen_all_strings(rest)
+        all_strings = list(rest_strings)
+
+        for string in rest_strings:
+            for idx in range(len(string) + 1):
+                all_strings.append(string[:idx] + first + string[idx:])
+
+        #print first, rest, rest_strings, all_strings
+        return all_strings
 
 # Function to load words from a file
 
@@ -158,11 +172,3 @@ def run():
 
 # Uncomment when you are ready to try the game
 # run()
-
-import random
-for i in range(10):
-    list = [random.randrange(1, 40) for _ in range(0, 15)]
-
-    print list
-    print merge_sort(list)
-    print
