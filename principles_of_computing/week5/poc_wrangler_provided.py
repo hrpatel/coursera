@@ -1,5 +1,3 @@
-__author__ = 'hrpatel'
-
 """
 Provided code for Word Wrangler game
 """

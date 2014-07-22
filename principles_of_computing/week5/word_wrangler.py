@@ -2,8 +2,9 @@
 Student code for Word Wrangler game
 """
 
-__author__ = 'hrpatel'
+__author__ = 'mamaray'
 
+import math
 import poc_wrangler_provided as provided
 
 WORDFILE = "assets_scrabble_words3.txt"
@@ -104,7 +105,17 @@ def merge_sort(list1):
     This function should be recursive.
     :param list1:
     """
-    return []
+    if len(list1) == 0:
+        return []
+    elif len(list1) == 1:
+        return list1
+    else:
+        mid_point = int(math.floor(len(list1) / 2))
+
+        first_half = merge_sort(list1[:mid_point])
+        second_half = merge_sort(list1[mid_point:])
+
+        return merge(first_half, second_half)
 
 
 # Function to generate all strings for the word wrangler game
@@ -150,12 +161,8 @@ def run():
 
 import random
 for i in range(10):
-    list = [random.randrange(1, 40) for _ in range(0, 5)]
-    list2 = [random.randrange(2, 40) for _ in range(0, 5)]
-    list.sort()
-    list2.sort()
+    list = [random.randrange(1, 40) for _ in range(0, 15)]
 
     print list
-    print list2
-    print merge(list, list2)
+    print merge_sort(list)
     print
