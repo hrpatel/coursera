@@ -33,13 +33,19 @@ class NavTree(poc_tree.Tree):
         """
         Return the root of the tree
         """
-        pass
+        if self._parent is None:
+            return self
+        else:
+            return self._parent.get_root()
 
     def depth(self):
         """
         Return the depth of the self with respect to the root of the tree
         """
-        pass
+        if self._parent is None:
+            return 0
+        else:
+            return self._parent.depth() + 1
 
 
 def run_examples():
