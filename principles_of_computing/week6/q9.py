@@ -29,11 +29,11 @@ class Tree:
         """
 
         ans = "["
-        ans += str(self._value)
 
         for child in self._children:
-            ans += ", "
             ans += str(child)
+            ans += ", "
+        ans += str(self._value)
         return ans + "]"
 
     def get_value(self):
