@@ -87,20 +87,23 @@ class TTTBoard:
         If game is a draw, return DRAW.
         If game is in progress, return None.
         """
+        board = self._board
+        dim = self._dim
+        dimrng = range(dim)
         lines = []
 
         # rows
-        lines.extend(self._board)
+        lines.extend(board)
 
         # cols
-        cols = [[self._board[rowidx][colidx] for rowidx in range(self._dim)]
-                for colidx in range(self._dim)]
+        cols = [[board[rowidx][colidx] for rowidx in dimrng]
+                for colidx in dimrng]
         lines.extend(cols)
 
         # diags
-        diag1 = [self._board[idx][idx] for idx in range(self._dim)]
-        diag2 = [self._board[idx][self._dim - idx - 1]
-                 for idx in range(self._dim)]
+        diag1 = [board[idx][idx] for idx in dimrng]
+        diag2 = [board[idx][dim - idx - 1]
+                 for idx in dimrng]
         lines.append(diag1)
         lines.append(diag2)
 
@@ -157,6 +160,10 @@ def play_game(mc_move_function, ntrials, reverse=False):
         winner = board.check_win()
         curplayer = switch_player(curplayer)
 
+        # Display board
+        print board
+        print
+
     # Print winner
     if winner == PLAYERX:
         print "X wins!"
@@ -166,4 +173,3 @@ def play_game(mc_move_function, ntrials, reverse=False):
         print "Tie!"
     else:
         print "Error: unknown winner"
-    print board
