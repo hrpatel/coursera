@@ -4,7 +4,7 @@ Mini-max Tic-Tac-Toe Player
 
 __author__ = 'ray'
 
-import poc_ttt_provided as provided
+import ttt_provided as provided
 
 # SCORING VALUES - DO NOT MODIFY
 SCORES = {provided.PLAYERX: 1,
