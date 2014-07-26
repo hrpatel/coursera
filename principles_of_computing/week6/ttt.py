@@ -28,38 +28,22 @@ def mm_move(board, player):
         return SCORES[winner], (-1, -1)
     else:
         point = -100
-        discard = None
-        cumulative = []
+        cumulative = {}
 
         moves = board.get_empty_squares()
+        random.shuffle(moves)
         for move in moves:
             trial_board = board.clone()
             trial_board.move(move[0], move[1], player)
             point, discard = (mm_move(trial_board, provided.switch_player(player)))
-            cumulative.append((point, move))
+            cumulative[point] = move
 
-            print "player: ", provided.STRMAP[player], " move: ", move, cumulative
-        print
-        return point, move
-        # if player == provided.PLAYERX:
-        #     maxm = -10
-        #     move = None
-        #     for score in scores:
-        #         if score[0] > maxm:
-        #             maxm = score[0]
-        #             move = score[1]
-        #     return maxm, move
-        # elif player == provided.PLAYERO:
-        #     maxm = 10
-        #     move = None
-        #     for score in scores:
-        #         if score[0] < maxm:
-        #             maxm = score[0]
-        #             move = score[1]
-        #     return maxm, move
-
-            # print scores
-            #return scores[0][0], scores[0][1]
+        if player == provided.PLAYERX:
+            max_move = max(cumulative.keys())
+            return max_move, cumulative[max_move]
+        else:
+            min_move = min(cumulative.keys())
+            return min_move, cumulative[min_move]
 
 
 def move_wrapper(board, player, trials):
@@ -78,7 +62,3 @@ def move_wrapper(board, player, trials):
 # testing to save time.
 
 # provided.play_game(move_wrapper, 1, False)
-print mm_move(provided.TTTBoard(3, False, [[provided.PLAYERX, provided.PLAYERO, provided.PLAYERO],
-                                           [provided.EMPTY, provided.PLAYERX, provided.PLAYERX],
-                                           [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]]),
-              provided.PLAYERX)
