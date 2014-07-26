@@ -35,8 +35,13 @@ def mm_move(board, player):
         for move in moves:
             trial_board = board.clone()
             trial_board.move(move[0], move[1], player)
-            point, discard = (mm_move(trial_board, provided.switch_player(player)))
+            point = (mm_move(trial_board, provided.switch_player(player)))[0]
             cumulative[point] = move
+
+            if player == provided.PLAYERX and point == 1:
+                break
+            elif player == provided.PLAYERO and point == -1:
+                break
 
         if player == provided.PLAYERX:
             max_move = max(cumulative.keys())
