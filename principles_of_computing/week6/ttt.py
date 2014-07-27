@@ -21,34 +21,39 @@ def mm_move(board, player):
     of the given board and the second element is the desired move as a
     tuple, (row, col).
     """
-    assert isinstance(board, provided.TTTBoard)
 
     winner = board.check_win()
     if winner is not None:
+        # base case
         return SCORES[winner], (-1, -1)
     else:
-        point = -100
+        # initialize local variables
         cumulative = {}
 
+        # get the list of next possible moves
         moves = board.get_empty_squares()
         random.shuffle(moves)
+
+        # calculate points for each move
         for move in moves:
+            # copy the board before sending it off
             trial_board = board.clone()
             trial_board.move(move[0], move[1], player)
+
+            # make a dictionary of points/moves
             point = (mm_move(trial_board, provided.switch_player(player)))[0]
             cumulative[point] = move
 
-            if player == provided.PLAYERX and point == 1:
-                break
-            elif player == provided.PLAYERO and point == -1:
+            # we've maximized the score, so quit the loop
+            if point == SCORES[player]:
                 break
 
-        if player == provided.PLAYERX:
-            max_move = max(cumulative.keys())
-            return max_move, cumulative[max_move]
-        else:
-            min_move = min(cumulative.keys())
-            return min_move, cumulative[min_move]
+        # figure out the maximum score for 'player'
+        points = {}
+        for point in cumulative:
+            points[SCORES[player] * point] = cumulative[point]
+
+        return max(points), points[max(points)]
 
 
 def move_wrapper(board, player, trials):
@@ -66,4 +71,4 @@ def move_wrapper(board, player, trials):
 # Both should be commented out when you submit for
 # testing to save time.
 
-# provided.play_game(move_wrapper, 1, False)
+provided.play_game(move_wrapper, 1, False)
