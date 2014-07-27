@@ -28,7 +28,7 @@ def mm_move(board, player):
         return SCORES[winner], (-1, -1)
     else:
         # initialize local variables
-        all_moves = {}
+        next_moves = {}
 
         # get the list of next possible moves
         moves = board.get_empty_squares()
@@ -41,19 +41,18 @@ def mm_move(board, player):
             trial_board.move(row, col, player)
 
             # make a dictionary of points/moves
-            next_player = provided.switch_player(player)
-            score = (mm_move(trial_board, next_player))[0]
+            score = (mm_move( trial_board, provided.switch_player(player) ))[0]
 
             # multiple by SCORES so we only need to check max(...)
-            all_moves[score * SCORES[player]] = row, col
+            next_moves[score * SCORES[player]] = row, col
 
             # we've maximized the score (best move at this point), so quit the loop
             if score == SCORES[player]:
                 break
 
         # return the best scoring move
-        best_move = max(all_moves)
-        return best_move * SCORES[player], all_moves[best_move]
+        best_move = max(next_moves)
+        return best_move * SCORES[player], next_moves[best_move]
 
 
 def move_wrapper(board, player, trials):
