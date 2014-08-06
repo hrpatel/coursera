@@ -208,4 +208,13 @@ class Puzzle:
         return ""
 
 # Start interactive simulation
-poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
+
+# q9
+# "ruldrdlurdluurddlur"
+puz3x2 = [[1, 2], [0, 4], [3, 5]]
+#poc_fifteen_gui.FifteenGUI(Puzzle(3, 2, puz3x2))
+
+# q10
+# "urdlurrdluldrruldl"
+puz2x3 = [[3, 4, 1], [0, 2, 5]]
+poc_fifteen_gui.FifteenGUI(Puzzle(2, 3, puz2x3))
