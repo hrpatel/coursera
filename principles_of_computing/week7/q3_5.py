@@ -6,6 +6,7 @@ Use the arrows key to swap this tile with its neighbors
 
 import poc_fifteen_gui
 
+
 class Puzzle:
     """
     Class representation for the Fifteen puzzle
@@ -29,7 +30,7 @@ class Puzzle:
 
     def __str__(self):
         """
-        Generate string representaion for puzzle
+        Generate string representation for puzzle
         Returns a string
         """
         ans = ""
@@ -38,7 +39,7 @@ class Puzzle:
             ans += "\n"
         return ans
 
-    #####################################
+    # ####################################
     # GUI methods
 
     def get_height(self):
@@ -207,4 +208,4 @@ class Puzzle:
         return ""
 
 # Start interactive simulation
-poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
+poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
