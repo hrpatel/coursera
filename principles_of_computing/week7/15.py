@@ -132,8 +132,26 @@ class Puzzle:
         at the given position in the bottom rows of the puzzle (target_row > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+
+        # initialize local variables
+        solved_value = -1
+
+        # check if the target position is a 0
+        if self.get_number(target_row, target_col) != 0:
+            return False
+
+        # check the rest of the row
+        for col in xrange(target_col, self.get_width()):
+            solved_value = (col + self._width * target_row)
+            if self.get_number(target_row, col) != solved_value:
+                return False
+
+        # check the rest of the rows
+        for row in xrange(target_row + 1, self._height):
+            for col in xrange(self._width):
+                solved_value = (col + self._width * row)
+                if self.get_number(row, col) != solved_value:
+                    return False
 
     def solve_interior_tile(self, target_row, target_col):
         """
