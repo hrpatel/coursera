@@ -209,3 +209,12 @@ class Puzzle:
 
 # Start interactive simulation
 poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
+
+# q3
+# 3
+
+# q4
+# rdlu
+
+# q5
+# drul | "rdlurdlu", "druldruldruldrul"
