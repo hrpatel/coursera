@@ -177,8 +177,30 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+
+        # check if the target position is a 0
+        if self.get_number(0, target_col) != 0:
+            return False
+
+        # check the rest of the 1st row
+        for col in xrange(target_col + 1, self.get_width()):
+            if self.get_number(0, col) != col:
+                return False
+
+        # check the 2nd row
+        for col in xrange(target_col, self.get_width()):
+            expected_val = (col + self._width * 1)
+            if self.get_number(1, col) != expected_val:
+                return False
+
+        # check the rest of the grid
+        for row in xrange(2, self._height):
+            for col in xrange(self._width):
+                expected_val = (col + self._width * row)
+                if self.get_number(row, col) != expected_val:
+                    return False
+
+        return True
 
     def row1_invariant(self, target_col):
         """
@@ -186,8 +208,25 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+
+        # check if the target position is a 0
+        if self.get_number(1, target_col) != 0:
+            return False
+
+        # check the rest of the row
+        for col in xrange(target_col + 1, self.get_width()):
+            expected_val = (col + self._width * 1)
+            if self.get_number(1, col) != expected_val:
+                return False
+
+        # check the rest of the grid
+        for row in xrange(2, self._height):
+            for col in xrange(self._width):
+                expected_val = (col + self._width * row)
+                if self.get_number(row, col) != expected_val:
+                    return False
+
+        return True
 
     def solve_row0_tile(self, target_col):
         """
