@@ -383,8 +383,22 @@ class Puzzle:
         Solve the upper left 2x2 part of the puzzle
         Updates the puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+
+        # local variables
+        move = ""
+
+        zero_pos = self.current_position(0, 0)
+        print "zero", zero_pos
+
+        # move 0 to corner
+        move += "u" * zero_pos[1]
+        move += "l" * zero_pos[0]
+
+        move += "drul"
+
+        print "move", move
+        self.update_puzzle(move)
+        return move
 
     def solve_puzzle(self):
         """
