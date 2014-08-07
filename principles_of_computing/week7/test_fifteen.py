@@ -24,6 +24,7 @@ print obj
 obj.solve_interior_tile(3, 1)
 print obj
 print
+print
 
 # Test solve_interior_tile(...)
 obj = puz.Puzzle(4, 4, [[6, 13, 1, 7],
@@ -33,6 +34,7 @@ obj = puz.Puzzle(4, 4, [[6, 13, 1, 7],
 print obj
 obj.solve_interior_tile(3, 1)
 print obj
+print
 print
 
 # Test solve_interior_tile(...)
@@ -44,6 +46,7 @@ print obj
 obj.solve_interior_tile(3, 3)
 print obj
 print
+print
 
 # Test solve_interior_tile(...)
 obj = puz.Puzzle(3, 3, [[8, 7, 6],
@@ -52,8 +55,9 @@ obj = puz.Puzzle(3, 3, [[8, 7, 6],
 print obj
 obj.solve_interior_tile(2, 2)
 print obj
-#obj.solve_interior_tile(2, 1)
-#print obj
+obj.solve_interior_tile(2, 1)
+print obj
+print
 print
 
 
@@ -64,3 +68,4 @@ obj = puz.Puzzle(3, 3, [[3, 2, 1],
 print obj
 obj.solve_interior_tile(2, 1)
 print obj
+print
