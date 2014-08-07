@@ -163,18 +163,18 @@ class Puzzle:
 
         target_cur_pos = self.current_position(target_row, target_col)
         zero_pos = self.current_position(0, 0)
-        print 'target', target_cur_pos
-        print "zero", zero_pos
+        #print 'target', target_cur_pos
+        #print "zero", zero_pos
 
         # move 0 to the same row as the target
         move += "u" * (zero_pos[0] - target_cur_pos[0])
 
         # calculate any left or right moves
         left_right = target_cur_pos[1] - zero_pos[1]
-        print "left/right", left_right
+        #print "left/right", left_right
         if left_right < 0:
             # move 0 left
-            print "move target right", left_right * -1
+            #print "move target right", left_right * -1
             move += "l" * (left_right * -1)
             # continue moving target right
             move += "drrul" * ((-1 * left_right) - 1)
@@ -182,7 +182,7 @@ class Puzzle:
             move += "druld" * (zero_pos[0] - target_cur_pos[0])
         elif left_right > 0:
             # move 0 right
-            print "move target left", left_right
+            #print "move target left", left_right
             move += "r" * left_right
             # continue moving target left
             move += "dllur" * (left_right - 1)
@@ -194,13 +194,13 @@ class Puzzle:
             move += "ld"
         elif left_right is 0:
             # target is below zero now
-            print "move target down"
+            #print "move target down"
             # continue moving target down
             move += "lddru" * (zero_pos[0] - target_cur_pos[0] - 1)
             # move 0 left, down beside target
             move += "ld"
 
-        print "move", move
+        #print "move", move
         self.update_puzzle(move)
         return move
 
