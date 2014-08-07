@@ -372,8 +372,76 @@ class Puzzle:
         Solve the tile in row one at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+
+        # initialize local variables
+        move = ""
+
+        target_cur_pos = self.current_position(1, target_col)
+        zero_pos = self.current_position(0, 0)
+        print 'target', target_cur_pos
+        print "zero", zero_pos
+
+        # target is above 0
+        if (target_cur_pos[0] == zero_pos[0] - 1) and \
+                (target_cur_pos[1] == zero_pos[1]):
+            move += "u"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target top/left of 0
+        if (target_cur_pos[0] == zero_pos[0] - 1) and \
+                (target_cur_pos[1] == zero_pos[1] - 1):
+            move += "uldru"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target left of 0
+        if (target_cur_pos[0] == zero_pos[0]) and \
+                (target_cur_pos[1] == zero_pos[1] - 1):
+            move += "lur"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target same row
+        if (target_cur_pos[0] == zero_pos[0]):
+
+            left_right = zero_pos[1] - target_cur_pos[1]
+            move += "l" * left_right
+
+            # continue moving target right
+            move += "urrdl" * (left_right - 1)
+            # finish off the move
+            move += "ur"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target 1 row above row
+        if (target_cur_pos[0] == zero_pos[0] - 1):
+            # we know its only 1 row up
+            move += "u"
+
+            left_right = zero_pos[1] - target_cur_pos[1]
+            move += "l" * left_right
+
+            # continue moving target right
+            move += "drrul" * (left_right - 1)
+            # finish off move
+            move += "dru"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+
+
 
     ###########################################################
     # Phase 3 methods
