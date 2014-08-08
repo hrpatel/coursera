@@ -170,15 +170,19 @@ class Puzzle:
         move += "u" * (zero_pos[0] - target_cur_pos[0])
 
         # calculate number of left or right moves
+        up_down = zero_pos[0] - target_cur_pos[0]
         left_right = target_cur_pos[1] - zero_pos[1]
 
         # target is left of 0
         if left_right < 0:
-            move += "l" * (left_right * -1)
+            # absolute value since its negative
+            left_right *= -1
+
+            move += "l" * left_right
             # continue moving target right
-            move += "drrul" * ((-1 * left_right) - 1)
+            move += "drrul" * (left_right - 1)
             # move 0 around target moving it down
-            move += "druld" * (zero_pos[0] - target_cur_pos[0])
+            move += "druld" * up_down
 
         # target is  right of 0
         elif left_right > 0:
@@ -188,14 +192,14 @@ class Puzzle:
             # move 0 down, left, up over target
             move += "dlu"
             # continue moving target down
-            move += "lddru" * (zero_pos[0] - target_cur_pos[0] - 1)
+            move += "lddru" * (up_down - 1)
             # move 0 left, down beside target
             move += "ld"
 
         # target is above 0
         elif left_right is 0:
             # continue moving target down
-            move += "lddru" * (zero_pos[0] - target_cur_pos[0] - 1)
+            move += "lddru" * (up_down - 1)
             # move 0 left, down beside target
             move += "ld"
 
