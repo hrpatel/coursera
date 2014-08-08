@@ -217,17 +217,6 @@ class Puzzle:
         print 'target', target_cur_pos
         print "zero", zero_pos
 
-        # special case
-        if (target_cur_pos[0] == zero_pos[0] - 1) and \
-                (target_cur_pos[1] == zero_pos[1] + 1):
-            move += "u"
-            move += "ruldrdlurdluurddlu"
-            move += "r" * (self._width - 1)
-
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
         # target is in the same column as 0
         if target_cur_pos[1] == zero_pos[1]:
             up_down = zero_pos[0] - target_cur_pos[0]
@@ -243,20 +232,12 @@ class Puzzle:
                 move += "rdl"
                 move += "ruldrdlurdluurddlu"
 
-            move += "r" * (self._width - 1)
-
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
-        # target is at least 2 rows above
-        if target_cur_pos[0] <= zero_pos[0] - 2:
+        # target is at least 2 rows above, at least 1 col over
+        elif target_cur_pos[0] <= zero_pos[0] - 2:
             # go up and right
             up_down = zero_pos[0] - target_cur_pos[0]
-            # move up all the way
-            move += "u" * up_down
-
             left_right = target_cur_pos[1] - zero_pos[1]
+            move += "u" * up_down
             move += "r" * left_right
 
             # continue moving target left
@@ -270,33 +251,31 @@ class Puzzle:
             # move into position for 3x2 move
             move += "rdl"
             move += "ruldrdlurdluurddlu"
-            move += "r" * (self._width - 1)
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
-        # target is 1 row above more than 2 col over
-        if target_cur_pos[0] == zero_pos[0] - 1:
-            # go up and right
+        # target is 1 row above more than 1 col over
+        elif target_cur_pos[0] == zero_pos[0] - 1:
+            # go up and right (should be 1 up)
             up_down = zero_pos[0] - target_cur_pos[0]
-            # move up all the way
+            left_right = target_cur_pos[1] - zero_pos[1]
             move += "u" * up_down
 
-            left_right = target_cur_pos[1] - zero_pos[1]
-            move += "r" * left_right
+            if left_right > 1:
+                move += "r" * left_right
 
-            # continue moving target left
-            move += "ulldr" * (left_right - 1)
+                # continue moving target left
+                move += "ulldr" * (left_right - 1)
 
-            # move into position for 3x2 move
-            move += "l"
+                # move into position for 3x2 move
+                move += "l"
+
             move += "ruldrdlurdluurddlu"
-            move += "r" * (self._width - 1)
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
+        # 0/target is in the correct position
+        move += "r" * (self._width - 1)
+
+        print "move", move
+        self.update_puzzle(move)
+        return move
 
     #############################################################
     # Phase two methods
