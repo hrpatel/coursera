@@ -219,8 +219,8 @@ class Puzzle:
         print "zero", zero_pos
 
         # special case
-        if (target_cur_pos[0] == zero_pos[0] -1) and \
-                (target_cur_pos[1] == zero_pos[1]  + 1):
+        if (target_cur_pos[0] == zero_pos[0] - 1) and \
+                (target_cur_pos[1] == zero_pos[1] + 1):
             move += "u"
             move += "ruldrdlurdluurddlu"
             move += "r" * (self._width - 1)
@@ -451,30 +451,18 @@ class Puzzle:
                 (target_cur_pos[1] == zero_pos[1]):
             move += "u"
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
         # target top/left of 0
-        if (target_cur_pos[0] == zero_pos[0] - 1) and \
+        elif (target_cur_pos[0] == zero_pos[0] - 1) and \
                 (target_cur_pos[1] == zero_pos[1] - 1):
             move += "uldru"
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
         # target left of 0
-        if (target_cur_pos[0] == zero_pos[0]) and \
+        elif (target_cur_pos[0] == zero_pos[0]) and \
                 (target_cur_pos[1] == zero_pos[1] - 1):
             move += "lur"
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
         # target same row
-        if (target_cur_pos[0] == zero_pos[0]):
+        elif (target_cur_pos[0] == zero_pos[0]):
 
             left_right = zero_pos[1] - target_cur_pos[1]
             move += "l" * left_right
@@ -484,12 +472,8 @@ class Puzzle:
             # finish off the move
             move += "ur"
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
         # target 1 row above row
-        if (target_cur_pos[0] == zero_pos[0] - 1):
+        elif (target_cur_pos[0] == zero_pos[0] - 1):
             # we know its only 1 row up
             move += "u"
 
@@ -501,11 +485,9 @@ class Puzzle:
             # finish off move
             move += "dru"
 
-            print "move", move
-            self.update_puzzle(move)
-            return move
-
-
+        print "move", move
+        self.update_puzzle(move)
+        return move
 
 
     ###########################################################
