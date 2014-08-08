@@ -30,7 +30,7 @@ class Puzzle:
 
     def __str__(self):
         """
-        Generate string representaion for puzzle
+        Generate string representation for puzzle
         Returns a string
         """
         ans = ""
@@ -82,8 +82,8 @@ class Puzzle:
 
     def current_position(self, solved_row, solved_col):
         """
-        Locate the current position of the tile that will be at
-        position (solved_row, solved_col) when the puzzle is solved
+        Locate the current position of the tile that will be at position (solved_row, solved_col) when the puzzle
+        is solved
         Returns a tuple of two integers
         """
         solved_value = (solved_col + self._width * solved_row)
@@ -128,8 +128,8 @@ class Puzzle:
 
     def lower_row_invariant(self, target_row, target_col):
         """
-        Check whether the puzzle satisfies the specified invariant
-        at the given position in the bottom rows of the puzzle (target_row > 1)
+        Check whether the puzzle satisfies the specified invariant at the given position in the bottom rows of
+        the puzzle (target_row > 1)
         Returns a boolean
         """
 
@@ -154,7 +154,7 @@ class Puzzle:
 
     def solve_interior_tile(self, target_row, target_col):
         """
-        Place correct tile at target position
+        Place correct tile at target position.
         Updates puzzle and returns a move string
         """
 
@@ -163,26 +163,25 @@ class Puzzle:
 
         target_cur_pos = self.current_position(target_row, target_col)
         zero_pos = self.current_position(0, 0)
-        #print 'target', target_cur_pos
-        #print "zero", zero_pos
+        print 'target', target_cur_pos
+        print "zero", zero_pos
 
         # move 0 to the same row as the target
         move += "u" * (zero_pos[0] - target_cur_pos[0])
 
-        # calculate any left or right moves
+        # calculate number of left or right moves
         left_right = target_cur_pos[1] - zero_pos[1]
-        #print "left/right", left_right
+
+        # target is left of 0
         if left_right < 0:
-            # move 0 left
-            #print "move target right", left_right * -1
             move += "l" * (left_right * -1)
             # continue moving target right
             move += "drrul" * ((-1 * left_right) - 1)
-            # move 0 around ttarget moving it down
+            # move 0 around target moving it down
             move += "druld" * (zero_pos[0] - target_cur_pos[0])
+
+        # target is  right of 0
         elif left_right > 0:
-            # move 0 right
-            #print "move target left", left_right
             move += "r" * left_right
             # continue moving target left
             move += "dllur" * (left_right - 1)
@@ -192,9 +191,9 @@ class Puzzle:
             move += "lddru" * (zero_pos[0] - target_cur_pos[0] - 1)
             # move 0 left, down beside target
             move += "ld"
+
+        # target is above 0
         elif left_right is 0:
-            # target is below zero now
-            #print "move target down"
             # continue moving target down
             move += "lddru" * (zero_pos[0] - target_cur_pos[0] - 1)
             # move 0 left, down beside target
@@ -304,8 +303,7 @@ class Puzzle:
 
     def row0_invariant(self, target_col):
         """
-        Check whether the puzzle satisfies the row zero invariant
-        at the given column (col > 1)
+        Check whether the puzzle satisfies the row zero invariant at the given column (col > 1)
         Returns a boolean
         """
 
@@ -335,8 +333,7 @@ class Puzzle:
 
     def row1_invariant(self, target_col):
         """
-        Check whether the puzzle satisfies the row one invariant
-        at the given column (col > 1)
+        Check whether the puzzle satisfies the row one invariant at the given column (col > 1)
         Returns a boolean
         """
 
