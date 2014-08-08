@@ -255,9 +255,8 @@ class Puzzle:
         # target is 1 row above more than 1 col over
         elif target_cur_pos[0] == zero_pos[0] - 1:
             # go up and right (should be 1 up)
-            up_down = zero_pos[0] - target_cur_pos[0]
             left_right = target_cur_pos[1] - zero_pos[1]
-            move += "u" * up_down
+            move += "u"
 
             if left_right > 1:
                 move += "r" * left_right
@@ -413,37 +412,30 @@ class Puzzle:
                 (target_cur_pos[1] == zero_pos[1]):
             move += "u"
 
-        # target top/left of 0
-        elif (target_cur_pos[0] == zero_pos[0] - 1) and \
-                (target_cur_pos[1] == zero_pos[1] - 1):
-            move += "uldru"
-
-        # target left of 0
-        elif (target_cur_pos[0] == zero_pos[0]) and \
-                (target_cur_pos[1] == zero_pos[1] - 1):
-            move += "lur"
-
-        # target same row
+        # target on the same row (to the left)
         elif (target_cur_pos[0] == zero_pos[0]):
-
+            # figure out how far left
             left_right = zero_pos[1] - target_cur_pos[1]
             move += "l" * left_right
 
             # continue moving target right
             move += "urrdl" * (left_right - 1)
+
             # finish off the move
             move += "ur"
 
-        # target 1 row above row
+        # target 1 row above (row 0), at least 1 col left
         elif (target_cur_pos[0] == zero_pos[0] - 1):
             # we know its only 1 row up
             move += "u"
 
+            # figure out how far left
             left_right = zero_pos[1] - target_cur_pos[1]
             move += "l" * left_right
 
             # continue moving target right
             move += "drrul" * (left_right - 1)
+
             # finish off move
             move += "dru"
 
@@ -451,10 +443,8 @@ class Puzzle:
         self.update_puzzle(move)
         return move
 
-
     ###########################################################
     # Phase 3 methods
-
     def solve_2x2(self):
         """
         Solve the upper left 2x2 part of the puzzle
