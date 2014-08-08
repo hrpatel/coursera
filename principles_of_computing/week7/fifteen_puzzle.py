@@ -364,8 +364,73 @@ class Puzzle:
         Solve the tile in row zero at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+
+        # initialize local variables
+        move = ""
+
+        target_cur_pos = self.current_position(0, target_col)
+        zero_pos = self.current_position(0, 0)
+        print 'target', target_cur_pos
+        print "zero", zero_pos
+
+        # target is beside/left of 0
+        if (target_cur_pos[0] == zero_pos[0]) and \
+                (target_cur_pos[1] == zero_pos[1] - 1):
+            move += "ld"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target is 1 row down and more than 2 col away
+        if (target_cur_pos[0] == zero_pos[0] + 1) and \
+                (target_cur_pos[1] <= zero_pos[1] - 2):
+            move += "ld"
+
+            left_right = zero_pos[1] - target_cur_pos[1]
+            move += "l" * (left_right - 1)
+
+            if left_right > 2:
+                # continue moving target left
+                move += "urrdl" * (left_right - 2)
+
+            move += "urdlurrdluldrruld"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target is 1 row down, 1 col away
+        if (target_cur_pos[0] == zero_pos[0] + 1) and \
+                (target_cur_pos[1] == zero_pos[1] - 1):
+            move += "lld"
+            move += "urdlurrdluldrruld"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
+        # target is 1 row down and more than 2 col away
+        if (target_cur_pos[0] == zero_pos[0]) and \
+                (target_cur_pos[1] <= zero_pos[1] - 2):
+            #move += "ld"
+
+            left_right = zero_pos[1] - target_cur_pos[1]
+            move += "l" * (left_right - 1)
+
+            # put target on second row, 2nd col
+            move += "dlurdl"
+
+            if left_right > 2:
+                # continue moving target left
+                move += "urrdl" * (left_right - 2)
+
+            move += "urdlurrdluldrruld"
+
+            print "move", move
+            self.update_puzzle(move)
+            return move
+
 
     def solve_row1_tile(self, target_col):
         """
