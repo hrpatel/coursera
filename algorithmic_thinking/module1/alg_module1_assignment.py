@@ -1,14 +1,12 @@
 """
 This is code to complete the assignment portion of module 1
 """
-__author__ = 'ray'
+__author__ = 'mamaray'
 
 import math
 import alg_module1 as funcs
 import matplotlib.pyplot as plt
 
-
-CITATION_DATA_FILE = "alg_phys-cite.txt"
 
 def read_citation_data(filename):
     """
@@ -42,7 +40,7 @@ def read_citation_data(filename):
 
 
 # get the data into a dict
-data = read_citation_data(CITATION_DATA_FILE)
+data = read_citation_data("alg_phys-cite.txt")
 
 # number of entries in the data
 num_entries = len(data.keys())
