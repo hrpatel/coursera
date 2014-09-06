@@ -37,10 +37,10 @@ def make_complete_graph(num_nodes):
     """
 
     graph = {}
+    tmp = range(num_nodes)
     for ctr in xrange(num_nodes):
-        tmp = range(num_nodes)
-        tmp.remove(ctr)
         graph[ctr] = set(tmp)
+        graph[ctr].remove(ctr)
 
     return graph
 
@@ -49,21 +49,18 @@ def compute_in_degrees(digraph):
     """
     Compute the in degrees of each node
 
-    :rtype : dictionary of each object with its in degree
+    :rtype : dict
     :param digraph: input graph
     """
-    in_degrees = {}
     # initialize all in-degrees to 0
-    for node in digraph.keys():
-        in_degrees[node] = 0
+    in_degrees = {}.fromkeys(digraph.keys(), 0)
 
     # loop through each node
     for node in digraph.keys():
         edges = digraph[node]
-
         # increment the in-degree for each edge
         for edge in edges:
-            in_degrees[edge] +=1
+            in_degrees[edge] += 1
 
     return in_degrees
 
@@ -72,16 +69,14 @@ def in_degree_distribution(digraph):
     """
     calculate the in-degree distribution of a given graph
 
-    :rtype : dictionary object with
+    :rtype : dict
     :param digraph: input graph
     """
     # local variables
     in_degree_graph = compute_in_degrees(digraph)
-    in_degree_dist = {}
 
-    # initialize the return variable
-    for degrees in in_degree_graph.values():
-        in_degree_dist[degrees] = 0
+    # initialize the dict
+    in_degree_dist = {}.fromkeys(in_degree_graph.values(), 0)
 
     # for each "in-degree" increment the count
     for degrees in in_degree_graph.values():
