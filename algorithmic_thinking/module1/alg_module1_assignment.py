@@ -60,7 +60,7 @@ def draw_plot(data, point_style, line_label):
 
 
     plt.plot(norm_dist.keys(), norm_dist.values(), point_style, label=line_label)
-    plt.title("In-degree distribution of citations (" + SCALE + " scale)")
+    plt.title("In-degree distribution (" + SCALE + " scale)")
     plt.ylabel("% of papers (log base " + str(LOG_BASE) + ")")
     plt.xlabel("# of citations (log base " + str(LOG_BASE) + ")")
     plt.grid(True)
@@ -114,4 +114,22 @@ def app_q3():
     print "average in-degree of citations: " + str(float(total_in_degrees)/num_nodes)
 
 
-app_q2_2()
+def app_q4():
+    # get the data into a dict
+    data1 = funcs.dpa_graph(27770,13)
+
+    draw_plot(data1, "gs", "dpa_graph(27770,13)")
+    plt.show()
+
+
+def app_q5():
+    # get the data into a dict
+    data1 = funcs.dpa_graph(27770,13)
+    data = read_citation_data("alg_phys-cite.txt")
+
+    draw_plot(data, "r+", "citations")
+    draw_plot(data1, "gs", "dpa_graph(27770,13)")
+    plt.show()
+
+
+app_q5()
