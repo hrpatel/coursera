@@ -7,6 +7,8 @@ import math
 import alg_module1 as funcs
 import matplotlib.pyplot as plt
 
+LOG_BASE = 10
+SCALE = "LINEAR"
 
 def read_citation_data(filename):
     """
@@ -39,27 +41,47 @@ def read_citation_data(filename):
     return cita_data
 
 
+def draw_plot(data, point_style, line_label):
+    # get the NORMALIZED distribution of in-degrees
+    dist = funcs.normalize_in_degree_dist(data)
+
+    # remove 0 in-degrees
+    if dist.has_key(0):
+        dist.pop(0)
+
+    # generate the log data
+    norm_dist = {}
+    if SCALE == "LINEAR":
+        for keys in dist.keys():
+            norm_dist[keys] = dist[keys]
+    elif SCALE == "LOG":
+        for keys in dist.keys():
+            norm_dist[math.log(keys, LOG_BASE)] = math.log(dist[keys], LOG_BASE)
+
+
+    plt.plot(norm_dist.keys(), norm_dist.values(), point_style, label=line_label)
+    plt.title("In-degree distribution of citations (log scale)")
+    plt.ylabel("% of papers (log base " + str(LOG_BASE) + ")")
+    plt.xlabel("# of citations (log base " + str(LOG_BASE) + ")")
+    plt.grid(True)
+    plt.legend()
+
+
 # get the data into a dict
 data = read_citation_data("alg_phys-cite.txt")
 
-# number of entries in the data
-num_entries = len(data.keys())
+data3 = funcs.generate_random_graph(500, .25)
+data2 = funcs.generate_random_graph(700, .55)
+data1 = funcs.generate_random_graph(1000, .9)
 
-# get the distribution of in-degrees
-dist = funcs.in_degree_distribution(data)
-#print dist
+# set the canvas size (in inches)
+plt.figure(figsize=(12,7))
 
-# remove 0 in-degrees
-dist.pop(0)
 
-# generate the log data
-norm_dist = {}
-for keys in dist.keys():
-    norm_dist[math.log(keys)] = math.log(dist[keys])
+#draw_plot(data, "r+", "citations")
 
-plt.plot(norm_dist.keys(), norm_dist.values(), 'ro')
-plt.title("In-degree distribution of citations (log scale)")
-plt.ylabel("# of papers with given in-degree (log base 2)")
-plt.xlabel("in-degree of paper (log base 2)")
+#draw_plot(data3, "g^", "random_graph(500, .25)")
+#draw_plot(data2, "ys", "random_graph(700, .55)")
+draw_plot(data1, "mo", "random_graph(1000, .9)")
 plt.show()
-plt.grid(True)
+
