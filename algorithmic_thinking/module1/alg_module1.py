@@ -4,6 +4,7 @@ Algorithmic Thinking - Module 1 Project
 __author__ = 'mamaray'
 
 import random
+import DPATrial as dpat
 
 # Example graph objects
 EX_GRAPH0 = {0: set([1, 2]),
@@ -152,3 +153,27 @@ def normalize_in_degree_dist(digraph):
 
     return norm_dist
 
+
+def dpa_graph(num_nodes, num_existing_nodes):
+
+    """
+    DPA algorithm implementation
+
+    :rtype : dict
+    :param num_nodes: final number of nodes
+    :param num_existing_nodes: <= num_nodes, the number of existing nodes to which a new node is connected during each
+                                iteration
+    :return: dictionary object representing a graph
+    """
+    # First make a complete graph
+    graph = make_complete_graph(num_existing_nodes)
+
+    rand_nodes = dpat.DPATrial(num_existing_nodes)
+
+
+    # iterate through the remaining nodes
+    for new_nodes in xrange(num_existing_nodes, num_nodes):
+        new_conns = rand_nodes.run_trial(num_existing_nodes)
+        graph[new_nodes] = set(new_conns)
+
+    return graph
