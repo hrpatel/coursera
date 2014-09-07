@@ -8,7 +8,7 @@ import alg_module1 as funcs
 import matplotlib.pyplot as plt
 
 LOG_BASE = 10
-SCALE = "LINEAR"
+SCALE = "LOG"
 
 def read_citation_data(filename):
     """
@@ -102,10 +102,16 @@ def app_q3():
     # get the data into a dict
     data = read_citation_data("alg_phys-cite.txt")
     out_degrees = funcs.compute_out_degrees(data)
+    in_degrees = funcs.compute_in_degrees(data)
 
-    print data[9912233], len(data[9912233])
-
-    print "average out-degree of citations: " + str(sum(out_degrees.values())/len(data.keys()))
+    num_nodes = len(data.keys())
+    total_in_degrees = sum(in_degrees.values())
+    total_out_degrees = sum(out_degrees.values())
+    print "num nodes: ", str(num_nodes)
+    print "total out degree: " + str(total_out_degrees)
+    print "total in degree: " + str(total_in_degrees)
+    print "average out-degree of citations: " + str(float(total_out_degrees)/num_nodes)
+    print "average in-degree of citations: " + str(float(total_in_degrees)/num_nodes)
 
 
 app_q2_2()
