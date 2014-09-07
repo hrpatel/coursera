@@ -67,6 +67,23 @@ def compute_in_degrees(digraph):
     return in_degrees
 
 
+def compute_out_degrees(digraph):
+    """
+    Compute the out-degrees of each node
+
+    :rtype : dict
+    :param digraph: input graph
+    """
+    # initialize all in-degrees to 0
+    out_degrees = {}.fromkeys(digraph.keys(), 0)
+
+    # loop through each node
+    for node in digraph.keys():
+        out_degrees[node] = len(digraph[node])
+
+    return out_degrees
+
+
 def in_degree_distribution(digraph):
     """
     calculate the in-degree distribution of a given graph
