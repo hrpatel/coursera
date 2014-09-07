@@ -31,7 +31,7 @@ def read_citation_data(filename):
         # first item is a node in the graph
         neighbours = line.split(" ")
         node = int(neighbours.pop(0))
-        neighbours = neighbours[1:-1]
+        neighbours = neighbours[:-1]
 
         # initialize the node data
         cita_data[node] = set([])
@@ -60,28 +60,52 @@ def draw_plot(data, point_style, line_label):
 
 
     plt.plot(norm_dist.keys(), norm_dist.values(), point_style, label=line_label)
-    plt.title("In-degree distribution of citations (log scale)")
+    plt.title("In-degree distribution of citations (" + SCALE + " scale)")
     plt.ylabel("% of papers (log base " + str(LOG_BASE) + ")")
     plt.xlabel("# of citations (log base " + str(LOG_BASE) + ")")
     plt.grid(True)
     plt.legend()
 
 
-# get the data into a dict
-data = read_citation_data("alg_phys-cite.txt")
-
-data3 = funcs.generate_random_graph(500, .25)
-data2 = funcs.generate_random_graph(700, .55)
-data1 = funcs.generate_random_graph(1000, .9)
-
 # set the canvas size (in inches)
 plt.figure(figsize=(12,7))
 
+def app_q1():
+    # get the data into a dict
+    data = read_citation_data("alg_phys-cite.txt")
 
-#draw_plot(data, "r+", "citations")
+    draw_plot(data, "r+", "citations")
+    plt.show()
 
-#draw_plot(data3, "g^", "random_graph(500, .25)")
-#draw_plot(data2, "ys", "random_graph(700, .55)")
-draw_plot(data1, "mo", "random_graph(1000, .9)")
-plt.show()
 
+def app_q2():
+    data3 = funcs.generate_random_graph(500, .25)
+    data2 = funcs.generate_random_graph(700, .55)
+    data1 = funcs.generate_random_graph(1000, .9)
+    data = read_citation_data("alg_phys-cite.txt")
+
+    draw_plot(data, "r+", "citations")
+    draw_plot(data3, "g^", "random_graph(500, .25)")
+    draw_plot(data2, "ys", "random_graph(700, .55)")
+    draw_plot(data1, "mo", "random_graph(1000, .9)")
+    plt.show()
+
+
+def app_q2_2():
+    data1 = funcs.generate_random_graph(5000, .85)
+
+    draw_plot(data1, "mo", "random_graph(5000, .85)")
+    plt.show()
+
+
+def app_q3():
+    # get the data into a dict
+    data = read_citation_data("alg_phys-cite.txt")
+    out_degrees = funcs.compute_out_degrees(data)
+
+    print data[9912233], len(data[9912233])
+
+    print "average out-degree of citations: " + str(sum(out_degrees.values())/len(data.keys()))
+
+
+app_q2_2()
