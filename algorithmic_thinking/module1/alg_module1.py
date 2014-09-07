@@ -3,6 +3,8 @@ Algorithmic Thinking - Module 1 Project
 """
 __author__ = 'mamaray'
 
+import random
+
 # Example graph objects
 EX_GRAPH0 = {0: set([1, 2]),
              1: set([]),
@@ -83,3 +85,39 @@ def in_degree_distribution(digraph):
         in_degree_dist[degrees] += 1
 
     return in_degree_dist
+
+
+def generate_random_graph(num_nodes, probability):
+
+    """
+    This function will generate a random graph based on a probability
+
+    :rtype : dict
+    :param num_nodes: number of nodes in this graph
+    :param probability: probability of edge existing
+    :return: a dictionary object representing a graph
+    """
+    # make a complete graph first
+    #graph = make_complete_graph(num_nodes)
+    #print graph
+
+    graph = {}
+    for itr in range(num_nodes):
+        graph[itr] = set()
+
+    tracker = range(num_nodes)
+
+    # loop through each node
+    for node_x in xrange(num_nodes):
+        tracker.remove(node_x)
+
+        for node_y in tracker:
+            rand = random.random()
+            if rand < probability:
+                graph[node_x].add(node_y)
+
+            rand = random.random()
+            if rand < probability:
+                graph[node_y].add(node_x)
+
+    return graph
