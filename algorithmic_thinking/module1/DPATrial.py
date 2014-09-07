@@ -37,16 +37,18 @@ class DPATrial:
         
         Returns: Set of nodes
         """
-        
+
         # compute the neighbors for the newly-created node
         new_node_neighbors = set()
         for dummy_idx in range(num_nodes):
             new_node_neighbors.add(random.choice(self._node_numbers))
-        
+
         # update the list of node numbers so that each node number appears in the correct ratio
         self._node_numbers.append(self._num_nodes)
         self._node_numbers.extend(list(new_node_neighbors))
-        
-        #update the number of nodes
+
+        # update the number of nodes
         self._num_nodes += 1
+
         return new_node_neighbors
+
