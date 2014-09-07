@@ -97,10 +97,6 @@ def generate_random_graph(num_nodes, probability):
     :param probability: probability of edge existing
     :return: a dictionary object representing a graph
     """
-    # make a complete graph first
-    #graph = make_complete_graph(num_nodes)
-    #print graph
-
     graph = {}
     for itr in range(num_nodes):
         graph[itr] = set()
@@ -121,3 +117,21 @@ def generate_random_graph(num_nodes, probability):
                 graph[node_y].add(node_x)
 
     return graph
+
+
+def normalize_in_degree_dist(digraph):
+    """
+    Takes a graph and returns a normalized distribution of each nodes in-degree
+
+    :rtype : dict
+    :param digraph: a dictionary representing a directed graph
+    """
+    idd = in_degree_distribution(digraph)
+    total_sum = sum(idd.values())
+
+    norm_dist = {}
+    for node in idd:
+        norm_dist[node] = float(idd[node])/total_sum
+
+    return norm_dist
+
