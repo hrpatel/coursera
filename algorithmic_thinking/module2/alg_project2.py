@@ -1,12 +1,11 @@
 """
 module 2 project for algorithmic thinking
 """
-
 __author__ = 'mamaray'
 
+
 from collections import deque
-import random
-# import alg_project2_graphs as data
+
 
 def bfs_visited(ugraph, start_node):
     """
@@ -25,11 +24,11 @@ def bfs_visited(ugraph, start_node):
     queue = deque()
     queue.append(start_node)
 
-    while len(queue) > 0:
+    while queue:
         # pop the next item from the queue
         next_item = queue.pop()
 
-        # iterate through each neighbour of the dequed node
+        # iterate through each neighbour of the dequeued node
         for neighbour in ugraph[next_item]:
             if neighbour not in visited:
                 # add to visited and queue so it gets inspected
@@ -51,21 +50,17 @@ def cc_visited(ugraph):
     ccs = []
 
     # initialize local variable
-    remaining_nodes = ugraph.keys()
+    remaining_nodes = set(ugraph.keys())
 
-    while len(remaining_nodes) > 0:
-        # pick a random node
-        node = random.choice(remaining_nodes)
-
-        # get all connected nodes of 'node'
-        visited = bfs_visited(ugraph, node)
+    while remaining_nodes:
+        # get all connected nodes of a random node
+        visited = bfs_visited(ugraph, remaining_nodes.pop())
 
         # add to the connected component list
         ccs.append(visited)
 
         # remove from remaining nodes to check
-        for item in visited:
-            remaining_nodes.remove(item)
+        remaining_nodes = remaining_nodes.difference(visited)
 
     return ccs
 
@@ -85,8 +80,9 @@ def largest_cc_size(ugraph):
 
     # find largest connected component
     for component in ccs:
-        if len(component) > max_size:
-            max_size = len(component)
+        dummy_len = len(component)
+        if dummy_len > max_size:
+            max_size = dummy_len
 
     return max_size
 
@@ -120,6 +116,19 @@ def compute_resilience(ugraph, attack_order):
 
     return lcc
 
+
+# import cProfile, pstats, StringIO
+# pr = cProfile.Profile()
+# pr.enable()
+#
+# import alg_project2_graphs as data
 # print compute_resilience(data.GRAPH2, [1, 3, 5, 7, 2, 4, 6, 8])
 # print compute_resilience(data.GRAPH3, [1, 3])
 # print compute_resilience(data.GRAPH0, [1, 2])
+#
+# pr.disable()
+# s = StringIO.StringIO()
+# sortby = 'cumtime'
+# ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+# ps.print_stats()
+# print s.getvalue()
