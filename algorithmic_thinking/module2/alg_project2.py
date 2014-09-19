@@ -3,7 +3,6 @@ module 2 project for algorithmic thinking
 """
 __author__ = 'mamaray'
 
-
 from collections import deque
 
 
@@ -46,7 +45,7 @@ def cc_visited(ugraph):
     :param ugraph: undirected graph
     :return: list of connected components of ugraph
     """
-    #start an empty list of connected component
+    # start an empty list of connected component
     ccs = []
 
     # initialize local variable
@@ -96,11 +95,8 @@ def compute_resilience(ugraph, attack_order):
     :param attack_order:
     :return:
     """
-    # initialize an empty list of largest connected components
-    lcc = []
-
-    # get all connected components and add to list
-    lcc.append(largest_cc_size(ugraph))
+    # get all connected components of ugraph and add to list
+    lcc = [largest_cc_size(ugraph)]
 
     # loop through each attack
     for attack in attack_order:
