@@ -65,6 +65,28 @@ def cc_visited(ugraph):
 
     return ccs
 
-#
+
+def largest_cc_size(ugraph):
+    """
+    a function to get the size of the largest connected component of a graph
+
+    :rtype : int
+    :param ugraph: undirected graph
+    :return: size (integer) of the largest connected component in ugraph
+    """
+    max_size = -1
+
+    # get all connected components
+    ccs = cc_visited(ugraph)
+
+    for component in ccs:
+        if len(component) > max_size:
+            max_size = len(component)
+
+    return max_size
+
+
 # print cc_visited(data.GRAPH0)
-# print cc_visited(data.GRAPH10)
+#
+# print cc_visited(data.GRAPH4)
+# print largest_cc_size(data.GRAPH4)
