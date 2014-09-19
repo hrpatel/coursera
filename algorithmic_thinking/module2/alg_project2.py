@@ -31,7 +31,7 @@ def bfs_visited(ugraph, start_node):
 
         # iterate through each neighbour of the dequed node
         for neighbour in ugraph[next_item]:
-            if not visited.__contains__(neighbour):
+            if neighbour not in visited:
                 # add to visited and queue so it gets inspected
                 visited.add(neighbour)
                 queue.append(neighbour)
@@ -47,19 +47,23 @@ def cc_visited(ugraph):
     :param ugraph: undirected graph
     :return: list of connected components of ugraph
     """
-    #start a list of connected component
+    #start an empty list of connected component
     ccs = []
 
     # initialize local variable
     remaining_nodes = ugraph.keys()
 
     while len(remaining_nodes) > 0:
+        # pick a random node
         node = random.choice(remaining_nodes)
 
+        # get all connected nodes of 'node'
         visited = bfs_visited(ugraph, node)
 
+        # add to the connected component list
         ccs.append(visited)
 
+        # remove from remaining nodes to check
         for item in visited:
             remaining_nodes.remove(item)
 
@@ -79,6 +83,7 @@ def largest_cc_size(ugraph):
     # get all connected components
     ccs = cc_visited(ugraph)
 
+    # find largest connected component
     for component in ccs:
         if len(component) > max_size:
             max_size = len(component)
