@@ -78,7 +78,7 @@ def largest_cc_size(ugraph):
     :param ugraph: undirected graph
     :return: size (integer) of the largest connected component in ugraph
     """
-    max_size = -1
+    max_size = 0
 
     # get all connected components
     ccs = cc_visited(ugraph)
@@ -120,6 +120,6 @@ def compute_resilience(ugraph, attack_order):
 
     return lcc
 
-
+# print compute_resilience(data.GRAPH2, [1, 3, 5, 7, 2, 4, 6, 8])
 # print compute_resilience(data.GRAPH3, [1, 3])
 # print compute_resilience(data.GRAPH0, [1, 2])
