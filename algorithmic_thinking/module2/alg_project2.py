@@ -91,7 +91,35 @@ def largest_cc_size(ugraph):
     return max_size
 
 
-# print cc_visited(data.GRAPH0)
-#
-# print cc_visited(data.GRAPH4)
-# print largest_cc_size(data.GRAPH4)
+def compute_resilience(ugraph, attack_order):
+    """
+    a function to test the resiliency of a graph by removing nodes/edges
+
+    :rtype : list
+    :param ugraph:
+    :param attack_order:
+    :return:
+    """
+    # initialize an empty list of largest connected components
+    lcc = []
+
+    # get all connected components and add to list
+    lcc.append(largest_cc_size(ugraph))
+
+    # loop through each attack
+    for attack in attack_order:
+        # remove the node
+        ugraph.pop(attack)
+
+        # remove edges from other nodes
+        for node in ugraph.keys():
+            ugraph[node].discard(attack)
+
+        # calculate largest connected component
+        lcc.append(largest_cc_size(ugraph))
+
+    return lcc
+
+
+# print compute_resilience(data.GRAPH3, [1, 3])
+# print compute_resilience(data.GRAPH0, [1, 2])
