@@ -5,10 +5,10 @@ module 2 project for algorithmic thinking
 __author__ = 'mamaray'
 
 from collections import deque
+import random
 # import alg_project2_graphs as data
 
 def bfs_visited(ugraph, start_node):
-    
     """
     a function to get the set consisting of all nodes that are visited by a given node
 
@@ -38,12 +38,33 @@ def bfs_visited(ugraph, start_node):
 
     return visited
 
-# print bfs_visited(data.GRAPH0, 0)
-# print bfs_visited(data.GRAPH1, 0)
-# print bfs_visited(data.GRAPH2, 0)
-# print bfs_visited(data.GRAPH3, 0)
-# print bfs_visited(data.GRAPH5, 3)
-# print bfs_visited(data.GRAPH6, 2)
-# print bfs_visited(data.GRAPH7, 0)
+
+def cc_visited(ugraph):
+    """
+    a function to get the set of connected components of a given graph
+
+    :rtype : list
+    :param ugraph: undirected graph
+    :return: list of connected components of ugraph
+    """
+    #start a list of connected component
+    ccs = []
+
+    # initialize local variable
+    remaining_nodes = ugraph.keys()
+
+    while len(remaining_nodes) > 0:
+        node = random.choice(remaining_nodes)
+
+        visited = bfs_visited(ugraph, node)
+
+        ccs.append(visited)
+
+        for item in visited:
+            remaining_nodes.remove(item)
+
+    return ccs
+
 #
-#
+# print cc_visited(data.GRAPH0)
+# print cc_visited(data.GRAPH10)
