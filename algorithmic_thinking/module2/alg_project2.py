@@ -101,10 +101,10 @@ def compute_resilience(ugraph, attack_order):
     # loop through each attack
     for attack in attack_order:
         # remove the node
-        ugraph.pop(attack)
+        edges = ugraph.pop(attack)
 
         # remove edges from other nodes
-        for node in ugraph.keys():
+        for node in edges:
             ugraph[node].discard(attack)
 
         # calculate largest connected component
@@ -119,12 +119,12 @@ def compute_resilience(ugraph, attack_order):
 #
 # import alg_project2_graphs as data
 # print compute_resilience(data.GRAPH2, [1, 3, 5, 7, 2, 4, 6, 8])
+# print compute_resilience(data.GRAPH7, [1, 3, 5, 7, 2, 4, 9, 11, 23, 12, 6, 8])
 # print compute_resilience(data.GRAPH3, [1, 3])
 # print compute_resilience(data.GRAPH0, [1, 2])
 #
 # pr.disable()
 # s = StringIO.StringIO()
-# sortby = 'cumtime'
-# ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+# ps = pstats.Stats(pr, stream=s)
 # ps.print_stats()
 # print s.getvalue()
