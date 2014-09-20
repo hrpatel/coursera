@@ -115,7 +115,7 @@ def generate_random_digraph(num_nodes, probability):
     :return: a dictionary object representing a graph
     """
     graph = {}
-    for itr in range(num_nodes):
+    for itr in xrange(num_nodes):
         graph[itr] = set()
 
     tracker = range(num_nodes)
