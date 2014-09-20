@@ -106,7 +106,6 @@ def in_degree_distribution(digraph):
 
 
 def generate_random_graph(num_nodes, probability):
-
     """
     This function will generate a random graph based on a probability
 
@@ -149,13 +148,12 @@ def normalize_in_degree_dist(digraph):
 
     norm_dist = {}
     for node in idd:
-        norm_dist[node] = float(idd[node])/total_sum
+        norm_dist[node] = float(idd[node]) / total_sum
 
     return norm_dist
 
 
 def dpa_graph(num_nodes, num_existing_nodes):
-
     """
     DPA algorithm implementation
 
@@ -169,7 +167,6 @@ def dpa_graph(num_nodes, num_existing_nodes):
     graph = make_complete_graph(num_existing_nodes)
 
     rand_nodes = dpat.DPATrial(num_existing_nodes)
-
 
     # iterate through the remaining nodes
     for new_nodes in xrange(num_existing_nodes, num_nodes):
