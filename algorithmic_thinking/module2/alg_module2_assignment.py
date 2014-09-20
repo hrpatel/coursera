@@ -23,9 +23,11 @@ def generate_random_ugraph(num_nodes, probability):
         tracker.remove(node_x)
 
         for node_y in tracker:
-            rand = random.random()
-            if rand < probability:
+            if random.random() < probability:
                 graph[node_x].add(node_y)
                 graph[node_y].add(node_x)
 
     return graph
+
+
+print generate_random_ugraph(10, 0.5)
