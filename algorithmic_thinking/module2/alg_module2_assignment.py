@@ -2,7 +2,7 @@ __author__ = 'ray'
 
 import random
 import UPATrial as upa
-import algorithmic_thinking.module1 as m1
+import algorithmic_thinking.module1.alg_module1 as m1
 
 
 def generate_random_ugraph(num_nodes, probability):
