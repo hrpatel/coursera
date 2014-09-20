@@ -107,10 +107,10 @@ def in_degree_distribution(digraph):
 
 def generate_random_digraph(num_nodes, probability):
     """
-    This function will generate a random graph based on a probability
+    This function will generate a random graph based on a probability (ER graph)
 
     :rtype : dict
-    :param num_nodes: number of nodes in this graph
+    :param num_nodes: number of nodes in the generated graph
     :param probability: probability of edge existing
     :return: a dictionary object representing a graph
     """
