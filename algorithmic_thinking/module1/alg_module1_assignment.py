@@ -1,6 +1,8 @@
 """
 This is code to complete the assignment portion of module 1
 """
+import algorithmic_thinking.utils as utils
+
 __author__ = 'mamaray'
 
 import math
@@ -9,37 +11,6 @@ import matplotlib.pyplot as plt
 
 LOG_BASE = 10
 SCALE = "LOG"
-
-
-def read_citation_data(filename):
-    """
-    A function to read data from a file
-
-    :param filename: file to read data from
-    :rtype : dict
-    """
-    # read in the citation data first
-    file = open(filename, "r")
-    raw_data = file.read().split("\n")
-    file.close()
-
-    # make a dictionary object from the raw data
-    cita_data = {}
-    for line in raw_data:
-        if line.strip() == "":
-            continue
-
-        # first item is a node in the graph
-        neighbours = line.split(" ")
-        node = int(neighbours.pop(0))
-        neighbours = neighbours[:-1]
-
-        # initialize the node data
-        cita_data[node] = set([])
-        for entry in neighbours:
-            cita_data[node].add(int(entry))
-
-    return cita_data
 
 
 def draw_plot(data, point_style, line_label):
@@ -73,7 +44,7 @@ plt.figure(figsize=(12, 7))
 
 def app_q1():
     # get the data into a dict
-    data = read_citation_data("alg_phys-cite.txt")
+    data = utils.read_graph_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
     plt.show()
@@ -83,7 +54,7 @@ def app_q2():
     data3 = m1.generate_random_digraph(500, .25)
     data2 = m1.generate_random_digraph(700, .55)
     data1 = m1.generate_random_digraph(1000, .9)
-    data = read_citation_data("alg_phys-cite.txt")
+    data = utils.read_graph_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
     draw_plot(data3, "g^", "random_graph(500, .25)")
@@ -101,7 +72,7 @@ def app_q2_2():
 
 def app_q3():
     # get the data into a dict
-    data = read_citation_data("alg_phys-cite.txt")
+    data = utils.read_graph_data("alg_phys-cite.txt")
     out_degrees = m1.compute_out_degrees(data)
     in_degrees = m1.compute_in_degrees(data)
 
@@ -126,7 +97,7 @@ def app_q4():
 def app_q5():
     # get the data into a dict
     data1 = m1.dpa_graph(27770, 13)
-    data = read_citation_data("alg_phys-cite.txt")
+    data = utils.read_graph_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
     draw_plot(data1, "gs", "dpa_graph(27770,13)")
