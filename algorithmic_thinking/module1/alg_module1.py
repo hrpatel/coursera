@@ -105,7 +105,7 @@ def in_degree_distribution(digraph):
     return in_degree_dist
 
 
-def generate_random_graph(num_nodes, probability):
+def generate_random_digraph(num_nodes, probability):
     """
     This function will generate a random graph based on a probability
 

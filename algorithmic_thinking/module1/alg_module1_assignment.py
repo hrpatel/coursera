@@ -80,9 +80,9 @@ def app_q1():
 
 
 def app_q2():
-    data3 = funcs.generate_random_graph(500, .25)
-    data2 = funcs.generate_random_graph(700, .55)
-    data1 = funcs.generate_random_graph(1000, .9)
+    data3 = funcs.generate_random_digraph(500, .25)
+    data2 = funcs.generate_random_digraph(700, .55)
+    data1 = funcs.generate_random_digraph(1000, .9)
     data = read_citation_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
@@ -93,7 +93,7 @@ def app_q2():
 
 
 def app_q2_2():
-    data1 = funcs.generate_random_graph(5000, .85)
+    data1 = funcs.generate_random_digraph(5000, .85)
 
     draw_plot(data1, "mo", "random_graph(5000, .85)")
     plt.show()
