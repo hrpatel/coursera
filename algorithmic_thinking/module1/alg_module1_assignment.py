@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 LOG_BASE = 10
 SCALE = "LOG"
 
+
 def read_citation_data(filename):
     """
     A function to read data from a file
@@ -58,7 +59,6 @@ def draw_plot(data, point_style, line_label):
         for keys in dist.keys():
             norm_dist[math.log(keys, LOG_BASE)] = math.log(dist[keys], LOG_BASE)
 
-
     plt.plot(norm_dist.keys(), norm_dist.values(), point_style, label=line_label)
     plt.title("In-degree distribution (" + SCALE + " scale)")
     plt.ylabel("% of papers (log base " + str(LOG_BASE) + ")")
@@ -68,7 +68,8 @@ def draw_plot(data, point_style, line_label):
 
 
 # set the canvas size (in inches)
-plt.figure(figsize=(12,7))
+plt.figure(figsize=(12, 7))
+
 
 def app_q1():
     # get the data into a dict
@@ -110,13 +111,13 @@ def app_q3():
     print "num nodes: ", str(num_nodes)
     print "total out degree: " + str(total_out_degrees)
     print "total in degree: " + str(total_in_degrees)
-    print "average out-degree of citations: " + str(float(total_out_degrees)/num_nodes)
-    print "average in-degree of citations: " + str(float(total_in_degrees)/num_nodes)
+    print "average out-degree of citations: " + str(float(total_out_degrees) / num_nodes)
+    print "average in-degree of citations: " + str(float(total_in_degrees) / num_nodes)
 
 
 def app_q4():
     # get the data into a dict
-    data1 = funcs.dpa_graph(27770,13)
+    data1 = funcs.dpa_graph(27770, 13)
 
     draw_plot(data1, "gs", "dpa_graph(27770,13)")
     plt.show()
@@ -124,7 +125,7 @@ def app_q4():
 
 def app_q5():
     # get the data into a dict
-    data1 = funcs.dpa_graph(27770,13)
+    data1 = funcs.dpa_graph(27770, 13)
     data = read_citation_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
