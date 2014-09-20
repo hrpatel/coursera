@@ -9,7 +9,7 @@ import random
 
 class UPATrial:
     """
-    Simple class to encapsulate optimizated trials for the UPA algorithm
+    Simple class to encapsulate optimized trials for UPA algorithm
     
     Maintains a list of node numbers with multiple instance of each number. The number of instances of each node number
     are in the same proportion as the desired probabilities
@@ -38,7 +38,7 @@ class UPATrial:
 
         # compute the neighbors for the newly-created node
         new_node_neighbors = set()
-        for _ in range(num_nodes):
+        for dummy_idx in range(num_nodes):
             new_node_neighbors.add(random.choice(self._node_numbers))
 
         # update the list of node numbers so that each node number appears in the correct ratio
