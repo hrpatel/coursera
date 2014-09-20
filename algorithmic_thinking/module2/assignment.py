@@ -2,7 +2,7 @@ __author__ = 'ray'
 
 import random
 import UPATrial as upa
-import algorithmic_thinking.module1.alg_module1 as m1
+import algorithmic_thinking.module1.project as m1project
 
 
 def generate_random_ugraph(num_nodes, probability):
@@ -43,7 +43,7 @@ def upa_graph(num_nodes, num_existing_nodes):
     :return: dictionary object representing a graph
     """
     # First make a complete graph
-    graph = m1.make_complete_graph(num_existing_nodes)
+    graph = m1project.make_complete_graph(num_existing_nodes)
 
     rand_nodes = upa.UPATrial(num_existing_nodes)
 

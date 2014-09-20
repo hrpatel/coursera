@@ -6,7 +6,7 @@ import algorithmic_thinking.utils as utils
 __author__ = 'mamaray'
 
 import math
-import alg_module1 as m1
+import project as project
 import matplotlib.pyplot as plt
 
 LOG_BASE = 10
@@ -15,7 +15,7 @@ SCALE = "LOG"
 
 def draw_plot(data, point_style, line_label):
     # get the NORMALIZED distribution of in-degrees
-    dist = m1.normalize_in_degree_dist(data)
+    dist = project.normalize_in_degree_dist(data)
 
     # remove 0 in-degrees
     if dist.has_key(0):
@@ -51,9 +51,9 @@ def app_q1():
 
 
 def app_q2():
-    data3 = m1.generate_random_digraph(500, .25)
-    data2 = m1.generate_random_digraph(700, .55)
-    data1 = m1.generate_random_digraph(1000, .9)
+    data3 = project.generate_random_digraph(500, .25)
+    data2 = project.generate_random_digraph(700, .55)
+    data1 = project.generate_random_digraph(1000, .9)
     data = utils.read_graph_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
@@ -64,7 +64,7 @@ def app_q2():
 
 
 def app_q2_2():
-    data1 = m1.generate_random_digraph(5000, .85)
+    data1 = project.generate_random_digraph(5000, .85)
 
     draw_plot(data1, "mo", "random_graph(5000, .85)")
     plt.show()
@@ -73,8 +73,8 @@ def app_q2_2():
 def app_q3():
     # get the data into a dict
     data = utils.read_graph_data("alg_phys-cite.txt")
-    out_degrees = m1.compute_out_degrees(data)
-    in_degrees = m1.compute_in_degrees(data)
+    out_degrees = project.compute_out_degrees(data)
+    in_degrees = project.compute_in_degrees(data)
 
     num_nodes = len(data.keys())
     total_in_degrees = sum(in_degrees.values())
@@ -88,7 +88,7 @@ def app_q3():
 
 def app_q4():
     # get the data into a dict
-    data1 = m1.dpa_graph(27770, 13)
+    data1 = project.dpa_graph(27770, 13)
 
     draw_plot(data1, "gs", "dpa_graph(27770,13)")
     plt.show()
@@ -96,7 +96,7 @@ def app_q4():
 
 def app_q5():
     # get the data into a dict
-    data1 = m1.dpa_graph(27770, 13)
+    data1 = project.dpa_graph(27770, 13)
     data = utils.read_graph_data("alg_phys-cite.txt")
 
     draw_plot(data, "r+", "citations")
