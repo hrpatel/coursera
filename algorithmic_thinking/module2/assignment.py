@@ -5,6 +5,7 @@ __author__ = 'ray'
 import random
 import UPATrial as upa
 import algorithmic_thinking.module1.project as m1project
+import algorithmic_thinking.utils as utils
 
 
 def generate_random_ugraph(num_nodes, probability):
@@ -71,3 +72,30 @@ def random_order(graph):
 
     # return shuffled node list
     return shuffled_nodes
+
+
+def q1():
+    """
+    examine the resilience of the computer network under an attack in which servers are chosen at random. We will
+    then compare the resilience of the network to the resilience of ER and UPA graphs of similar size
+    :return:
+    """
+    # get the network graph
+    net_g = utils.read_graph_data("alg_rf7.txt")
+
+    # generate a upa graph with the given average out-degree
+    upa_g = upa_graph(len(net_g), 5)
+
+    # create an ER ugraph
+    er_g = generate_random_ugraph(len(net_g), 0.0034328666)
+
+    # utils.print_graph_data(net_g, name="net_g")
+    # utils.print_graph_data(upa_g, name="upa_g")
+    # utils.print_graph_data(er_g, name="er_g")
+
+
+
+
+q1()
+
+
