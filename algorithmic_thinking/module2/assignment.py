@@ -99,7 +99,9 @@ def q1():
     upa_g = upa_graph(len(net_g), m)
 
     # create an ER ugraph
-    p = 0.0034328666
+    network_size = len(net_g)
+    total_possible_edges = (network_size * (network_size - 1)) / 2
+    p = total_out_degrees / float(total_possible_edges) / 2
     er_g = generate_random_ugraph(len(net_g), p)
 
     # utils.print_graph_data(net_g, name="net_g")
@@ -115,7 +117,7 @@ def q1():
     # plot the data
     xvals = range(len(net_g) + 1)
 
-    plt.plot(xvals, net_g_r, '-b', label='network')
+    plt.plot(xvals, net_g_r, '-b', label='computer network')
     plt.plot(xvals, upa_g_r, '-r', label='upa graph, m='+str(m))
     plt.plot(xvals, er_g_r, '-g', label='er graph, p='+str(p))
     plt.legend(loc='upper right')
