@@ -1,5 +1,6 @@
-from algorithmic_thinking.module1 import graph_data
-
+"""
+assignment portion of algorithmic thinking - module 2
+"""
 __author__ = 'ray'
 
 import random
@@ -7,6 +8,7 @@ import UPATrial as upa
 import algorithmic_thinking.utils as utils
 import algorithmic_thinking.module1.project as m1project
 import algorithmic_thinking.module2.project as m2project
+from algorithmic_thinking.module2 import provided
 import matplotlib.pyplot as plt
 
 
@@ -91,7 +93,7 @@ net_g = utils.read_graph_data("alg_rf7.txt")
 
 # generate a upa graph with the given average out-degree
 total_out_degrees = sum(m1project.compute_out_degrees(net_g).values())
-average_degree =float(total_out_degrees) / len(net_g)
+average_degree = float(total_out_degrees) / len(net_g)
 m = int(round(average_degree))
 upa_g = upa_graph(len(net_g), m)
 
@@ -106,7 +108,7 @@ er_g = generate_random_ugraph(len(net_g), p)
 # utils.print_graph_data(er_g, name="er_g")
 
 
-def q1():
+def q1_q2():
     """
     examine the resilience of the computer network under an attack in which servers are chosen at random. We will
     then compare the resilience of the network to the resilience of ER and UPA graphs of similar size
@@ -122,22 +124,15 @@ def q1():
     xvals = range(len(net_g) + 1)
 
     plt.plot(xvals, net_g_r, '-b', label='computer network')
-    plt.plot(xvals, upa_g_r, '-r', label='upa graph, m='+str(m))
-    plt.plot(xvals, er_g_r, '-g', label='er graph, p='+str(p))
+    plt.plot(xvals, upa_g_r, '-r', label='upa graph, m=' + str(m))
+    plt.plot(xvals, er_g_r, '-g', label='er graph, p=' + str(p))
     plt.legend(loc='upper right')
     plt.xlabel("Number of nodes removed")
     plt.ylabel("Size of largest connected component")
     plt.title("Comparison of Network/Graph Resiliency")
     plt.show()
 
-
-def q2():
-    # compute the resiliency of each graph
-    attack_order = random_order(net_g)
-    net_g_r = m2project.compute_resilience(net_g, attack_order)
-    upa_g_r = m2project.compute_resilience(upa_g, attack_order)
-    er_g_r = m2project.compute_resilience(er_g, attack_order)
-
+    # q2
     resiliency_factor = 0.25
     percent_node_removed = 0.2
 
@@ -154,6 +149,47 @@ def q2():
     print "resiliency range:", remaining_nodes - _limit, remaining_nodes + _limit
 
 
-q2()
+def q4_q5():
+    """
+    examine the resilience of the computer network under an attack in which servers are chosen at random. We will
+    then compare the resilience of the network to the resilience of ER and UPA graphs of similar size
+    :return:
+    """
+    # compute the resiliency of each graph
+    attack_order = provided.targeted_order(net_g)
+    net_g_r = m2project.compute_resilience(net_g, attack_order)
+    upa_g_r = m2project.compute_resilience(upa_g, attack_order)
+    er_g_r = m2project.compute_resilience(er_g, attack_order)
+
+    # plot the data
+    xvals = range(len(net_g) + 1)
+
+    plt.plot(xvals, net_g_r, '-b', label='computer network')
+    plt.plot(xvals, upa_g_r, '-r', label='upa graph, m=' + str(m))
+    plt.plot(xvals, er_g_r, '-g', label='er graph, p=' + str(p))
+    plt.legend(loc='upper right')
+    plt.xlabel("Number of nodes removed")
+    plt.ylabel("Size of largest connected component")
+    plt.title("Comparison of Network/Graph Resiliency (targeted attack)")
+    plt.show()
+
+    # q5
+    resiliency_factor = 0.25
+    percent_node_removed = 0.2
+
+    # get the largest connected component after 20% nodes are removed
+    idx = int(len(net_g) * percent_node_removed)
+    print "largest cc", net_g_r[idx], upa_g_r[idx], er_g_r[idx]
+
+    # calculate remaining nodes
+    remaining_nodes = (1 - percent_node_removed) * len(net_g)
+    print "#nodes remaining:", remaining_nodes
+
+    # calculate the resiliency range
+    _limit = resiliency_factor * remaining_nodes
+    print "resiliency range:", remaining_nodes - _limit, remaining_nodes + _limit
+
+
+q4_q5()
 
 
