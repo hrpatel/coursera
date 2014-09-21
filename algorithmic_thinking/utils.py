@@ -1,5 +1,7 @@
 __author__ = 'ray'
 
+import algorithmic_thinking.module1.project as m1project
+
 
 def read_graph_data(filename):
     """
@@ -31,3 +33,21 @@ def read_graph_data(filename):
             graph[node].add(int(entry))
 
     return graph
+
+
+def print_graph_data(graph, name=""):
+    out_degrees = m1project.compute_out_degrees(graph)
+    in_degrees = m1project.compute_in_degrees(graph)
+
+    num_nodes = len(graph.keys())
+    total_in_degrees = sum(in_degrees.values())
+    total_out_degrees = sum(out_degrees.values())
+
+    if name is not "":
+        print "graph:", name
+    print "num nodes: ", str(num_nodes)
+    print "total out degree: " + str(total_out_degrees)
+    print "total in degree: " + str(total_in_degrees)
+    print "average out-degree: " + str(float(total_out_degrees) / num_nodes)
+    print "average in-degree: " + str(float(total_in_degrees) / num_nodes)
+    print
