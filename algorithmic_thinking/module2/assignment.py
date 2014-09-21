@@ -83,31 +83,35 @@ def random_order(graph):
     return shuffled_nodes
 
 
+"""
+generate graph data for use in the questions
+"""
+# get the network graph
+net_g = utils.read_graph_data("alg_rf7.txt")
+
+# generate a upa graph with the given average out-degree
+total_out_degrees = sum(m1project.compute_out_degrees(net_g).values())
+average_degree =float(total_out_degrees) / len(net_g)
+m = int(round(average_degree))
+upa_g = upa_graph(len(net_g), m)
+
+# create an ER ugraph
+network_size = len(net_g)
+total_possible_edges = (network_size * (network_size - 1)) / 2
+p = total_out_degrees / float(total_possible_edges) / 2
+er_g = generate_random_ugraph(len(net_g), p)
+
+# utils.print_graph_data(net_g, name="net_g")
+# utils.print_graph_data(upa_g, name="upa_g")
+# utils.print_graph_data(er_g, name="er_g")
+
+
 def q1():
     """
     examine the resilience of the computer network under an attack in which servers are chosen at random. We will
     then compare the resilience of the network to the resilience of ER and UPA graphs of similar size
     :return:
     """
-    # get the network graph
-    net_g = utils.read_graph_data("alg_rf7.txt")
-
-    # generate a upa graph with the given average out-degree
-    total_out_degrees = sum(m1project.compute_out_degrees(net_g).values())
-    average_degree =float(total_out_degrees) / len(net_g)
-    m = int(round(average_degree))
-    upa_g = upa_graph(len(net_g), m)
-
-    # create an ER ugraph
-    network_size = len(net_g)
-    total_possible_edges = (network_size * (network_size - 1)) / 2
-    p = total_out_degrees / float(total_possible_edges) / 2
-    er_g = generate_random_ugraph(len(net_g), p)
-
-    # utils.print_graph_data(net_g, name="net_g")
-    # utils.print_graph_data(upa_g, name="upa_g")
-    # utils.print_graph_data(er_g, name="er_g")
-
     # compute the resiliency of each graph
     attack_order = random_order(net_g)
     net_g_r = m2project.compute_resilience(net_g, attack_order)
@@ -127,6 +131,29 @@ def q1():
     plt.show()
 
 
-q1()
+def q2():
+    # compute the resiliency of each graph
+    attack_order = random_order(net_g)
+    net_g_r = m2project.compute_resilience(net_g, attack_order)
+    upa_g_r = m2project.compute_resilience(upa_g, attack_order)
+    er_g_r = m2project.compute_resilience(er_g, attack_order)
+
+    resiliency_factor = 0.25
+    percent_node_removed = 0.2
+
+    # get the largest connected component after 20% nodes are removed
+    idx = int(len(net_g) * percent_node_removed)
+    print "largest cc", net_g_r[idx], upa_g_r[idx], er_g_r[idx]
+
+    # calculate remaining nodes
+    remaining_nodes = (1 - percent_node_removed) * len(net_g)
+    print "#nodes remaining:", remaining_nodes
+
+    # calculate the resiliency range
+    _limit = resiliency_factor * remaining_nodes
+    print "resiliency range:", remaining_nodes - _limit, remaining_nodes + _limit
+
+
+q2()
 
 
