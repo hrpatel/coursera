@@ -18,7 +18,7 @@ def draw_plot(data, point_style, line_label):
     dist = project.normalize_in_degree_dist(data)
 
     # remove 0 in-degrees
-    if dist.has_key(0):
+    if 0 in dist:
         dist.pop(0)
 
     # generate the log data
