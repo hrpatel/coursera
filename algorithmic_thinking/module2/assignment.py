@@ -4,8 +4,10 @@ __author__ = 'ray'
 
 import random
 import UPATrial as upa
-import algorithmic_thinking.module1.project as m1project
 import algorithmic_thinking.utils as utils
+import algorithmic_thinking.module1.project as m1project
+import algorithmic_thinking.module2.project as m2project
+import matplotlib.pyplot as plt
 
 
 def generate_random_ugraph(num_nodes, probability):
@@ -51,9 +53,16 @@ def upa_graph(num_nodes, num_existing_nodes):
     rand_nodes = upa.UPATrial(num_existing_nodes)
 
     # iterate through the remaining nodes
-    for new_nodes in xrange(num_existing_nodes, num_nodes):
+    for new_node in xrange(num_existing_nodes, num_nodes):
+        # get new connections for the next node
         new_conns = rand_nodes.run_trial(num_existing_nodes)
-        graph[new_nodes] = set(new_conns)
+
+        # add the new connections
+        graph[new_node] = set(new_conns)
+
+        # add the same edges in the opposite direction
+        for new_con in new_conns:
+            graph[new_con].add(new_node)
 
     return graph
 
@@ -84,16 +93,36 @@ def q1():
     net_g = utils.read_graph_data("alg_rf7.txt")
 
     # generate a upa graph with the given average out-degree
-    upa_g = upa_graph(len(net_g), 5)
+    total_out_degrees = sum(m1project.compute_out_degrees(net_g).values())
+    average_degree =float(total_out_degrees) / len(net_g)
+    m = int(round(average_degree))
+    upa_g = upa_graph(len(net_g), m)
 
     # create an ER ugraph
-    er_g = generate_random_ugraph(len(net_g), 0.0034328666)
+    p = 0.0034328666
+    er_g = generate_random_ugraph(len(net_g), p)
 
     # utils.print_graph_data(net_g, name="net_g")
     # utils.print_graph_data(upa_g, name="upa_g")
     # utils.print_graph_data(er_g, name="er_g")
 
+    # compute the resiliency of each graph
+    attack_order = random_order(net_g)
+    net_g_r = m2project.compute_resilience(net_g, attack_order)
+    upa_g_r = m2project.compute_resilience(upa_g, attack_order)
+    er_g_r = m2project.compute_resilience(er_g, attack_order)
 
+    # plot the data
+    xvals = range(len(net_g) + 1)
+
+    plt.plot(xvals, net_g_r, '-b', label='network')
+    plt.plot(xvals, upa_g_r, '-r', label='upa graph, m='+str(m))
+    plt.plot(xvals, er_g_r, '-g', label='er graph, p='+str(p))
+    plt.legend(loc='upper right')
+    plt.xlabel("Number of nodes removed")
+    plt.ylabel("Size of largest connected component")
+    plt.title("Comparison of Network/Graph Resiliency")
+    plt.show()
 
 
 q1()
