@@ -4,7 +4,7 @@ assignment portion of algorithmic thinking - module 2
 __author__ = 'ray'
 
 import random
-import UPATrial as upa
+import UPATrial
 import algorithmic_thinking.utils as utils
 import algorithmic_thinking.module1.project as m1project
 import algorithmic_thinking.module2.project as m2project
@@ -52,7 +52,7 @@ def upa_graph(num_nodes, num_existing_nodes):
     # First make a complete graph
     graph = m1project.make_complete_graph(num_existing_nodes)
 
-    rand_nodes = upa.UPATrial(num_existing_nodes)
+    rand_nodes = UPATrial.UPATrial(num_existing_nodes)
 
     # iterate through the remaining nodes
     for new_node in xrange(num_existing_nodes, num_nodes):
@@ -191,5 +191,3 @@ def q4_q5():
 
 
 q4_q5()
-
-
