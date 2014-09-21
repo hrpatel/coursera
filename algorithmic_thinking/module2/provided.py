@@ -25,8 +25,9 @@ def targeted_order(ugraph):
     """
     Compute a targeted attack order consisting of nodes of maximal degree
     
-    Returns:
-    A list of nodes
+    :rtype : list
+    :param ugraph: input graph
+    Returns: A list of nodes
     """
     # copy the graph
     new_graph = copy_graph(ugraph)
