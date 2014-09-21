@@ -17,13 +17,13 @@ def read_graph_data(filename):
     graph = {}
     for line in raw_data:
         # support empty files
-        if line.strip() == "":
+        line = line.strip()
+        if line == "":
             continue
 
         # first item is a node in the graph
         neighbours = line.split(" ")
         node = int(neighbours.pop(0))
-        neighbours = neighbours[:-1]
 
         # initialize the node data
         graph[node] = set([])
