@@ -23,8 +23,7 @@ def delete_node(ugraph, node):
 
 def targeted_order(ugraph):
     """
-    Compute a targeted attack order consisting
-    of nodes of maximal degree
+    Compute a targeted attack order consisting of nodes of maximal degree
     
     Returns:
     A list of nodes
