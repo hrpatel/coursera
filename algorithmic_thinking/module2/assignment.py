@@ -85,6 +85,52 @@ def random_order(graph):
     return shuffled_nodes
 
 
+def fast_targeted_order(graph):
+    """
+    Compute a targeted attack order consisting of nodes of maximal degree
+
+    :rtype : list
+    :param ugraph: input graph
+    """
+
+    # initialize return variable
+    attack_order = []
+
+    # initialize array
+    degree_sets = {}
+    for itr in xrange(len(graph)):
+        degree_sets[itr] = set()
+
+    for idx in graph:
+        degree_sets[len(graph[idx])].add(idx)
+
+    rev_degrees = degree_sets.keys()
+    rev_degrees.reverse()
+    for idx in rev_degrees:
+        while degree_sets[idx]:
+
+            u = degree_sets[idx].pop()
+
+            for neighbour in graph[u]:
+                d = len(graph[neighbour])
+
+                degree_sets[d].remove(neighbour)
+                degree_sets[d - 1].add(neighbour)
+
+            attack_order.append(u)
+
+            provided.delete_node(graph, u)
+
+
+    return attack_order
+
+
+import graph_data as gd
+
+print fast_targeted_order(gd.GRAPH10)
+print fast_targeted_order(gd.GRAPH5)
+
+
 """
 generate graph data for use in the questions
 """
@@ -93,7 +139,7 @@ net_g = utils.read_graph_data("alg_rf7.txt")
 
 # generate a upa graph with the given average out-degree
 total_out_degrees = sum(m1project.compute_out_degrees(net_g).values())
-average_degree = float(total_out_degrees) / len(net_g)
+average_degree = float(total_out_degrees) / len(net_g) / 2
 m = int(round(average_degree))
 upa_g = upa_graph(len(net_g), m)
 
@@ -117,7 +163,11 @@ def q1_q2():
     # compute the resiliency of each graph
     attack_order = random_order(net_g)
     net_g_r = m2project.compute_resilience(net_g, attack_order)
+
+    attack_order = random_order(upa_g)
     upa_g_r = m2project.compute_resilience(upa_g, attack_order)
+
+    attack_order = random_order(er_g)
     er_g_r = m2project.compute_resilience(er_g, attack_order)
 
     # plot the data
@@ -158,7 +208,11 @@ def q4_q5():
     # compute the resiliency of each graph
     attack_order = provided.targeted_order(net_g)
     net_g_r = m2project.compute_resilience(net_g, attack_order)
+
+    attack_order = provided.targeted_order(upa_g)
     upa_g_r = m2project.compute_resilience(upa_g, attack_order)
+
+    attack_order = provided.targeted_order(er_g)
     er_g_r = m2project.compute_resilience(er_g, attack_order)
 
     # plot the data
