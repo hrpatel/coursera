@@ -4,6 +4,7 @@ module 2 project for algorithmic thinking
 __author__ = 'mamaray'
 
 from collections import deque
+from algorithmic_thinking.module2.provided import copy_graph
 
 
 def bfs_visited(ugraph, start_node):
@@ -95,20 +96,23 @@ def compute_resilience(ugraph, attack_order):
     :param attack_order:
     :return:
     """
+    # copy the graph
+    graph = copy_graph(ugraph)
+
     # get all connected components of ugraph and add to list
-    lcc = [largest_cc_size(ugraph)]
+    lcc = [largest_cc_size(graph)]
 
     # loop through each attack
     for attack in attack_order:
         # remove the node
-        edges = ugraph.pop(attack)
+        edges = graph.pop(attack)
 
         # remove edges from other nodes
         for node in edges:
-            ugraph[node].discard(attack)
+            graph[node].discard(attack)
 
         # calculate largest connected component
-        lcc.append(largest_cc_size(ugraph))
+        lcc.append(largest_cc_size(graph))
 
     return lcc
 
