@@ -1,3 +1,5 @@
+from algorithmic_thinking.module1 import graph_data
+
 __author__ = 'ray'
 
 import random
@@ -53,3 +55,19 @@ def upa_graph(num_nodes, num_existing_nodes):
         graph[new_nodes] = set(new_conns)
 
     return graph
+
+
+def random_order(graph):
+    """
+    that takes a graph and returns a list of the nodes in the graph in some random order
+
+    :rtype : list
+    :param graph: graph object
+    :return: list of nodes in an random order
+    """
+    # make a list and shuffle it
+    shuffled_nodes = graph.keys()
+    random.shuffle(shuffled_nodes)
+
+    # return shuffled node list
+    return shuffled_nodes
