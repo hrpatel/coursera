@@ -1,5 +1,3 @@
-__author__ = 'hrpatel'
-
 """
 Template for Project 3
 Student will implement four functions:
@@ -11,6 +9,9 @@ kmeans_clustering(cluster_list, num_clusters, num_iterations)
 
 where cluster_list is a list of clusters in the plane
 """
+
+__author__ = 'hrpatel'
+
 
 import math
 import alg_cluster
@@ -34,7 +35,31 @@ def slow_closest_pairs(cluster_list):
     have minimum distance dist.
 
     """
-    return set([(0, 0, 0)])
+    # initialize return variable
+    pairs = set()
+
+    # initialize variable
+    d_1 = 1000000
+
+    # loop through each point
+    list_size = len(cluster_list)
+    for p_1 in xrange(list_size):
+        for p_2 in xrange(list_size):
+            if p_1 is p_2:
+                continue
+            else:
+                (d_2, x_2, y_2) = pair_distance(cluster_list, p_1, p_2)
+                # did we find a new lower distance?
+                if d_2 < d_1:
+                    d_1 = d_2
+
+                    pairs = set()
+                    pairs.add((d_2, x_2, y_2))
+                # is it  equal to min?
+                elif d_2 == d_1:
+                    pairs.add((d_2, x_2, y_2))
+
+    return pairs
 
 
 def fast_closest_pair(cluster_list):
