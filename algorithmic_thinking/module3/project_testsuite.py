@@ -263,5 +263,3 @@ def test_kmeans():
 
 
 test_kmeans()
-        
-        
