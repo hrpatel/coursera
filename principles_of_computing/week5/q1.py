@@ -1,4 +1,4 @@
-__author__ = 'hrpatel'
+__author__ = 'mamaray'
 
 """
 Recursion according to the "Cat in the Hat"

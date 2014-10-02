@@ -1,5 +1,5 @@
 # Rock-paper-scissors-lizard-Spock game
-__author__ = "hrpatel"
+__author__ = "mamaray"
 
 # import required modules
 import random

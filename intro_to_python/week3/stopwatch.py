@@ -1,5 +1,5 @@
 # "Stopwatch: The Game"
-__author__ = "hrpatel"
+__author__ = "mamaray"
 
 import simplegui
 
