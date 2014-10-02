@@ -43,21 +43,18 @@ def slow_closest_pairs(cluster_list):
 
     # loop through each point
     list_size = len(cluster_list)
-    for p_1 in xrange(list_size):
-        for p_2 in xrange(list_size):
-            if p_1 is p_2:
-                continue
-            else:
-                (d_2, x_2, y_2) = pair_distance(cluster_list, p_1, p_2)
-                # did we find a new lower distance?
-                if d_2 < d_1:
-                    d_1 = d_2
+    for p_1 in xrange(list_size - 1):
+        for p_2 in xrange(p_1 + 1, list_size):
+            (d_2, x_2, y_2) = pair_distance(cluster_list, p_1, p_2)
+            # did we find a new lower distance?
+            if d_2 < d_1:
+                d_1 = d_2
 
-                    pairs = set()
-                    pairs.add((d_2, x_2, y_2))
-                # is it  equal to min?
-                elif d_2 == d_1:
-                    pairs.add((d_2, x_2, y_2))
+                pairs = set()
+                pairs.add((d_2, x_2, y_2))
+            # is it  equal to min?
+            elif d_2 == d_1:
+                pairs.add((d_2, x_2, y_2))
 
     return pairs
 
