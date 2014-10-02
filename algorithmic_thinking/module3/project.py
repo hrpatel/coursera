@@ -77,14 +77,66 @@ def fast_closest_pair(cluster_list):
         have the smallest distance dist of any pair of clusters
 
         """
+        # initialize size of horizontal points
+        h_size = len(horiz_order)
 
         # base case
+        if h_size <= 3:
+
+            small_list = []
+            for node in horiz_order:
+                small_list.append(cluster_list[node])
+
+            pair = slow_closest_pairs(small_list)
+            min_d, p_1, p_2 = pair.pop()
+
+            return (min_d, horiz_order[p_1], horiz_order[p_2])
 
         # divide
+        else:
+            # midpoint
+            h_mid = h_size / 2
+            mid_x = 0.5 * (cluster_list[horiz_order[h_mid - 1]].horiz_center() +
+                           cluster_list[horiz_order[h_mid]].horiz_center())
 
-        # conquer
+            # half the x-coordinates
+            h_l = horiz_order[:h_mid]
+            h_r = horiz_order[h_mid:]
 
-        return (0, 0, 0)
+            # half the y-coordinates (ordered)
+            # TODO: make this faster
+            vlidx = [(cluster_list[idx].vert_center(), idx) for idx in h_l]
+            vlidx.sort()
+            v_l = [vlidx[idx][1] for idx in range(len(vlidx))]
+
+            vridx = [(cluster_list[idx].vert_center(), idx) for idx in h_r]
+            vridx.sort()
+            v_r = [vridx[idx][1] for idx in range(len(vridx))]
+
+            # break the problem into smaller bits
+            d_l, i_l, j_l = fast_helper(cluster_list, h_l, v_l)
+            d_r, i_r, j_r = fast_helper(cluster_list, h_r, v_r)
+
+            # conquer
+            if d_l < d_r:
+                min_d, p_1, p_2 = d_l, i_l, j_l
+            else:
+                min_d, p_1, p_2 = d_r, i_r, j_r
+
+            # check around the mid point of x
+            s_list = []
+            for v_node in vert_order:
+                if abs(cluster_list[v_node].horiz_center() - mid_x) < min_d:
+                    s_list.append(v_node)
+
+            s_size = len(s_list)
+            for idx in xrange(s_size - 1):
+                for idy in xrange(idx + 1, min(idx + 4, s_size)):
+                    s_d = cluster_list[s_list[idx]].distance(cluster_list[s_list[idy]])
+                    if s_d < min_d:
+                        min_d, p_1, p_2 = s_d, s_list[idx], s_list[idy]
+
+        return (min_d, p_1, p_2)
 
     # compute list of indices for the clusters ordered in the horizontal direction
     hcoord_and_index = [(cluster_list[idx].horiz_center(), idx)
@@ -100,6 +152,7 @@ def fast_closest_pair(cluster_list):
 
     # compute answer recursively
     answer = fast_helper(cluster_list, horiz_order, vert_order)
+
     return (answer[0], min(answer[1:]), max(answer[1:]))
 
 
