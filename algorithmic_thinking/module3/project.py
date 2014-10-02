@@ -10,7 +10,7 @@ kmeans_clustering(cluster_list, num_clusters, num_iterations)
 where cluster_list is a list of clusters in the plane
 """
 
-__author__ = 'hrpatel'
+__author__ = 'mamaray'
 
 import alg_cluster
 
