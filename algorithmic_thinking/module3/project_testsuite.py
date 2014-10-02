@@ -255,8 +255,8 @@ def test_kmeans():
         # Prepare test
         error_message = "Testing kmeans_custering on 24 county table, num_clusters = " + str(num_clusters)
         error_message += " num_iterations = " + str(num_iterations)
-        error_message += "\nStudent county tuples: " + str(student_county_tuple)
-        error_message += "\nExpected county tuples: " + str(expected_county_tuple)
+        error_message += "\nStudent county tuples:\t" + str(student_county_tuple)
+        error_message += "\nExpected county tuples:\t" + str(expected_county_tuple)
         suite.run_test(student_county_tuple == expected_county_tuple, True, error_message)
 
     suite.report_results()
