@@ -12,6 +12,8 @@ where cluster_list is a list of clusters in the plane
 
 __author__ = 'hrpatel'
 
+import alg_cluster
+
 
 def pair_distance(cluster_list, idx1, idx2):
     """
@@ -178,19 +180,6 @@ def hierarchical_clustering(cluster_list, num_clusters):
     return cluster_list
 
 
-import alg_cluster
-print hierarchical_clustering([alg_cluster.Cluster(set([]), 90.9548590217, -17.089022585, 1, 0),
-                               alg_cluster.Cluster(set([]), 90.2536656675, -70.5911544718, 1, 0),
-                               alg_cluster.Cluster(set([]), -57.5872347006, 99.7124028905, 1, 0),
-                               alg_cluster.Cluster(set([]), -15.9338519877, 5.91547495626, 1, 0),
-                               alg_cluster.Cluster(set([]), 19.1869055492, -28.0681513017, 1, 0),
-                               alg_cluster.Cluster(set([]), -23.0752410653, -42.1353490324, 1, 0),
-                               alg_cluster.Cluster(set([]), -65.1732261872, 19.675582646, 1, 0),
-                               alg_cluster.Cluster(set([]), 99.7789872101, -11.2619165604, 1, 0),
-                               alg_cluster.Cluster(set([]), -43.3699854405, -94.7349852817, 1, 0)],
-                               5)
-
-
 def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     """
     Compute the k-means clustering of a set of clusters
@@ -204,5 +193,35 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     """
 
     # initialize k-means clusters to be initial clusters with largest populations
+    populations = [(cluster_list[idx].total_population(), idx) for idx in range(len(cluster_list))]
+    populations.sort(reverse=True)
 
-    return []
+    # generate "random" centers (but based on most populated num_cluster's)
+    u_clusters = [cluster_list[populations[idx][1]].copy() for idx in xrange(num_clusters)]
+
+    k_clusters = []
+    # run through each iteration
+    for dummy_iteration in range(num_iterations):
+        # initialize k empty Clusters
+        k_clusters = [alg_cluster.Cluster(set(), 0, 0, 0, 0) for dummy_ctr in range(num_clusters)]
+
+        # loop through each point in cluster_list
+        for point in range(len(cluster_list)):
+
+            # for each point, find the closest u_clusters cluster distance
+            min_d = 10000000
+            min_k_idx = -1
+            for dummy_idx in range(num_clusters):
+                tmp_d = cluster_list[point].distance(u_clusters[dummy_idx])
+                if tmp_d < min_d:
+                    min_d = tmp_d
+                    min_k_idx = dummy_idx
+
+            # take the union of the closest point with k_clusters (same index as u_clusters)
+            k_clusters[min_k_idx].merge_clusters(cluster_list[point])
+
+        # update each u_center with the new center
+        for idx in xrange(num_clusters):
+            u_clusters[idx] = k_clusters[idx].copy()
+
+    return k_clusters
