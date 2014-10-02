@@ -169,7 +169,26 @@ def hierarchical_clustering(cluster_list, num_clusters):
     Output: List of clusters whose length is num_clusters
     """
 
-    return []
+    while len(cluster_list) > num_clusters:
+        closest = fast_closest_pair(cluster_list)
+
+        cluster_list[closest[1]].merge_clusters(cluster_list[closest[2]])
+        cluster_list.pop(closest[2])
+
+    return cluster_list
+
+
+import alg_cluster
+print hierarchical_clustering([alg_cluster.Cluster(set([]), 90.9548590217, -17.089022585, 1, 0),
+                               alg_cluster.Cluster(set([]), 90.2536656675, -70.5911544718, 1, 0),
+                               alg_cluster.Cluster(set([]), -57.5872347006, 99.7124028905, 1, 0),
+                               alg_cluster.Cluster(set([]), -15.9338519877, 5.91547495626, 1, 0),
+                               alg_cluster.Cluster(set([]), 19.1869055492, -28.0681513017, 1, 0),
+                               alg_cluster.Cluster(set([]), -23.0752410653, -42.1353490324, 1, 0),
+                               alg_cluster.Cluster(set([]), -65.1732261872, 19.675582646, 1, 0),
+                               alg_cluster.Cluster(set([]), 99.7789872101, -11.2619165604, 1, 0),
+                               alg_cluster.Cluster(set([]), -43.3699854405, -94.7349852817, 1, 0)],
+                               5)
 
 
 def kmeans_clustering(cluster_list, num_clusters, num_iterations):
