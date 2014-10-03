@@ -43,21 +43,23 @@ def slow_closest_pairs(cluster_list):
     pairs = set()
 
     # initialize variable
-    d_1 = 1000000
+    d_1 = 10000000
 
     # loop through each point
     list_size = len(cluster_list)
     for p_1 in xrange(list_size - 1):
         for p_2 in xrange(p_1 + 1, list_size):
+            # calculate distance between all possible combinations
             (d_2, x_2, y_2) = pair_distance(cluster_list, p_1, p_2)
             # did we find a new lower distance?
             if d_2 < d_1:
                 d_1 = d_2
 
+                # new lower distance so start over
                 pairs = set()
                 pairs.add((d_2, x_2, y_2))
-            # is it  equal to min?
             elif d_2 == d_1:
+                # equal distance, so add to pairs
                 pairs.add((d_2, x_2, y_2))
 
     return pairs
@@ -117,7 +119,7 @@ def fast_closest_pair(cluster_list):
             vridx.sort()
             v_r = [vridx[dummy_ctr][1] for dummy_ctr in range(len(vridx))]
 
-            # break the problem into smaller bits
+            # break the problem into halves
             pair_l = fast_helper(c_list, h_l, v_l)
             pair_r = fast_helper(c_list, h_r, v_r)
 
@@ -171,10 +173,15 @@ def hierarchical_clustering(cluster_list, num_clusters):
     Output: List of clusters whose length is num_clusters
     """
 
+    # loop until desired num_clusters
     while len(cluster_list) > num_clusters:
+        # find the two closest clusters (points)
         closest = fast_closest_pair(cluster_list)
 
+        # merge point 2 -> point 1
         cluster_list[closest[1]].merge_clusters(cluster_list[closest[2]])
+
+        # remove point 2
         cluster_list.pop(closest[2])
 
     return cluster_list
@@ -217,10 +224,10 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
                     min_d = tmp_d
                     min_k_idx = dummy_idx
 
-            # take the union of the closest point with k_clusters (same index as u_clusters)
+            # merge the closest point with k_clusters (same index as u_clusters)
             k_clusters[min_k_idx].merge_clusters(cluster_list[point])
 
-        # update each u_center with the new center
+        # update each u_center with the new k_clusters centers
         for idx in xrange(num_clusters):
             u_clusters[idx] = k_clusters[idx].copy()
 
