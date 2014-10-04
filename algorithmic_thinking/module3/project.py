@@ -231,19 +231,3 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
             u_clusters[idx] = k_clusters[idx].copy()
 
     return k_clusters
-
-
-#
-# from random import randint
-# pointList = [alg_cluster.Cluster(set(), randint(0,1000), randint(0,1000), 0, 0) for i in range(1000)]
-#
-#
-# def compare_slow_fast_pairs():
-#     import cProfile
-#
-#     for i in range(1):
-#         cProfile.run('fast_closest_pair(pointList)')
-#         cProfile.run('slow_closest_pairs(pointList)')
-#
-#
-# compare_slow_fast_pairs()
