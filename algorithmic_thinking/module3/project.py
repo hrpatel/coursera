@@ -109,15 +109,13 @@ def fast_closest_pair(cluster_list):
             h_l = h_order[:h_mid]
             h_r = h_order[h_mid:]
 
-            # half the y-coordinates (ordered)
-            # TODO: make this faster
-            vlidx = [(c_list[dummy_ctr].vert_center(), dummy_ctr) for dummy_ctr in h_l]
-            vlidx.sort()
-            v_l = [vlidx[dummy_ctr][1] for dummy_ctr in range(len(vlidx))]
+            # for O(1) lookups
+            h_l_set = set(h_l)
+            h_r_set = set(h_r)
 
-            vridx = [(c_list[dummy_ctr].vert_center(), dummy_ctr) for dummy_ctr in h_r]
-            vridx.sort()
-            v_r = [vridx[dummy_ctr][1] for dummy_ctr in range(len(vridx))]
+            # half the y-coordinates (ordered)
+            v_l = [v_order[ctr] for ctr in xrange(len(v_order)) if v_order[ctr] in h_l_set]
+            v_r = [v_order[ctr] for ctr in xrange(len(v_order)) if v_order[ctr] in h_r_set]
 
             # break the problem into halves
             pair_l = fast_helper(c_list, h_l, v_l)
@@ -129,11 +127,12 @@ def fast_closest_pair(cluster_list):
             else:
                 min_pair = pair_r
 
-            # check around the mid point of x
+            # gather list of points around the mid_x min_pair[0] or less away
             s_list = [dummy_ctr
                       for dummy_ctr in v_order
                       if abs(c_list[dummy_ctr].horiz_center() - mid_x) < min_pair[0]]
 
+            # find the smallest distance in this group of points
             s_size = len(s_list)
             for dummy_idx in xrange(s_size - 1):
                 for dummy_idy in xrange(dummy_idx + 1, min(dummy_idx + 4, s_size)):
@@ -232,3 +231,19 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
             u_clusters[idx] = k_clusters[idx].copy()
 
     return k_clusters
+
+
+#
+# from random import randint
+# pointList = [alg_cluster.Cluster(set(), randint(0,1000), randint(0,1000), 0, 0) for i in range(1000)]
+#
+#
+# def compare_slow_fast_pairs():
+#     import cProfile
+#
+#     for i in range(1):
+#         cProfile.run('fast_closest_pair(pointList)')
+#         cProfile.run('slow_closest_pairs(pointList)')
+#
+#
+# compare_slow_fast_pairs()
