@@ -40,7 +40,7 @@ def slow_closest_pair(i):
     return project.slow_closest_pairs(gen_random_clusters(i))
 
 
-def q_1():
+def assignment_q1():
     # start a dict to store the running time
     slow_run = {}
     fast_run = {}
@@ -67,5 +67,3 @@ def q_1():
     plt.title("Comparison of slow_closest_pairs/fast_closest_pair algorithms")
     plt.show()
 
-
-q_1()
