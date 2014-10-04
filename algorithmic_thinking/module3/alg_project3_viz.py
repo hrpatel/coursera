@@ -98,11 +98,11 @@ def run_example():
     # cluster_list = sequential_clustering(singleton_list, 50)
     # print "Displaying", len(cluster_list), "sequential clusters"
 
-    cluster_list = project.hierarchical_clustering(singleton_list, 15)
-    print "Displaying", len(cluster_list), "hierarchical clusters"
+    # cluster_list = project.hierarchical_clustering(singleton_list, 15)
+    # print "Displaying", len(cluster_list), "hierarchical clusters"
 
-    # cluster_list = project.kmeans_clustering(singleton_list, 9, 100)
-    # print "Displaying", len(cluster_list), "k-means clusters"
+    cluster_list = project.kmeans_clustering(singleton_list, 15, 5)
+    print "Displaying", len(cluster_list), "k-means clusters"
 
     # draw the clusters using matplotlib or simplegui
     if DESKTOP:
@@ -111,28 +111,70 @@ def run_example():
         alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
 
 
-run_example()
+def assignment_q2():
+    """
+    Load a data table, compute a list of clusters and
+    plot a list of clusters
+    """
+    data_table = load_data_table(DATA_3108_URL)
+    singleton_list = []
+    for line in data_table:
+        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+
+    cluster_list = project.hierarchical_clustering(singleton_list, 15)
+    print "Displaying", len(cluster_list), "hierarchical clusters"
+
+    alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
 
 
+def assignment_q3():
+    """
+    Load a data table, compute a list of clusters and
+    plot a list of clusters
+    """
+    data_table = load_data_table(DATA_3108_URL)
+    singleton_list = []
+    for line in data_table:
+        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+
+    cluster_list = project.kmeans_clustering(singleton_list, 15, 5)
+    print "Displaying", len(cluster_list), "k-means clusters"
+
+    alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
 
 
+def assignment_q5():
+    """
+    Load a data table, compute a list of clusters and
+    plot a list of clusters
+    """
+    data_table = load_data_table(DATA_111_URL)
+    singleton_list = []
+    for line in data_table:
+        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
-    
+    cluster_list = project.hierarchical_clustering(singleton_list, 9)
+    print "Displaying", len(cluster_list), "hierarchical clusters"
 
-
-
-
-
-  
-        
-
-
-
-
-
-
-        
+    alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
 
 
+def assignment_q6():
+    """
+    Load a data table, compute a list of clusters and
+    plot a list of clusters
+    """
+    data_table = load_data_table(DATA_111_URL)
+    singleton_list = []
+    for line in data_table:
+        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+
+    cluster_list = project.kmeans_clustering(singleton_list, 9, 5)
+    print "Displaying", len(cluster_list), "k-means clusters"
+
+    alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
+
+
+assignment_q6()
 
 
