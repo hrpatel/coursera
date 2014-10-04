@@ -20,15 +20,15 @@ if DESKTOP:
 else:
     import alg_clusters_simplegui
     import codeskulptor
+
     codeskulptor.set_timeout(30)
 
 
-###################################################
+# ##################################################
 # Code to load data tables
 
 # URLs for cancer risk data tables of various sizes
 # Numbers indicate number of counties in data table
-
 DIRECTORY = "http://commondatastorage.googleapis.com/codeskulptor-assets/"
 DATA_3108_URL = "unifiedCancerData_3108.csv"
 DATA_896_URL = "unifiedCancerData_896.csv"
@@ -46,7 +46,7 @@ def load_data_table(data_url):
     data_lines = data.split('\n')
     print "Loaded", len(data_lines), "data points"
     data_tokens = [line.split(',') for line in data_lines]
-    return [[tokens[0], float(tokens[1]), float(tokens[2]), int(tokens[3]), float(tokens[4])] 
+    return [[tokens[0], float(tokens[1]), float(tokens[2]), int(tokens[3]), float(tokens[4])]
             for tokens in data_tokens]
 
 
@@ -61,22 +61,22 @@ def sequential_clustering(singleton_list, num_clusters):
     
     Note that method may return num_clusters or num_clusters + 1 final clusters
     """
-    
+
     cluster_list = []
     cluster_idx = 0
     total_clusters = len(singleton_list)
-    cluster_size = float(total_clusters)  / num_clusters
-    
+    cluster_size = float(total_clusters) / num_clusters
+
     for cluster_idx in range(len(singleton_list)):
         new_cluster = singleton_list[cluster_idx]
         if math.floor(cluster_idx / cluster_size) != \
-           math.floor((cluster_idx - 1) / cluster_size):
+                math.floor((cluster_idx - 1) / cluster_size):
             cluster_list.append(new_cluster)
         else:
             cluster_list[-1] = cluster_list[-1].merge_clusters(new_cluster)
-            
+
     return cluster_list
-                
+
 
 #####################################################################
 # Code to load cancer data, compute a clustering and 
@@ -90,11 +90,11 @@ def run_example():
     Set DESKTOP = True/False to use either matplotlib or simplegui
     """
     data_table = load_data_table(DATA_3108_URL)
-    
+
     singleton_list = []
     for line in data_table:
         singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
-        
+
     # cluster_list = sequential_clustering(singleton_list, 50)
     # print "Displaying", len(cluster_list), "sequential clusters"
 
@@ -154,6 +154,11 @@ def assignment_q5():
         singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
     cluster_list = project.hierarchical_clustering(singleton_list, 9)
+
+    # q7
+    distortion = compute_distortion(cluster_list, data_table)
+    print "hierarchical_clustering distortion:", distortion
+
     print "Displaying", len(cluster_list), "hierarchical clusters"
 
     alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
@@ -170,11 +175,23 @@ def assignment_q6():
         singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
     cluster_list = project.kmeans_clustering(singleton_list, 9, 5)
+
+    # q7
+    distortion = compute_distortion(cluster_list, data_table)
+    print "kmeans_clustering distortion:", distortion
+
     print "Displaying", len(cluster_list), "k-means clusters"
 
     alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
 
 
-assignment_q6()
+def compute_distortion(cluster_list, data_table):
+    distortion = 0
+    for idx in range(len(cluster_list)):
+        distortion += cluster_list[idx].cluster_error(data_table)
+    return distortion
+
+
+assignment_q5()
 
 
