@@ -92,6 +92,8 @@ def fast_targeted_order(graph):
     :rtype : list
     :param ugraph: input graph
     """
+    # copy graph
+    graph = provided.copy_graph(graph)
 
     # initialize return variable
     attack_order = []
@@ -121,15 +123,11 @@ def fast_targeted_order(graph):
 
             provided.delete_node(graph, u)
 
-
     return attack_order
 
-
-import graph_data as gd
-
-print fast_targeted_order(gd.GRAPH10)
-print fast_targeted_order(gd.GRAPH5)
-
+# import graph_data as gd
+# print fast_targeted_order(gd.GRAPH2)
+# quit()
 
 """
 generate graph data for use in the questions
@@ -206,13 +204,13 @@ def q4_q5():
     :return:
     """
     # compute the resiliency of each graph
-    attack_order = provided.targeted_order(net_g)
+    attack_order = fast_targeted_order(net_g)
     net_g_r = m2project.compute_resilience(net_g, attack_order)
 
-    attack_order = provided.targeted_order(upa_g)
+    attack_order = fast_targeted_order(upa_g)
     upa_g_r = m2project.compute_resilience(upa_g, attack_order)
 
-    attack_order = provided.targeted_order(er_g)
+    attack_order = fast_targeted_order(er_g)
     er_g_r = m2project.compute_resilience(er_g, attack_order)
 
     # plot the data
@@ -244,4 +242,33 @@ def q4_q5():
     print "resiliency range:", remaining_nodes - _limit, remaining_nodes + _limit
 
 
-q4_q5()
+def q3():
+    import time
+
+    slow = []
+    fast = []
+
+    for n in range(10, 1000, 10):
+        upa_g = upa_graph(n, 5)
+        s = time.time()
+        attack_order = provided.targeted_order(upa_g)
+        e = time.time()
+        slow.append(e - s)
+
+    for n in range(10, 1000, 10):
+        upa_g = upa_graph(n, 5)
+        s = time.time()
+        attack_order = fast_targeted_order(upa_g)
+        e = time.time()
+        fast.append(e - s)
+
+    plt.plot(range(10, 1000, 10), slow, '-b', label='targeted_order')
+    plt.plot(range(10, 1000, 10), fast, '-r', label='fast_targeted_order')
+    plt.legend(loc='upper right')
+    plt.xlabel("number of nodes")
+    plt.ylabel("running time")
+    plt.title("comparison of running time on desktop python")
+    plt.show()
+
+
+q3()
