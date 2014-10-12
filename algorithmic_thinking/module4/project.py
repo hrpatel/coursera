@@ -105,31 +105,38 @@ def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     align_x and align_y. Note that align_x and align_y should have the same length and may include the padding
     character '-'
     """
-    align_x = ""
-    align_y = ""
-
     x_size = len(seq_x)
     y_size = len(seq_y)
 
+    # return variables
     score = alignment_matrix[x_size][y_size]
 
+    align_x = ""
+    align_y = ""
+
+    # loop until we exhaust one of the sequences
     while x_size > 0 and y_size > 0:
         # trace back diagonal
-        if alignment_matrix[x_size][y_size] == alignment_matrix[x_size - 1][y_size - 1] + scoring_matrix[seq_x[x_size - 1]][seq_y[y_size - 1]]:
+        if alignment_matrix[x_size][y_size] == alignment_matrix[x_size - 1][y_size - 1] + \
+                scoring_matrix[seq_x[x_size - 1]][seq_y[y_size - 1]]:
             align_x = seq_x[x_size - 1] + align_x
             align_y = seq_y[y_size - 1] + align_y
             x_size += -1
             y_size += -1
         else:
-            if alignment_matrix[x_size][y_size] == alignment_matrix[x_size - 1][y_size] + scoring_matrix[seq_x[x_size - 1]]["-"]:
+            # trace back up 1 row ("-" in seq_y)
+            if alignment_matrix[x_size][y_size] == alignment_matrix[x_size - 1][y_size] + \
+                    scoring_matrix[seq_x[x_size - 1]]["-"]:
                 align_x = seq_x[x_size - 1] + align_x
                 align_y = "-" + align_y
                 x_size += -1
+            # trace back left one column ("-" in seq_x)
             else:
                 align_x = "-" + align_x
                 align_y = seq_y[y_size - 1] + align_y
                 y_size += -1
 
+    # finish off the rest of the left over string, if any
     while x_size > 0:
         align_x = seq_x[x_size - 1] + align_x
         align_y = "-" + align_y
@@ -162,17 +169,18 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
 
     return score, align_x, align_y
 
-print compute_global_alignment('ACTACT',
-                         'AGCTA',
-                         {'A': {'A': 2, 'C': 1, '-': 0, 'T': 1, 'G': 1},
-                          'C': {'A': 1, 'C': 2, '-': 0, 'T': 1, 'G': 1},
-                          '-': {'A': 0, 'C': 0, '-': 0, 'T': 0, 'G': 0},
-                          'T': {'A': 1, 'C': 1, '-': 0, 'T': 2, 'G': 1},
-                          'G': {'A': 1, 'C': 1, '-': 0, 'T': 1, 'G': 2}},
-                         [[0, 0, 0, 0, 0, 0],
-                          [0, 2, 2, 2, 2, 2],
-                          [0, 2, 3, 4, 4, 4],
-                          [0, 2, 3, 4, 6, 6],
-                          [0, 2, 3, 4, 6, 8],
-                          [0, 2, 3, 5, 6, 8],
-                          [0, 2, 3, 5, 7, 8]])
+
+# print compute_global_alignment('ACTACT',
+#                                'AGCTA',
+#                                {'A': {'A': 2, 'C': 1, '-': 0, 'T': 1, 'G': 1},
+#                                 'C': {'A': 1, 'C': 2, '-': 0, 'T': 1, 'G': 1},
+#                                 '-': {'A': 0, 'C': 0, '-': 0, 'T': 0, 'G': 0},
+#                                 'T': {'A': 1, 'C': 1, '-': 0, 'T': 2, 'G': 1},
+#                                 'G': {'A': 1, 'C': 1, '-': 0, 'T': 1, 'G': 2}},
+#                                [[0, 0, 0, 0, 0, 0],
+#                                 [0, 2, 2, 2, 2, 2],
+#                                 [0, 2, 3, 4, 4, 4],
+#                                 [0, 2, 3, 4, 6, 6],
+#                                 [0, 2, 3, 4, 6, 8],
+#                                 [0, 2, 3, 5, 6, 8],
+#                                 [0, 2, 3, 5, 7, 8]])
