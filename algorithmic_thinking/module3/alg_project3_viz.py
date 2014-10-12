@@ -193,7 +193,7 @@ def compute_distortion(cluster_list, data_table):
     return distortion
 
 
-def assignment_q10_data():
+def assignment_q10():
     """
     Load a data table, compute a list of clusters and
     plot a list of clusters
@@ -215,22 +215,21 @@ def assignment_q10_data():
         # read in the data
         data_table = load_data_table(data_tables[data])
         singleton_list = []
+        for line in data_table:
+            singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
         # loop through each clustering method
-        for method in ["kmeans"]:
+        for method in ["kmeans", "hierarchical"]:
             distortions[data][method] = []
-
-            for line in data_table:
-                singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
             # loop through cluster sizes in reverse
             for num_clusters in range(20, 5, -1):
-                # for line in data_table:
-                #     singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
 
                 if method == "kmeans":
                     cluster_list = []
                     cluster_list = methods[method](singleton_list, num_clusters, 5)
+
+                # WARNING: 'hierarchical' modifies the cluster list
                 elif method == "hierarchical":
                     cluster_list = methods[method](singleton_list, num_clusters)
 
@@ -246,51 +245,81 @@ def assignment_q10_data():
         print
         print
 
-    print distortions
+    # loop through each data set
+    for dataset in distortions.keys():
+        colours = ["-b", "-g"]
 
+        # loop through each algorithm
+        for alg in distortions[dataset]:
+            # reverse the data so it aligns with output clusters
+            distortions[dataset][alg].reverse()
 
-def assignment_q10_graphs():
-    hi = {'111': { 'hierarchical': [43346616567.370995, 43572685067.322044, 47956771398.36999, 75195590422.5596,
-                                    76305792806.40341, 83751677988.91672, 92851824733.8917, 95061330400.91187,
-                                    123364931819.36792, 128691501288.44057, 136007319294.4524, 175163886915.8305,
-                                    256295541683.34512, 304487213235.6511, 473061548301.70715]},
-          '290': {'hierarchical': [158866394846.55307, 165854841465.23853, 209424475932.79617, 210882439099.43875,
-                                   257523094470.34372, 265642320327.18256, 273999812286.6749, 300957083742.44525,
-                                   409759400590.09357, 452595640777.7162, 479106607308.0914, 607404453849.4803,
-                                   607704110695.7351, 873386979469.7281, 1721363375274.0847]},
-          '896': {'hierarchical': [377806730495.8184, 463371219437.6528, 466383317148.95233, 468733959164.0338,
-                                   504815920302.4635, 509864466993.6245, 581040540888.136, 635476455541.3553,
-                                   775480684213.7341, 887973140164.112, 947764944638.2128, 972923457621.6617,
-                                   1228012004919.8132, 1263342391158.555, 2211819145957.3906]}}
+            # define the x axis data
+            xvals = range(6, 21)
 
-    km = {'111': {'kmeans': [123389671106.6206, 123483080788.27681, 161626921206.76382, 162018028052.88672,
-                             163567291743.99063, 164745271371.3518, 165471040577.26993, 173058588040.28055,
-                             173535638065.6752, 174267507472.60236, 175790688405.04092, 271254226924.20047,
-                             430845493901.4979, 480503404944.00757, 855406302600.9299]},
-          '290': {'kmeans': [186562044404.06274, 215763229779.78592, 218182336738.10098, 220231070772.07336,
-                             232286884261.00916, 238910074068.03934, 397061951861.4956, 397796574329.07294,
-                             449630999209.31024, 557173759501.5332, 619318206656.0833, 656031563613.5233,
-                             726141205120.559, 1256566786124.0432, 1432446364647.484]},
-          '896': {'kmeans': [341850583704.0547, 392190427938.5421, 418814444487.6942, 441641633333.34503,
-                             475260676178.591, 477113007869.9135, 693980006271.2808, 707481162063.751,
-                             717297472806.9475, 873017865209.888, 941617184525.7502, 1005638949041.6797,
-                             1149516152182.7866, 1632162002379.899, 2376173737632.8]}}
-
-    for i in km.keys():
-        km[i]["kmeans"].reverse()
-        hi[i]["hierarchical"].reverse()
+            # add data to plot
+            plt.plot(xvals, distortions[dataset][alg], colours.pop(), label=alg)
 
         # plot the data
-        xvals = range(6, 21)
-
-        plt.plot(xvals, km[i]["kmeans"], '-b', label='kmeans')
-        plt.plot(xvals, hi[i]["hierarchical"], '-r', label='hierarchical')
         plt.legend(loc='upper right')
         plt.xlabel(" number of output clusters")
         plt.ylabel("distortion associated with each output clustering")
-        plt.title("distortion of the list of {} clusters".format(i))
+        plt.title("distortion of the list of {} clusters".format(dataset))
         plt.show()
 
 
-# assignment_q10_data()
-assignment_q10_graphs()
+def assignment_q10_graphs():
+    """
+    leaving here for reference. I've updated the above method to generate data and plot.
+    """
+    import random
+
+    data = {'111': {'hierarchical': [43346616567.370995, 43572685067.322044, 47956771398.36999, 75195590422.5596,
+                                     76305792806.40341, 83751677988.91672, 92851824733.8917, 95061330400.91187,
+                                     123364931819.36792, 128691501288.44057, 136007319294.4524, 175163886915.8305,
+                                     256295541683.34512, 304487213235.6511, 473061548301.70715],
+                    'kmeans': [123389671106.6206, 123483080788.27681, 161626921206.76382, 162018028052.88672,
+                               163567291743.99063, 164745271371.3518, 165471040577.26993, 173058588040.28055,
+                               173535638065.6752, 174267507472.60236, 175790688405.04092, 271254226924.20047,
+                               430845493901.4979, 480503404944.00757, 855406302600.9299]},
+
+            '290': {'hierarchical': [158866394846.55307, 165854841465.23853, 209424475932.79617, 210882439099.43875,
+                                     257523094470.34372, 265642320327.18256, 273999812286.6749, 300957083742.44525,
+                                     409759400590.09357, 452595640777.7162, 479106607308.0914, 607404453849.4803,
+                                     607704110695.7351, 873386979469.7281, 1721363375274.0847],
+                    'kmeans': [186562044404.06274, 215763229779.78592, 218182336738.10098, 220231070772.07336,
+                               232286884261.00916, 238910074068.03934, 397061951861.4956, 397796574329.07294,
+                               449630999209.31024, 557173759501.5332, 619318206656.0833, 656031563613.5233,
+                               726141205120.559, 1256566786124.0432, 1432446364647.484]},
+
+            '896': {'hierarchical': [377806730495.8184, 463371219437.6528, 466383317148.95233, 468733959164.0338,
+                                     504815920302.4635, 509864466993.6245, 581040540888.136, 635476455541.3553,
+                                     775480684213.7341, 887973140164.112, 947764944638.2128, 972923457621.6617,
+                                     1228012004919.8132, 1263342391158.555, 2211819145957.3906],
+                    'kmeans': [341850583704.0547, 392190427938.5421, 418814444487.6942, 441641633333.34503,
+                               475260676178.591, 477113007869.9135, 693980006271.2808, 707481162063.751,
+                               717297472806.9475, 873017865209.888, 941617184525.7502, 1005638949041.6797,
+                               1149516152182.7866, 1632162002379.899, 2376173737632.8]}}
+
+
+    # loop through each data set
+    for dataset in data.keys():
+        colours = ["-b", "-g"]
+
+        # loop through each algorithm
+        for alg in data[dataset]:
+            # reverse the data so it aligns with output clusters
+            data[dataset][alg].reverse()
+
+            # define the x axis data
+            xvals = range(6, 21)
+
+            # add data to plot
+            plt.plot(xvals, data[dataset][alg], colours.pop(), label=alg)
+
+        # plot the data
+        plt.legend(loc='upper right')
+        plt.xlabel(" number of output clusters")
+        plt.ylabel("distortion associated with each output clustering")
+        plt.title("distortion of the list of {} clusters".format(dataset))
+        plt.show()
