@@ -47,7 +47,7 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
     Homework. If global_flag is False, each entry is computed using the method described in Question 12 of the Homework
 
     :rtype : list
-    :param seq_x: first sequence 
+    :param seq_x: first sequence
     :param seq_y: second sequence
     :param scoring_matrix: alphabet scoring matrix
     :param global_flag: global or local alignment
@@ -90,3 +90,43 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
                 dps[idx][idy] = 0
 
     return dps
+
+
+def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
+    """
+    This function computes a global alignment of seq_x and seq_y using the global alignment matrix alignment_matrix.
+
+    :rtype : tuple
+    :param seq_x: first sequence
+    :param seq_y: second sequence to compare
+    :param scoring_matrix: scoring matrix for alphabet
+    :param alignment_matrix: alignment matrix for the sequences
+    :return: a tuple of the form (score, align_x, align_y) where score is the score of the global alignment
+    align_x and align_y. Note that align_x and align_y should have the same length and may include the padding
+    character '-'
+    """
+    score = 0
+    align_x = ""
+    align_y = ""
+
+    return score, align_x, align_y
+
+
+def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
+    """
+    This function computes a local alignment of seq_x and seq_y using the local alignment matrix alignment_matrix.
+
+    :rtype : tuple
+    :param seq_x:
+    :param seq_y:
+    :param scoring_matrix:
+    :param alignment_matrix:
+    :return: a tuple of the form (score, align_x, align_y) where score is the score of the optimal local
+    alignment align_x and align_y. Note that align_x and align_y should have the same length and may include the padding
+    character '-'.
+    """
+    score = 0
+    align_x = ""
+    align_y = ""
+
+    return score, align_x, align_y
