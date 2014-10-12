@@ -27,20 +27,66 @@ def build_scoring_matrix(alphabet, diag_score, off_diag_score, dash_score):
 
         for char_y in alphabet:
 
-            # match
+            # matching a "-"
             if char_x == "-" or char_y == "-":
                 scoring_matrix[char_x][char_y] = dash_score
-
+            # matching character
             elif char_x == char_y:
                 scoring_matrix[char_x][char_y] = diag_score
-
+            # non-matching character
             else:
                 scoring_matrix[char_x][char_y] = off_diag_score
 
-            print char_x, char_y, scoring_matrix[char_x][char_y]
-
     return scoring_matrix
 
-# build_scoring_matrix(set(['A', 'C', '-', 'T', 'G']), 6, 2, -4)
-# a = {'A': {'A': 6, 'C': 2, '-': -4, 'T': 2, 'G': 2}, 'C': {'A': 2, 'C': 6, '-': -4, 'T': 2, 'G': 2}, '-': {'A': -4, 'C': -4, '-': -4, 'T': -4, 'G': -4}, 'T': {'A': 2, 'C': 2, '-': -4, 'T': 6, 'G': 2}, 'G': {'A': 2, 'C': 2, '-': -4, 'T': 2, 'G': 6}}
-# b = {'A': {'A': 6, 'C': 2, '-': -4, 'T': 2, 'G': 2}, 'C': {'A': 2, 'C': 6, '-': -4, 'T': 2, 'G': 2}, '-': {'A': -4, 'C': -4, '-': 6, 'T': -4, 'G': -4}, 'T': {'A': 2, 'C': 2, '-': -4, 'T': 6, 'G': 2}, 'G': {'A': 2, 'C': 2, '-': -4, 'T': 2, 'G': 6}}
+
+def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
+    """
+    The function computes and returns the alignment matrix for seq_x and seq_y as described in the Homework. If
+    global_flag is True, each entry of the alignment matrix is computed using the method described in Question 8 of the
+    Homework. If global_flag is False, each entry is computed using the method described in Question 12 of the Homework
+
+    :rtype : list
+    :param seq_x:
+    :param seq_y:
+    :param scoring_matrix:
+    :param global_flag:
+    :return:
+    """
+
+    # define the size of the DPS matrix
+    x_size = len(seq_x) + 1
+    y_size = len(seq_y) + 1
+
+    # initialize matrix and set [0][0] = 0
+    dps = [[None for dummy_c in range(y_size)] for dummy_r in range(x_size)]
+    dps[0][0] = 0
+
+    # set the null match score for seq_x
+    for idx in range(1, x_size):
+        dps[idx][0] = dps[idx - 1][0] + scoring_matrix[seq_x[idx - 1]]["-"]
+
+        # local matching
+        if not global_flag and dps[idx][0] < 0:
+            dps[idx][0] = 0
+
+    # set the null match score for seq_y
+    for idy in range(1, y_size):
+        dps[0][idy] = dps[0][idy - 1] + scoring_matrix["-"][seq_y[idy - 1]]
+
+        # local matching
+        if not global_flag and dps[0][idy] < 0:
+            dps[0][idy] = 0
+
+    # calculate the rest of the matrix
+    for idx in range(1, x_size):
+        for idy in range(1, y_size):
+            dps[idx][idy] = max(dps[idx - 1][idy - 1] + scoring_matrix[seq_x[idx - 1]][seq_y[idy - 1]],
+                                dps[idx - 1][idy] + scoring_matrix[seq_x[idx - 1]]["-"],
+                                dps[idx][idy - 1] + scoring_matrix["-"][seq_y[idy - 1]])
+
+            # local matching
+            if not global_flag and dps[idx][idy] < 0:
+                dps[idx][idy] = 0
+
+    return dps
