@@ -212,7 +212,6 @@ def assignment_q10():
             for num_clusters in range(20, 5, -1):
 
                 if method == "kmeans":
-                    cluster_list = []
                     cluster_list = methods[method](singleton_list, num_clusters, 5)
 
                 # WARNING: 'hierarchical' modifies the cluster list
