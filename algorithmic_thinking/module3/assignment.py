@@ -1,25 +1,25 @@
 __author__ = 'mamaray'
 
-
 import alg_cluster
 import project
 import random
 import time
 import matplotlib.pyplot as plt
 
-
 from random import randint
-pointList = [alg_cluster.Cluster(set(), randint(0,1000), randint(0,1000), 0, 0) for i in range(1000)]
+
+pointList = [alg_cluster.Cluster(set(), randint(0, 1000), randint(0, 1000), 0, 0) for i in range(1000)]
+
 
 def compare_slow_fast_pairs():
     import cProfile
 
-    for i in range(1):
+    for idx in range(1):
         cProfile.run('project.fast_closest_pair(pointList)')
         cProfile.run('project.slow_closest_pairs(pointList)')
 
-# compare_slow_fast_pairs()
 
+# compare_slow_fast_pairs()
 
 
 def gen_random_clusters(num_clusters):
@@ -34,10 +34,12 @@ def gen_random_clusters(num_clusters):
     return clusters
 
 
-def fast_closest_pair(i):
-    return project.fast_closest_pair(gen_random_clusters(i))
-def slow_closest_pair(i):
-    return project.slow_closest_pairs(gen_random_clusters(i))
+def fast_closest_pair(num_clusters):
+    return project.fast_closest_pair(gen_random_clusters(num_clusters))
+
+
+def slow_closest_pair(num_clusters):
+    return project.slow_closest_pairs(gen_random_clusters(num_clusters))
 
 
 def assignment_q1():
