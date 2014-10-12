@@ -166,7 +166,7 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     x_idx = 0
     y_idx = 0
 
-    # return variables
+    # find the largest score and corresponding indices
     score = alignment_matrix[x_idx][y_idx]
     for idx in range(len(seq_x) + 1):
         for idy in range(len(seq_y) + 1):
@@ -179,7 +179,7 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     align_x = ""
     align_y = ""
 
-    # loop until we exhaust one of the sequences
+    # loop until we reach a 0 score
     while x_idx > 0 and y_idx > 0:
         # trace back diagonal
         if alignment_matrix[x_idx][y_idx] == alignment_matrix[x_idx - 1][y_idx - 1] + \
@@ -201,29 +201,8 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
                 align_y = seq_y[y_idx - 1] + align_y
                 y_idx += -1
 
+        # found a zero, we're done
         if alignment_matrix[x_idx][y_idx] == 0:
             break
 
-    # # finish off the rest of the left over string, if any
-    # while x_idx > 0:
-    #     align_x = seq_x[x_idx - 1] + align_x
-    #     align_y = "-" + align_y
-    #     x_idx += -1
-    #
-    # while y_idx > 0:
-    #     align_x = "-" + align_x
-    #     align_y = seq_y[y_idx - 1] + align_y
-    #     y_idx += -1
-
     return score, align_x, align_y
-
-
-print compute_local_alignment('A',
-                              'A',
-                              {'A': {'A': 6, 'C': 2, '-': -4, 'T': 2, 'G': 2},
-                               'C': {'A': 2, 'C': 6, '-': -4, 'T': 2, 'G': 2},
-                               '-': {'A': -4, 'C': -4, '-': -4, 'T': -4, 'G': -4},
-                               'T': {'A': 2, 'C': 2, '-': -4, 'T': 6, 'G': 2},
-                               'G': {'A': 2, 'C': 2, '-': -4, 'T': 2, 'G': 6}},
-                              [[0, 0],
-                               [0, 6]])
