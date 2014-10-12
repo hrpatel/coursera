@@ -7,23 +7,11 @@ http://www.codeskulptor.org/#alg_clusters_matplotlib.py
 to use the matplotlib version of this code
 """
 
-# Flavor of Python - desktop or CodeSkulptor
-DESKTOP = True
-
-import math
 import alg_cluster
+import alg_clusters_matplotlib
+import math
 import matplotlib.pyplot as plt
-
-
-# conditional imports
-if DESKTOP:
-    import project
-    import alg_clusters_matplotlib
-else:
-    import alg_clusters_simplegui
-    import codeskulptor
-
-    codeskulptor.set_timeout(30)
+import project
 
 
 # ##################################################
@@ -94,7 +82,7 @@ def run_example():
 
     singleton_list = []
     for line in data_table:
-        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+        singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
     # cluster_list = sequential_clustering(singleton_list, 50)
     # print "Displaying", len(cluster_list), "sequential clusters"
@@ -106,10 +94,7 @@ def run_example():
     print "Displaying", len(cluster_list), "k-means clusters"
 
     # draw the clusters using matplotlib or simplegui
-    if DESKTOP:
-        alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
-    else:
-        alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
+    alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
 
 
 def assignment_q2():
@@ -120,7 +105,7 @@ def assignment_q2():
     data_table = load_data_table(DATA_3108_URL)
     singleton_list = []
     for line in data_table:
-        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+        singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
     cluster_list = project.hierarchical_clustering(singleton_list, 15)
     print "Displaying", len(cluster_list), "hierarchical clusters"
@@ -136,7 +121,7 @@ def assignment_q3():
     data_table = load_data_table(DATA_3108_URL)
     singleton_list = []
     for line in data_table:
-        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+        singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
     cluster_list = project.kmeans_clustering(singleton_list, 15, 5)
     print "Displaying", len(cluster_list), "k-means clusters"
@@ -152,7 +137,7 @@ def assignment_q5():
     data_table = load_data_table(DATA_111_URL)
     singleton_list = []
     for line in data_table:
-        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+        singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
     cluster_list = project.hierarchical_clustering(singleton_list, 9)
 
@@ -173,7 +158,7 @@ def assignment_q6():
     data_table = load_data_table(DATA_111_URL)
     singleton_list = []
     for line in data_table:
-        singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+        singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
     cluster_list = project.kmeans_clustering(singleton_list, 9, 5)
 
@@ -216,12 +201,13 @@ def assignment_q10():
         data_table = load_data_table(data_tables[data])
         singleton_list = []
         for line in data_table:
-            singleton_list.append(alg_cluster.Cluster(set([line[0]]), line[1], line[2], line[3], line[4]))
+            singleton_list.append(alg_cluster.Cluster({line[0]}, line[1], line[2], line[3], line[4]))
 
         # loop through each clustering method
         for method in ["kmeans", "hierarchical"]:
             distortions[data][method] = []
 
+            cluster_list = []
             # loop through cluster sizes in reverse
             for num_clusters in range(20, 5, -1):
 
@@ -272,8 +258,6 @@ def assignment_q10_graphs():
     """
     leaving here for reference. I've updated the above method to generate data and plot.
     """
-    import random
-
     data = {'111': {'hierarchical': [43346616567.370995, 43572685067.322044, 47956771398.36999, 75195590422.5596,
                                      76305792806.40341, 83751677988.91672, 92851824733.8917, 95061330400.91187,
                                      123364931819.36792, 128691501288.44057, 136007319294.4524, 175163886915.8305,
