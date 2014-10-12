@@ -47,11 +47,11 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
     Homework. If global_flag is False, each entry is computed using the method described in Question 12 of the Homework
 
     :rtype : list
-    :param seq_x:
-    :param seq_y:
-    :param scoring_matrix:
-    :param global_flag:
-    :return:
+    :param seq_x: first sequence 
+    :param seq_y: second sequence
+    :param scoring_matrix: alphabet scoring matrix
+    :param global_flag: global or local alignment
+    :return: score matrix for aligning both sequences
     """
 
     # define the size of the DPS matrix
