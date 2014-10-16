@@ -2,8 +2,6 @@
 Provide code and solution for Application 4
 """
 
-import urllib2
-
 
 # URLs for data files
 PAM50_URL = "alg_PAM50.txt"
@@ -28,7 +26,7 @@ def read_scoring_matrix(filename):
     A dictionary of dictionaries mapping X and Y characters to scores
     """
     scoring_dict = {}
-    scoring_file = urllib2.urlopen(filename)
+    scoring_file = open(filename)
     ykeys = scoring_file.readline()
     ykeychars = ykeys.split()
     for line in scoring_file.readlines():
@@ -50,7 +48,7 @@ def read_protein(filename):
     Returns:
     A string representing the protein
     """
-    protein_file = urllib2.urlopen(filename)
+    protein_file = open(filename)
     protein_seq = protein_file.read()
     protein_seq = protein_seq.rstrip()
     return protein_seq
@@ -63,7 +61,7 @@ def read_words(filename):
     Returns a list of strings.
     """
     # load assets
-    word_file = urllib2.urlopen(filename)
+    word_file = open(filename)
 
     # read in files as string
     words = word_file.read()
