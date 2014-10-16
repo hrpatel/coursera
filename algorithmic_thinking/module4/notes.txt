@@ -1,0 +1,4 @@
+https://www.cs.umd.edu/class/fall2011/cmsc858s/Alignment.pdf
+http://www.cs.utoronto.ca/~brudno/bcb410/lec2notes.pdf
+http://www.primate.or.kr/bioinformatics/Course/Boston/04.pdfhttp://www.primate.or.kr/bioinformatics/Course/Boston/04.pdf
+https://d396qusza40orc.cloudfront.net/algorithmicthink/handouts/SequenceAlignment.pdf
