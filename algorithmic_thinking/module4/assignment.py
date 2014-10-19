@@ -124,7 +124,7 @@ def q4():
     # 65: 9, 66: 7, 67: 5, 68: 3, 69: 1, 70: 2, 71: 1, 72: 2, 73: 3, 75: 1, 76: 1, 77: 2, 78: 2, 82: 1, 85: 1}
 
     # dist2 = {38: 3, 40: 7, 41: 13, 42: 23, 43: 27, 44: 29, 45: 45, 46: 74, 47: 69, 48: 72, 49: 71, 50: 65, 51: 52,
-    #          52: 64, 53: 57, 54: 49, 55: 43, 56: 28, 57: 40, 58: 31, 59: 17, 60: 18, 61: 14, 62: 12, 63: 9, 64: 9,
+    # 52: 64, 53: 57, 54: 49, 55: 43, 56: 28, 57: 40, 58: 31, 59: 17, 60: 18, 61: 14, 62: 12, 63: 9, 64: 9,
     #          65: 4, 66: 10, 67: 8, 68: 5, 69: 6, 70: 2, 71: 3, 72: 4, 73: 1, 75: 3, 77: 4, 79: 2, 80: 1, 81: 1, 82: 2,
     #          84: 1, 85: 1, 93: 1}
 
@@ -183,4 +183,38 @@ def q7():
     print soln.compute_global_alignment(x, y, sm, am)
 
 
-q7()
+# scoring matrix for q8
+word_sm = soln.build_scoring_matrix("abcdefghijklmnopqrstuvwxyz-", 2, 1, 0)
+
+
+def check_spelling(checked_word, dist, word_list):
+    wordlist = []
+    word_len = len(checked_word)
+
+    # global
+    for word in word_list:
+        am = soln.compute_alignment_matrix(checked_word, word, word_sm, True)
+        g_al, dummy_x, dummy_y = soln.compute_global_alignment(checked_word, word, word_sm, am)
+
+        score = word_len + len(word) - g_al
+
+        if score <= dist:
+            wordlist.append(word)
+            print word, score
+
+    return wordlist
+
+
+def q8():
+    word_list = data.read_words(data.WORD_LIST_URL)
+
+    word1 = "humble"
+    words = check_spelling(word1, 1, word_list)
+    print "{}: ".format(word1), words
+
+    word2 = "firefly"
+    words = check_spelling(word2, 2, word_list)
+    print "{}: ".format(word2), words
+
+
+q8()
