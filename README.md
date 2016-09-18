@@ -1,4 +1,3 @@
 coursera
 ========
-This repo is to track all my project for courses I take at Coursera. 
-
+This repo is for the python specialization I took at Coursera
